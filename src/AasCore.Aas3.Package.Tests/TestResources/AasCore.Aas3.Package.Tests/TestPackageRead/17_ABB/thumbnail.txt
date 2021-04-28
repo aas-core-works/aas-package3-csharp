@@ -1,0 +1,1 @@
+URI: /thumbnail.jpg, first bytes: 255, 216, 255, 224

@@ -1,2 +1,114 @@
-# aas-package
-Read and write .aasx packages.
+# aas-package3-csharp9-dotnet5
+
+Aas-package3-csharp9-dotnet5 is a library for reading and writing packaged file format of an [Asset Administration Shell (AAS)].
+
+[Asset Administration Shell (AAS)]: https://www.plattform-i40.de/PI40/Redaktion/DE/Downloads/Publikation/Details_of_the_Asset_Administration_Shell_Part1_V3.html
+
+## Status
+
+The library is thoroughly tested and ready to be used in production.
+
+## Documentation
+
+The documentation is available at [https://aas-core-works.github.io/aas-package3-csharp9-dotnet5].
+
+### Teaser
+
+Here is are short snippets to demonstrate how you can use the library.
+
+To create and write to a package:
+
+```csharp
+// General packaging handler to be shared accross the program
+Aas3.Packaging packaging = new();
+
+// Create a package
+{
+    byte[] specContent = ...;
+    byte[] thumbnailContent = ...;
+    byte[] supplementaryContent = ...;
+
+    using var pkg = packaging.Create("/path/to/some/file");
+    pkg.PutSpec(
+        new Uri("/aasx/some-company/data.json", UriKind.Relative),
+        "text/json",
+        specContent);
+
+    pkg.PutThumbnail(
+        new Uri("/some-thumbnail.png", UriKind.Relative),
+        "image/png",
+        thumbnailContent,
+        true);
+
+    pkg.PutSupplementary(
+        new Uri("/aasx-suppl/some-company/some-manual.pdf", UriKind.Relative),
+        "application/pdf",
+        supplementaryContent);
+
+    pkg.Flush();
+}
+```
+
+To read from the package:
+
+```csharp
+// General packaging handler to be shared accross the program
+Aas3.Packaging packaging = new();
+
+// Read from the package
+byte[] specContent;
+byte[] thumbnailContent;
+byte[] supplementaryContent;
+
+{
+    using var pkgOrErr = packaging.OpenRead(
+        "/path/to/some/file");
+
+    var pkg = pkgOrErr.Must();
+
+    // Read the specs
+    var specsByContentType = pkg.SpecsByContentType();
+    if (!specsByContentType.Contains("text/json"))
+    {
+        throw new ArgumentException("No json specs");
+    }
+    var spec = specsByContentType["text/json"].First();
+    specContent = spec.ReadAllBytes();
+
+    // Read the thumbnail
+    thumbnailContent = pkg.Thumbnail().ReadAllBytes();
+
+    // Read the supplementary file
+    supplementaryContent = pkg
+        .FindPart(
+            new Uri("/aasx-suppl/some-company/some-manual.pdf", UriKind.Relative))
+        .ReadAllBytes();
+}
+```
+
+Please see the full documentation at [https://aas-core-works.github.io/aas-package3-csharp9-dotnet5] for more details.
+
+## Installation
+
+The library is available on NuGet at:
+
+
+
+## Versioning
+
+The name of the library indicates the supported version of the [Asset Administration Shell (AAS)], the oldest C# version and the runtime version.
+
+In case of `aas-package3-csharp9-dotnet5`, this means:
+
+* Version 3 of the [Asset Administration Shell (AAS)],
+* C# 9.0, and
+* NET 5 runtime.
+
+We follow [Semantic Versioning] to version the library.
+The version X.Y.Z indicates:
+
+[Semantic Versioning]: http://semver.org/spec/v1.0.0.html
+
+* X is the major version (backward-incompatible),
+* Y is the minor version (backward-compatible), and
+* Z is the patch version (backward-compatible bug fix).

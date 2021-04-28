@@ -1,0 +1,31 @@
+name: Generate-doc-workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Generate-doc:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.202'
+
+      - name: Install docdev dependencies
+        working-directory: src
+        run: powershell .\InstallDocDependencies.ps1
+
+      - name: Generate the docdev
+        working-directory: src
+        run: powershell .\GenerateDoc.ps1
+
+      - name: Deploy to gh-pages 🚀
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: artefacts/gh-pages
