@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Continuous Integration </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Continuous Integration ">
+    <meta name="generator" content="docfx 2.56.1.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/adminshellio-48x48.jpg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="continuous-integration">Continuous Integration</h1>
+
+<p>To establish confidence in the software as well as to continuously maintain the code quality, we provide scripts to run pre-merge checks on your local machine as well as Github workflows to run remotely.</p>
+<p>All the following scripts <em>should not</em> require any administration privilege.</p>
+<h2 id="building-for-debug">Building for Debug</h2>
+<p>To build the solution for debugging and testing (<em>e.g.</em>, with other libraries), invoke:</p>
+<pre><code class="lang-powershell">.\src\BuildForDebug.ps1
+</code></pre>
+<p>To clean the build, call:</p>
+<pre><code class="lang-powershell">.\src\BuildForDebug.ps1 -clean
+</code></pre>
+<p>In cases of substantial changes to the solution, you need to delete <code>bin</code> and <code>obj</code> subdirectories beneath <code>src</code> as dotnet  will not do that for you.
+We provide a shallow script to save you a couple of keystrokes:</p>
+<pre><code class="lang-powershell">.\src\RemoveBinAndObj.ps1
+</code></pre>
+<h2 id="reformatting-code">Reformatting Code</h2>
+<p>We use <code>dontet-format</code> to automatically fix the formatting of the code to comply with the style guideline.
+To reformat the code in-place, call:</p>
+<pre><code class="lang-powershell">.\src\FormatCode.ps1
+</code></pre>
+<h2 id="generate-doctests">Generate Doctests</h2>
+<p>We use <a href="https://github.com/mristin/doctest-csharp">doctest-csharp</a> for <a href="https://en.wikipedia.org/wiki/Doctest">doctests</a>.
+To extract the doctests and generate the corresponding unit tests:</p>
+<pre><code class="lang-powershell">.\src\Doctest.ps1
+</code></pre>
+<h2 id="running-checks-locally">Running Checks Locally</h2>
+<p>We bundled all the checks in a single script, <code>src\Check.ps1</code>.
+If you want to run all the checks, simply call:</p>
+<pre><code class="lang-powershell">.\src\Check.ps1
+</code></pre>
+<p>The script <code>src\Check.ps1</code> will inform you which individual commands were run.
+In case of failures, you can just run the last failing command.</p>
+<p>Please see the source code of <code>src\Check.ps1</code> for more details.</p>
+<p>Our tests with external dependencies use environment variables to specify the location of the dependencies.
+While <code>src\Check.ps1</code> and related scripts set up the expected locations in the environment automatically, you need to adjust your test setting accordingly.</p>
+<p>So far, we need to set <code>SAMPLE_AASX_DIR</code> environment variable to point to the absolute path where AASX samples have been downloaded (using <code>src\DownloadSamples.ps1</code>).
+This is by definition <code>{your repository}\sample-aasx</code>.</p>
+<h2 id="github-workflows">Github Workflows</h2>
+<p>Github Actions allow for running continuous integration on Github servers.
+For a general introduction, see <a href="https://docs.github.com/en/actions">Github's documentation on Actions</a>.</p>
+<p>The specification of our Github workflows can be found in <a href="https://github.com/aas-core-works/aas-package3-csharp/tree/main/.github/workflows"><code>.github/workflows</code></a> directory.
+Please see the corresponding <code>*.yml</code> files for more details.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/aas-core-works/aas-package3-csharp/blob/main/doc/contributing/continuous-integration.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

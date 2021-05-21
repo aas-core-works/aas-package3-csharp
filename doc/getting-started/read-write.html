@@ -1,0 +1,238 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Read-Writing </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Read-Writing ">
+    <meta name="generator" content="docfx 2.56.1.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/adminshellio-48x48.jpg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="read-writing">Read-Writing</h1>
+
+<p>We show here how you can open a package for both read/write operations.</p>
+<p>We are going to use an instance of [api/AasCore.Aas3.Package.Packaging] to interact with the library.
+Please see [intro] for more details.</p>
+<h2 id="creating-a-new-package">Creating a New Package</h2>
+<p>Creating a new package is straightforward:</p>
+<pre><code class="lang-csharp">using var pkg = packaging.Create(&quot;/path/to/some/file&quot;);
+</code></pre>
+<p>Please do not forget to dispose the package if you do not use <code>using</code> statement.</p>
+<h2 id="opening-a-package-for-readwriting">Opening a Package for Read/Writing</h2>
+<p>Opening a package for read/writing is similar to how we open a package for reading:</p>
+<pre><code class="lang-csharp">using var pkgOrErr = packaging.OpenReadWrite(stream);
+</code></pre>
+<p>The result is a discriminated union, either a package, or an exception (see [reading] for more details).</p>
+<p>For example, to check for an exception:</p>
+<pre><code class="lang-csharp">if (pkgOrErr.MaybeException() != null)
+{
+    throw new System.ArgumentException(
+        &quot;something went wrong&quot;, pkgOrErr.MaybeException());
+}
+</code></pre>
+<p>or to get the package (which will throw the exception for you, if any):</p>
+<pre><code class="lang-csharp">var pkg = pkgOrErr.Must();
+</code></pre>
+<h2 id="writing-specs">Writing Specs</h2>
+<p>Whether you want to over-write existing specs or add a new spec, call <code>PutSpec</code>:</p>
+<pre><code class="lang-csharp">using Uri = System.Uri;
+using UriKind = System.UriKind;
+
+byte[] content = ...;
+
+pkg.PutSpec(
+    new Uri(&quot;/aasx/data.json&quot;, UriKind.Relative),
+    &quot;text/json&quot;,
+    content);
+</code></pre>
+<p>You can also use streams:</p>
+<pre><code class="lang-csharp">using Stream = System.IO.Stream;
+using Uri = System.Uri;
+using UriKind = System.UriKind;
+
+using Stream stream = ...;
+
+pkg.PutSpec(
+    new Uri(&quot;/aasx/data.json&quot;, UriKind.Relative),
+    &quot;text/json&quot;,
+    stream);
+</code></pre>
+<h2 id="writing-supplementary-parts">Writing Supplementary Parts</h2>
+<p>Similar to how you write specs, you write supplementary parts with <code>PutSupplementary</code>:</p>
+<pre><code class="lang-csharp">using Uri = System.Uri;
+using UriKind = System.UriKind;
+
+byte[] content = ...;
+
+pkg.PutSupplementary(
+    new Uri(&quot;/aasx/suppl/something.pdf&quot;, UriKind.Relative),
+    &quot;application/pdf&quot;,
+    content);
+</code></pre>
+<p>Streams can also be written:</p>
+<pre><code class="lang-csharp">using Stream = System.IO.Stream;
+using Uri = System.Uri;
+using UriKind = System.UriKind;
+
+Stream stream = ...;
+
+pkg.PutSupplementary(
+    new Uri(&quot;/aasx/suppl/something.pdf&quot;, UriKind.Relative),
+    &quot;application/pdf&quot;,
+    stream);
+</code></pre>
+<h2 id="writing-a-thumbnail">Writing a Thumbnail</h2>
+<p>There can be only one thumbnail per package.
+You can add a thumbnail (or overwrite it if it already exists) with:</p>
+<pre><code class="lang-csharp">using Uri = System.Uri;
+using UriKind = System.UriKind;
+
+byte[] content = ...;
+
+pkg.PutThumbnail(
+    new Uri(&quot;/thumbnail.png&quot;, UriKind.Relative),
+    &quot;image/png&quot;,
+    content,
+    true);
+</code></pre>
+<p>The last parameter (here set to <code>true</code>) determines whether the part of the previous thumbnail should be deleted (or kept in the package).</p>
+<p>You can also write a thumbnail from a stream:</p>
+<pre><code class="lang-csharp">using Stream = System.IO.Stream;
+using Uri = System.Uri;
+using UriKind = System.UriKind;
+
+Stream stream = ...;
+
+pkg.PutThumbnail(
+    new Uri(&quot;/thumbnail.png&quot;, UriKind.Relative),
+    &quot;image/png&quot;,
+    stream,
+    true);
+</code></pre>
+<h2 id="flushing">Flushing</h2>
+<p>Flushing is necessary if you want to make sure that the changes you made to the package are persisted properly.</p>
+<p>We do not implement a separate flushing operation, but simply delegate the flushing request to the underlying <a href="https://docs.microsoft.com/en-us/dotnet/api/system.io.packaging.package">System.IO.Packaging.Package</a> instance.</p>
+<p>To flush:</p>
+<pre><code class="lang-csharp">pkg.Flush();
+</code></pre>
+<h2 id="conflicts">Conflicts</h2>
+<p>Please be careful if you read parts while you are writing.
+The library is <strong>NOT</strong> thread-safe, and you need to take care of locking issues yourself.</p>
+<p>Additionally, be careful to re-read the proper nuggets of information if you changed them.
+For example, capturing the groups of specs by content type becomes invalid if you add a new spec:</p>
+<pre><code class="lang-csharp">var specsByContentType = pkg.SpecsByContentType();
+
+foreach(var (contentType, specs) in specsByContentType)
+{
+    pkg.PutSpec(...);
+    // specsByContentType is now stale and needs to be re-read.
+}
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/aas-core-works/aas-package3-csharp/blob/main/doc/getting-started/read-write.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
