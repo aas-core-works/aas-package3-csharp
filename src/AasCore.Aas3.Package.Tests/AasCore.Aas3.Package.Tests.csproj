@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
 
         <IsPackable>false</IsPackable>
 
@@ -10,6 +9,12 @@
         <Platforms>AnyCPU</Platforms>
 
         <Nullable>enable</Nullable>
+
+        <TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
+
+        <OutputType>Library</OutputType>
+
+        <LangVersion>8</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

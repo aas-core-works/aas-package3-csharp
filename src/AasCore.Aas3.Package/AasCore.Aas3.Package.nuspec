@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package >
   <metadata>
-    <id>AasCore.Aas3.Package.Csharp9.Dotnet5</id>
+    <id>AasCore.Aas3.Package</id>
     <version>1.0.0-pre1</version>
-    <title>AAS Package 3 for C# 9 and NET 5</title>
+    <title>AAS v3 Package Library</title>
     <authors>Marko Ristin, Nico Braunisch, Robert Lehmann</authors>
     <owners>$author$</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/aas-core-works/aas-package3-csharp9-dotnet5</projectUrl>
     <description>
-        A library for reading and writing packaged file format of an Asset Administration Shell (AAS)
+        A library for reading and writing packaged file format of an Asset Administration Shell (AAS) v3
     </description>
     <copyright>Copyright (c) 2021</copyright>
   </metadata>

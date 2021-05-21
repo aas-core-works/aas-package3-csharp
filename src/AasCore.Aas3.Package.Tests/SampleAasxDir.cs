@@ -56,7 +56,7 @@ namespace AasCore.Aas3.Package.Tests
         public static string Path34Festo()
         {
             var sampleAasxDir = DirPathFromEnvironment();
-            var pth = Path.Join(sampleAasxDir, "34_Festo.aasx");
+            var pth = Path.Combine(new[] { sampleAasxDir, "34_Festo.aasx" });
             if (!File.Exists(pth))
             {
                 throw new FileNotFoundException(

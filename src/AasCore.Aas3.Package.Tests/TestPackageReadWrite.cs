@@ -22,10 +22,10 @@ namespace AasCore.Aas3.Package.Tests
         {
             var originalContent = Encoding.UTF8.GetBytes("some content");
 
-            using TemporaryDirectory tmpdir = new();
-            string pth = Path.Join(tmpdir.Path, "dummy.aasx");
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
 
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
             {
                 using var pkg = packaging.Create(pth);
@@ -49,10 +49,10 @@ namespace AasCore.Aas3.Package.Tests
         {
             var originalContent = Encoding.UTF8.GetBytes("some content");
 
-            using TemporaryDirectory tmpdir = new();
-            string pth = Path.Join(tmpdir.Path, "dummy.aasx");
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
 
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
             {
                 using var pkg = packaging.Create(pth);
@@ -76,10 +76,10 @@ namespace AasCore.Aas3.Package.Tests
         {
             var originalContent = Encoding.UTF8.GetBytes("some content");
 
-            using TemporaryDirectory tmpdir = new();
-            string pth = Path.Join(tmpdir.Path, "dummy.aasx");
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
 
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
             {
                 using var pkg = packaging.Create(pth);
@@ -103,11 +103,11 @@ namespace AasCore.Aas3.Package.Tests
         [Test]
         public void Test_creating_a_package_in_a_stream()
         {
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
             var originalContent = Encoding.UTF8.GetBytes("some content");
 
-            MemoryStream stream = new();
+            MemoryStream stream = new MemoryStream();
             {
                 using var pkg = packaging.Create(stream);
                 pkg.PutThumbnail(
@@ -130,12 +130,12 @@ namespace AasCore.Aas3.Package.Tests
         [Test]
         public void Test_modify_package_in_a_stream()
         {
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
             var originalContent = Encoding.UTF8.GetBytes("some content");
             var uri = new Uri("/some-thumbnail.txt", UriKind.Relative);
 
-            MemoryStream stream = new();
+            MemoryStream stream = new MemoryStream();
 
             // Create
             {
@@ -174,10 +174,10 @@ namespace AasCore.Aas3.Package.Tests
         [Test]
         public void Test_modify_thumbnail_and_delete_existing()
         {
-            using TemporaryDirectory tmpdir = new();
-            string pth = Path.Join(tmpdir.Path, "dummy.aasx");
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
 
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
             // Initialize
             {
@@ -218,10 +218,10 @@ namespace AasCore.Aas3.Package.Tests
         [Test]
         public void Test_modify_thumbnail_and_dont_delete_existing()
         {
-            using TemporaryDirectory tmpdir = new();
-            string pth = Path.Join(tmpdir.Path, "dummy.aasx");
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
 
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
             var originalContent = Encoding.UTF8.GetBytes("some content");
             var originalUri = new Uri("/some-thumbnail.txt", UriKind.Relative);
@@ -268,10 +268,10 @@ namespace AasCore.Aas3.Package.Tests
         [Test]
         public void Test_deleting_a_spec()
         {
-            using TemporaryDirectory tmpdir = new();
-            string pth = Path.Join(tmpdir.Path, "dummy.aasx");
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
 
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
             var uri = new Uri("/aasx/some-company/data.txt", UriKind.Relative);
 
@@ -296,10 +296,10 @@ namespace AasCore.Aas3.Package.Tests
         [Test]
         public void Test_deleting_a_supplementary()
         {
-            using TemporaryDirectory tmpdir = new();
-            string pth = Path.Join(tmpdir.Path, "dummy.aasx");
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
 
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
             var uri = new Uri("/aasx/some-company/suppl.txt", UriKind.Relative);
 
@@ -323,10 +323,10 @@ namespace AasCore.Aas3.Package.Tests
         [Test]
         public void Test_deleting_a_thumbnail()
         {
-            using TemporaryDirectory tmpdir = new();
-            string pth = Path.Join(tmpdir.Path, "dummy.aasx");
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
 
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
             var uri = new Uri("/aasx/some-company/thumb.txt", UriKind.Relative);
 
@@ -351,14 +351,14 @@ namespace AasCore.Aas3.Package.Tests
         [Test]
         public void Test_that_opening_a_non_package_file_returns_the_exception()
         {
-            using TemporaryDirectory tmpdir = new();
-            string pth = Path.Join(tmpdir.Path, "dummy.aasx");
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
             {
                 // Create an invalid file w.r.t. Open Package Convention
                 File.WriteAllText(pth, "This is not OPC.");
             }
 
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
             {
                 using var pkgOrErr = packaging.OpenReadWrite(pth);
@@ -371,8 +371,8 @@ namespace AasCore.Aas3.Package.Tests
         [Test]
         public void Test_that_opening_a_file_without_origin_returns_the_exception()
         {
-            using TemporaryDirectory tmpdir = new();
-            string pth = Path.Join(tmpdir.Path, "dummy.aasx");
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
             {
                 // Create an empty Open Package Convention package, *i.e.* an invalid
                 // AAS package
@@ -380,7 +380,7 @@ namespace AasCore.Aas3.Package.Tests
                     pth, FileMode.Create, FileAccess.Write);
             }
 
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
             {
                 using var pkgOrErr = packaging.OpenReadWrite(pth);
@@ -393,7 +393,7 @@ namespace AasCore.Aas3.Package.Tests
         [Test]
         public void Test_that_opening_a_stream_without_origin_returns_the_exception()
         {
-            MemoryStream stream = new();
+            MemoryStream stream = new MemoryStream();
             {
                 // Create an empty Open Package Convention package, *i.e.* an invalid
                 // AAS package
@@ -401,7 +401,7 @@ namespace AasCore.Aas3.Package.Tests
                     stream, FileMode.Create, FileAccess.Write);
             }
 
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
             {
                 using var pkgOrErr = packaging.OpenReadWrite(stream);
@@ -414,9 +414,9 @@ namespace AasCore.Aas3.Package.Tests
         [Test]
         public void Test_that_opening_an_empty_stream_returns_the_exception()
         {
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
-            using MemoryStream stream = new();
+            using MemoryStream stream = new MemoryStream();
 
             using var pkgOrErr = packaging.OpenReadWrite(stream);
 

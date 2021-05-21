@@ -64,7 +64,7 @@ namespace AasCore.Aas3.Package
             }
             catch (Exception)
             {
-                if (_package is not null)
+                if (_package != null)
                 {
                     ((IDisposable)_package).Dispose();
                 }
@@ -78,7 +78,7 @@ namespace AasCore.Aas3.Package
          */
         public TPackage Must()
         {
-            if (MaybeException is not null)
+            if (MaybeException != null)
             {
                 throw MaybeException;
             }
@@ -96,7 +96,7 @@ namespace AasCore.Aas3.Package
         {
             if (!_disposed)
             {
-                if (_package is not null)
+                if (_package != null)
                 {
                     ((IDisposable)_package).Dispose();
                 }
@@ -145,7 +145,7 @@ namespace AasCore.Aas3.Package
         public byte[] ReadAllBytes()
         {
             using var stream = Stream();
-            MemoryStream ms = new();
+            MemoryStream ms = new MemoryStream();
             stream.CopyTo(ms);
             return ms.ToArray();
         }
@@ -203,7 +203,7 @@ namespace AasCore.Aas3.Package
             // This list also includes the opened package.
             //
             // Capacity of 1 is meant for the opened package.
-            List<IDisposable> toBeDisposed = new(1);
+            List<IDisposable> toBeDisposed = new List<IDisposable>(1);
 
             try
             {
@@ -236,7 +236,7 @@ namespace AasCore.Aas3.Package
             // This list also includes the opened package.
             //
             // Capacity of 1 is meant for the opened package.
-            List<IDisposable> toBeDisposed = new(1);
+            List<IDisposable> toBeDisposed = new List<IDisposable>(1);
 
             try
             {
@@ -298,7 +298,7 @@ namespace AasCore.Aas3.Package
             // This list also includes the opened package.
             //
             // Capacity of 2 is meant for: 1) the stream and 2) the package itself
-            List<IDisposable> toBeDisposed = new(2);
+            List<IDisposable> toBeDisposed = new List<IDisposable>(2);
 
             PackageOrException<PackageRead>? result;
 
@@ -340,7 +340,7 @@ namespace AasCore.Aas3.Package
 
             // Dispose the toBeDisposed pre-emptively here so that they do not have to
             // linger unnecessarily in the resulting object.
-            if (result.MaybeException is not null)
+            if (result.MaybeException != null)
             {
                 for (var i = toBeDisposed.Count - 1; i >= 0; i--)
                 {
@@ -379,7 +379,7 @@ namespace AasCore.Aas3.Package
             //
             // Capacity of 1 is meant for only the package itself, we are not responsible
             // for closing the stream.
-            List<IDisposable> toBeDisposed = new(1);
+            List<IDisposable> toBeDisposed = new List<IDisposable>(1);
 
             PackageOrException<PackageRead>? result;
 
@@ -414,7 +414,7 @@ namespace AasCore.Aas3.Package
 
             // Dispose the toBeDisposed pre-emptively here so that they do not have to
             // linger unnecessarily in the resulting object.
-            if (result.MaybeException is not null)
+            if (result.MaybeException != null)
             {
                 for (var i = toBeDisposed.Count - 1; i >= 0; i--)
                 {
@@ -454,7 +454,7 @@ namespace AasCore.Aas3.Package
             // This list also includes the opened package.
             //
             // Capacity of 2 is meant for: 1) the stream and 2) the package itself
-            List<IDisposable> toBeDisposed = new(2);
+            List<IDisposable> toBeDisposed = new List<IDisposable>(2);
 
             PackageOrException<PackageReadWrite>? result;
 
@@ -496,7 +496,7 @@ namespace AasCore.Aas3.Package
 
             // Dispose the toBeDisposed pre-emptively here so that they do not have to
             // linger unnecessarily in the resulting object.
-            if (result.MaybeException is not null)
+            if (result.MaybeException != null)
             {
                 for (var i = toBeDisposed.Count - 1; i >= 0; i--)
                 {
@@ -537,13 +537,14 @@ namespace AasCore.Aas3.Package
             //
             // Capacity of 1 is meant for only the package itself, we are not responsible
             // for closing the stream.
-            List<IDisposable> toBeDisposed = new(1);
+            List<IDisposable> toBeDisposed = new List<IDisposable>(1);
 
             PackageOrException<PackageReadWrite>? result;
 
             try
             {
-                var pkg = SystemPackage.Open(stream, FileMode.Open, FileAccess.ReadWrite);
+                var pkg = SystemPackage.Open(
+                    stream, FileMode.Open, FileAccess.ReadWrite);
                 toBeDisposed.Add(pkg);
 
                 var originPart = FindOriginPart(pkg);
@@ -572,7 +573,7 @@ namespace AasCore.Aas3.Package
 
             // Dispose the toBeDisposed pre-emptively here so that they do not have to
             // linger unnecessarily in the resulting object.
-            if (result.MaybeException is not null)
+            if (result.MaybeException != null)
             {
                 for (var i = toBeDisposed.Count - 1; i >= 0; i--)
                 {
@@ -725,7 +726,7 @@ namespace AasCore.Aas3.Package
          */
         public IDictionary<string, List<Part>> SpecsByContentType()
         {
-            SortedDictionary<string, List<Part>> result = new();
+            var result = new SortedDictionary<string, List<Part>>();
             foreach (var spec in Specs())
             {
                 if (!result.ContainsKey(spec.ContentType))
@@ -810,7 +811,7 @@ namespace AasCore.Aas3.Package
          */
         public Part MustPart(Uri uri)
         {
-            return new(uri, UnderlyingPackage.GetPart(uri));
+            return new Part(uri, UnderlyingPackage.GetPart(uri));
         }
 
         /**
@@ -869,7 +870,7 @@ namespace AasCore.Aas3.Package
          */
         public void PutSpec(Uri uri, string contentType, byte[] content)
         {
-            using MemoryStream ms = new(content, false);
+            using MemoryStream ms = new MemoryStream(content, false);
             PutSpec(uri, contentType, ms);
 
             #region Postconditions
@@ -997,7 +998,7 @@ namespace AasCore.Aas3.Package
          */
         public void PutSupplementary(Uri uri, string contentType, byte[] content)
         {
-            using MemoryStream ms = new(content, false);
+            using MemoryStream ms = new MemoryStream(content, false);
             PutSupplementary(uri, contentType, ms);
 
             #region Postconditions
@@ -1137,7 +1138,7 @@ namespace AasCore.Aas3.Package
         public void PutThumbnail(
             Uri uri, string contentType, byte[] content, bool deleteExisting)
         {
-            using MemoryStream ms = new(content, false);
+            using MemoryStream ms = new MemoryStream(content, false);
             PutThumbnail(uri, contentType, ms, deleteExisting);
 
             #region Postconditions
@@ -1383,7 +1384,7 @@ namespace AasCore.Aas3.Package
                 if (Supplementaries().Any(suppl => suppl.Uri == uri))
                 {
                     throw new InvalidOperationException(
-                        $"The supplementary file must not be " +
+                        "The supplementary file must not be " +
                         $"listed in the Supplementaries: {uri}");
                 }
 
@@ -1400,7 +1401,7 @@ namespace AasCore.Aas3.Package
         public void RemoveThumbnail()
         {
             var thumb = Thumbnail();
-            if (thumb is not null)
+            if (thumb != null)
             {
                 var morituri =
                     UnderlyingPackage.GetRelationshipsByType(
@@ -1418,7 +1419,7 @@ namespace AasCore.Aas3.Package
             #region Postconditions
 
 #if DEBUG || DEBUGSLOW
-            if (Thumbnail() is not null)
+            if (Thumbnail() != null)
             {
                 throw new InvalidOperationException(
                     "The thumbnail must not exist any more");

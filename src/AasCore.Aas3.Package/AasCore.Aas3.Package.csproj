@@ -1,15 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
         <Nullable>enable</Nullable>
         <Configurations>Debug;Release;DebugSlow</Configurations>
         <Platforms>AnyCPU</Platforms>
+        <LangVersion>8</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
       <PackageReference Include="System.IO.Packaging" Version="5.0.0" />
-      <PackageReference Include="System.Security.Cryptography.Xml" Version="5.0.0" />
     </ItemGroup>
 </Project>

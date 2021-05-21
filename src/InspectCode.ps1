@@ -23,10 +23,11 @@ function Main
     # InspectCode passes over the properties to MSBuild,
     # see https://www.jetbrains.com/help/resharper/InspectCode.html#msbuild-related-parameters
     & dotnet jb inspectcode `
+        "--properties:Configuration=DebugSlow" `
         "-o=$codeInspectionPath" `
         "--caches-home=$cachesHome" `
-        '--exclude=*\obj\*;packages\*;*\bin\*;*\*.json' `
-        aas-package3-csharp9-dotnet5.sln
+        '--exclude=*\obj\*;packages\*;*\bin\*;*\*.json;*\TestResources\*' `
+        aas-package3-csharp.sln
 
     [xml]$inspection = Get-Content $codeInspectionPath
 
