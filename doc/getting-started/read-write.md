@@ -2,8 +2,10 @@
 
 We show here how you can open a package for both read/write operations.
 
-We are going to use an instance of [api/AasCore.Aas3.Package.Packaging] to interact with the library.
+We are going to use an instance `packaging` of class [`Packaging`] to interact with the library.
 Please see [intro] for more details.
+
+[`Packaging`]: ../api/AasCore.Aas3.Package.Packaging.yml
 
 ## Creating a New Package
 

@@ -1,6 +1,8 @@
 # Reading
 
-Using the `packaging` instance (see [entry-point.md]), we open a package for reading:
+Using the instance `packaging` of class [`Packaging`] (see [entry-point.md]), we open a package for reading:
+
+[`Packaging`]: ../api/AasCore.Aas3.Package.Packaging.yml
 
 ```csharp
 var packaging = new AasCore.Aas3.Package.Packaging();
@@ -45,8 +47,10 @@ Each part has a content type (given as a [MIME type]) and gives you access to it
 
 [MIME type]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
 
-A part is modeled as [api/AasCore.Aas3.Package.Part].
+A part is modeled as an instance of class [`Part`].
 You can read all bytes or all text from it, or open a read stream:
+
+[`Part`]: ../api/AasCore.Aas3.Package.Part.yml
 
 ```csharp
 var part = ...;

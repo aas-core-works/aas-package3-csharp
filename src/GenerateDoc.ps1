@@ -36,7 +36,7 @@ function Main
     }
 
     $siteDir = Join-Path $artefactsDir "gh-pages" `
-        | Join-Path -ChildPath "devdoc"
+        | Join-Path -ChildPath "doc"
 
     Write-Host "The documentation has been generated to: '$siteDir'"
     Write-Host "You can serve it locally with:"

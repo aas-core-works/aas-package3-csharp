@@ -1,6 +1,8 @@
 # Entry Point
 
-The class `Packaging` provides the main entry to the library:
+The class [`Packaging`] provides the main entry to the library:
+
+[`Packaging`]: ../api/AasCore.Aas3.Package.Packaging.yml
 
 ```csharp
 var packaging = new AasCore.Aas3.Package.Packaging();
