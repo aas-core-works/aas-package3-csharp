@@ -26,7 +26,7 @@ function Main
     $artefactsDir = CreateAndGetArtefactsDir
 
     $repoDir = Split-Path -Parent $PSScriptRoot
-    $docfxProjectDir = Join-Path $repoDir "docdev"
+    $docfxProjectDir = Join-Path $repoDir "doc"
 
     Set-Location $docfxProjectDir
     & $docfxExe "docfx.json"

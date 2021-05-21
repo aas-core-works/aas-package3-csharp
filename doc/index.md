@@ -1,19 +1,15 @@
-# aas-package3-csharp9-dotnet5
+# aas-package3-csharp
 
-This is the documentation for the library `aas-package3-csharp9-dotnet5`.
-The library allows you to read and write .aasx packages, a package format for [Asset Administration Shell (AAS)].
+This is the documentation for the library aas-package3-csharp.
+The library allows you to read and write `.aasx` packages, a package format for [Asset Administration Shell (AAS)].
 
 [Asset Administration Shell (AAS)]: https://www.plattform-i40.de/PI40/Redaktion/DE/Downloads/Publikation/Details_of_the_Asset_Administration_Shell_Part1_V3.html
 
-As it name goes:
+As it name goes, the library operates on packages complying to the [version 3 of the AAS].
 
-* The library operates on packages complying to the [version 3 of the AAS].
-* It is a C# library using all the language features from up to and including [C# 9.0].
-* The library depends on [.NET 5] runtime.
+The library runs both on NET Standard 2.0 and NET 5. It is thoroughly tested and ready for production.
 
 [version 3 of the AAS]: https://www.plattform-i40.de/PI40/Redaktion/DE/Downloads/Publikation/Details_of_the_Asset_Administration_Shell_Part1_V3.html
-[C# 9.0]: https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-9
-[.NET 5]: https://docs.microsoft.com/en-us/dotnet/core/dotnet-five
 
 The documentation is split in three sections:
 

@@ -12,7 +12,7 @@ Both NETStandard 2.0 and NET 5 are supported.
 
 ## Documentation
 
-The documentation is available at [https://aas-core-works.github.io/aas-package3-csharp9-dotnet5].
+The documentation is available at [https://aas-core-works.github.io/aas-package3-csharp/doc].
 
 ### Teaser
 
@@ -88,7 +88,7 @@ byte[] supplementaryContent;
 }
 ```
 
-Please see the full documentation at [https://aas-core-works.github.io/aas-package3-csharp] for more details.
+Please see the full documentation at [https://aas-core-works.github.io/aas-package3-csharp/doc] for more details.
 
 ## Installation
 

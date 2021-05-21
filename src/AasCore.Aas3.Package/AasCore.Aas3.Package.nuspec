@@ -8,7 +8,7 @@
     <owners>$author$</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
-    <projectUrl>https://github.com/aas-core-works/aas-package3-csharp9-dotnet5</projectUrl>
+    <projectUrl>https://github.com/aas-core-works/aas-package3-csharp</projectUrl>
     <description>
         A library for reading and writing packaged file format of an Asset Administration Shell (AAS) v3
     </description>

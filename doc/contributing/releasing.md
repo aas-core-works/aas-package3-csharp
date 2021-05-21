@@ -39,4 +39,4 @@ We provide a shallow script to save you a couple of keystrokes:
 There is a dedicated GitHub workflow for publishing the package to NuGet.
 Please see the `publish-to-nuget.yml` in [`.github/workflows`].
 
-[`.github/workflows`]: https://github.com/aas-core-works/aas-package3-csharp9-dotnet5/tree/main/.github/workflows
+[`.github/workflows`]: https://github.com/aas-core-works/aas-package3-csharp/tree/main/.github/workflows

@@ -1,9 +1,10 @@
-name: Generate-doc-workflow
+name: Check Doc
 
 on:
-  push:
+  pull_request:
     branches:
       - main
+    types: [ opened, synchronize, reopened, edited ]
 
 jobs:
   Generate-doc:
@@ -23,9 +24,3 @@ jobs:
       - name: Generate the doc
         working-directory: src
         run: powershell .\GenerateDoc.ps1
-
-      - name: Deploy to gh-pages 🚀
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: artefacts/gh-pages

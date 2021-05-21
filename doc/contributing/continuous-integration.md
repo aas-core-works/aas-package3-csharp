@@ -75,4 +75,4 @@ For a general introduction, see [Github's documentation on Actions].
 The specification of our Github workflows can be found in [`.github/workflows`] directory.
 Please see the corresponding `*.yml` files for more details.
 
-[`.github/workflows`]: https://github.com/aas-core-works/aas-package3-csharp9-dotnet5/tree/main/.github/workflows
+[`.github/workflows`]: https://github.com/aas-core-works/aas-package3-csharp/tree/main/.github/workflows
