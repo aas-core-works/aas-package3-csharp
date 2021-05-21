@@ -29,8 +29,10 @@
       },
       {
         "files": [
-          "getting-started/**.md",
-          "getting-started/**/toc.yml",
+          "getting-started/*.md",
+          "getting-started/toc.yml",
+          "contributing/*.md",
+          "contributing/toc.yml",
           "toc.yml",
           "*.md"
         ]
@@ -46,7 +48,7 @@
     "overwrite": [
       {
         "files": [
-          "apidoc/**.md"
+          "api/**.md"
         ],
         "exclude": [
           "obj/**",
@@ -54,7 +56,7 @@
         ]
       }
     ],
-    "dest": "../artefacts/gh-pages/devdoc",
+    "dest": "../artefacts/gh-pages/doc",
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": [

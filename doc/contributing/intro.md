@@ -18,7 +18,7 @@ This is a brief list of steps explaining how to submit your code contribution.
  
 * Clone the Git repository:
   ```
-  git clone https://github.com/aas-core-works/aas-package3-csharp9-dotnet5
+  git clone https://github.com/aas-core-works/aas-package3-csharp
   ```
   
 * Create your feature branch:
@@ -36,7 +36,7 @@ This is a brief list of steps explaining how to submit your code contribution.
 
 * Clone the Git repository:
   ```
-  git clone https://github.com/yourUsername/aas-package3-csharp9-dotnet5
+  git clone https://github.com/yourUsername/aas-package3-csharp
   ```
 
 * Create your feature branch:
@@ -47,7 +47,7 @@ This is a brief list of steps explaining how to submit your code contribution.
 
 ### Dependencies
 
-* We assume that you installed [.NET 5 SDK] on your system.
+* We assume that you installed both [.NET 3.1 SDK] and [.NET 5 SDK] on your system.
 
 * Change to the directory of your repository. Execute the following command to install all the development dependencies:
 
@@ -111,7 +111,7 @@ This is a brief list of steps explaining how to submit your code contribution.
 
 ### Pull Request
  
-* Go to the [aas-package3-csharp9-dotnet5 GitHub Repository] and
+* Go to the [aas-package3-csharp GitHub Repository] and
   create the pull request in the web interface.
 * Have it reviewed, if necessary
 * Make sure all the remote checks pass
@@ -132,6 +132,7 @@ This is a brief list of steps explaining how to submit your code contribution.
 [our guideline to naming the branches]: https://aas-core-works.github.io/aas-package3-cshapr9-dotnet5/devdoc/getting-started/development-workflow.html#pull-requests
 [this GitHub guide about forking]: https://guides.github.com/activities/forking/
 [guideline related to commit messages]: https://aas-core-works.github.io/aas-package3-cshapr9-dotnet5/devdoc/getting-started/development-workflow.html#commit-messages
+[.NET 3.1 SDK]: https://dotnet.microsoft.com/download/dotnet/3.1
 [.NET 5 SDK]: https://dotnet.microsoft.com/download/dotnet/5.0
-[aas-package3-csharp9-dotnet5 GitHub Repository]: https://github.com/aas-core-works/aas-package3-csharp9-dotnet5
+[aas-package3-csharp GitHub Repository]: https://github.com/aas-core-works/aas-package3-csharp
 [this section of the GitHub documentation on squash & merge]: https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/merging-a-pull-request
