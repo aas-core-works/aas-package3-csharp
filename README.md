@@ -21,7 +21,7 @@ Both NETStandard 2.0 and NET 5 are supported.
 
 ## Documentation
 
-The documentation is available at [https://aas-core-works.github.io/aas-package3-csharp/doc].
+The documentation is available at https://aas-core-works.github.io/aas-package3-csharp/doc.
 
 ### Teaser
 
