@@ -3,7 +3,7 @@
 [![Test](https://github.com/aas-core-works/aas-package3-csharp/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/aas-core-works/aas-package3-csharp/actions/workflows/test.yml
 ) [![Check style](https://github.com/aas-core-works/aas-package3-csharp/actions/workflows/check-style.yml/badge.svg)](https://github.com/aas-core-works/aas-package3-csharp/actions/workflows/check-style.yml
 ) [![Check Doc](https://github.com/aas-core-works/aas-package3-csharp/actions/workflows/check-doc.yml/badge.svg)](https://github.com/aas-core-works/aas-package3-csharp/actions/workflows/check-doc.yml
-) [![Coverage Status](https://coveralls.io/repos/github/aas-core-works/aas-package3-csharp9-dotnet5/badge.svg?branch=main)](https://coveralls.io/github/aas-core-works/aas-package3-csharp9-dotnet5?branch=main
+) [![Coverage Status](https://coveralls.io/repos/github/aas-core-works/aas-package3-csharp/badge.svg?branch=main)](https://coveralls.io/github/aas-core-works/aas-package3-csharp?branch=main
 ) [![Nuget](
 https://img.shields.io/nuget/v/AasCore.Aas3.Package)](
 https://www.nuget.org/packages/AasCore.Aas3.Package
