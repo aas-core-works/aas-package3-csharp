@@ -1,12 +1,14 @@
-# aas-package3-csharp9-dotnet5
+# aas-package3-csharp
 
-Aas-package3-csharp9-dotnet5 is a library for reading and writing packaged file format of an [Asset Administration Shell (AAS)].
+Aas-package3-csharp is a library for reading and writing packaged file format of an [Asset Administration Shell (AAS)] in C#.
 
 [Asset Administration Shell (AAS)]: https://www.plattform-i40.de/PI40/Redaktion/DE/Downloads/Publikation/Details_of_the_Asset_Administration_Shell_Part1_V3.html
 
 ## Status
 
 The library is thoroughly tested and ready to be used in production.
+
+Both NETStandard 2.0 and NET 5 are supported.
 
 ## Documentation
 
@@ -20,7 +22,7 @@ To create and write to a package:
 
 ```csharp
 // General packaging handler to be shared accross the program
-Aas3.Packaging packaging = new();
+var packaging = new AasCore.Aas3.Package.Packaging();
 
 // Create a package
 {
@@ -53,7 +55,7 @@ To read from the package:
 
 ```csharp
 // General packaging handler to be shared accross the program
-Aas3.Packaging packaging = new();
+var packaging = new AasCore.Aas3.Package.Packaging();
 
 // Read from the package
 byte[] specContent;
@@ -86,23 +88,17 @@ byte[] supplementaryContent;
 }
 ```
 
-Please see the full documentation at [https://aas-core-works.github.io/aas-package3-csharp9-dotnet5] for more details.
+Please see the full documentation at [https://aas-core-works.github.io/aas-package3-csharp] for more details.
 
 ## Installation
 
-The library is available on NuGet at:
-
-
+The library is available on NuGet at: https://www.nuget.org/packages/AasCore.Aas3.Package/
 
 ## Versioning
 
-The name of the library indicates the supported version of the [Asset Administration Shell (AAS)], the oldest C# version and the runtime version.
+The name of the library indicates the supported version of the [Asset Administration Shell (AAS)].
 
-In case of `aas-package3-csharp9-dotnet5`, this means:
-
-* Version 3 of the [Asset Administration Shell (AAS)],
-* C# 9.0, and
-* NET 5 runtime.
+In case of `aas-package3-csharp`, this means that the Version 3 of the [Asset Administration Shell (AAS)] is supported.
 
 We follow [Semantic Versioning] to version the library.
 The version X.Y.Z indicates:

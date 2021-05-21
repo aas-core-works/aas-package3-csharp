@@ -21,7 +21,7 @@ namespace AasCore.Aas3.Package.Tests
     public class Table
     {
         private readonly List<string> _headers;
-        private readonly List<List<string>> _rows = new();
+        private readonly List<List<string>> _rows = new List<List<string>>();
 
         public Table(List<string> headers)
         {
@@ -77,7 +77,7 @@ namespace AasCore.Aas3.Package.Tests
                 }
             }
 
-            StringWriter writer = new();
+            StringWriter writer = new StringWriter();
             columnIndex = 0;
             foreach (string header in _headers)
             {

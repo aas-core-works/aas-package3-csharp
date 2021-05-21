@@ -23,10 +23,11 @@ namespace AasCore.Aas3.Package.Tests
         {
             return Path.Combine(
                 TestContext.CurrentContext.TestDirectory,
-                Path.Join(
+                Path.Combine(
+                    new[]{
                     "TestResources",
                     $"{nameof(AasCore)}.{nameof(Aas3)}.{nameof(Package)}.{nameof(Tests)}",
-                    nameof(TestPackageRead)
+                    nameof(TestPackageRead)}
                 ));
         }
 
@@ -46,7 +47,8 @@ namespace AasCore.Aas3.Package.Tests
             {
                 string name = Path.GetFileNameWithoutExtension(pth);
 
-                string expectedDir = Path.Join(GetTestResourcesPath(), name);
+                string expectedDir = Path.Combine(
+                    new[] { GetTestResourcesPath(), name });
                 const bool record = false;
 
 #pragma warning disable 162
@@ -55,10 +57,10 @@ namespace AasCore.Aas3.Package.Tests
                 if (record) Directory.CreateDirectory(expectedDir);
 #pragma warning restore 162
 
-                Packaging packaging = new();
+                Packaging packaging = new Packaging();
 
                 using var pkgOrErr = packaging.OpenRead(pth);
-                if (pkgOrErr.MaybeException is not null)
+                if (pkgOrErr.MaybeException != null)
                 {
                     throw new AssertionException(
                         $"Failed to open for reading: {pth}",
@@ -79,7 +81,7 @@ namespace AasCore.Aas3.Package.Tests
 
             ForEachReadOfSampleAasx((pkg, expectedDir) =>
             {
-                Table tbl = new(new List<string> { "Content Type", "URIs" });
+                Table tbl = new Table(new List<string> { "Content Type", "URIs" });
                 foreach (var item in pkg.SpecsByContentType())
                 {
                     tbl.Add(new List<string>
@@ -91,7 +93,8 @@ namespace AasCore.Aas3.Package.Tests
                     });
                 }
 
-                var tblPth = Path.Join(expectedDir, "specsTable.txt");
+                var tblPth = Path.Combine(
+                    new[] { expectedDir, "specsTable.txt" });
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 if (record)
 #pragma warning disable 162
@@ -115,7 +118,7 @@ namespace AasCore.Aas3.Package.Tests
 
             ForEachReadOfSampleAasx((pkg, expectedDir) =>
             {
-                HashSet<string> filenameSet = new();
+                HashSet<string> filenameSet = new HashSet<string>();
 
                 foreach (var spec in pkg.Specs())
                 {
@@ -139,7 +142,7 @@ namespace AasCore.Aas3.Package.Tests
 
                     filenameSet.Add(filename);
 
-                    string contentPth = Path.Join(expectedDir, filename);
+                    string contentPth = Path.Combine(new[] { expectedDir, filename });
 
                     // We need to convert Windows newlines to Linux newlines since
                     // we can run the tests on both systems. Additionally, Git will
@@ -173,7 +176,7 @@ namespace AasCore.Aas3.Package.Tests
 
             ForEachReadOfSampleAasx((pkg, expectedDir) =>
             {
-                Table tbl = new(new List<string> { "Content Type", "URI" });
+                Table tbl = new Table(new List<string> { "Content Type", "URI" });
                 foreach (var suppl in pkg.Supplementaries())
                 {
                     tbl.Add(new List<string>
@@ -182,7 +185,8 @@ namespace AasCore.Aas3.Package.Tests
                     });
                 }
 
-                var tblPth = Path.Join(expectedDir, "supplementariesTable.txt");
+                var tblPth = Path.Combine(
+                    new[] { expectedDir, "supplementariesTable.txt" });
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 if (record)
 #pragma warning disable 162
@@ -208,7 +212,8 @@ namespace AasCore.Aas3.Package.Tests
             {
                 var thumbnail = pkg.Thumbnail();
 
-                var thumbSummaryPth = Path.Join(expectedDir, "thumbnail.txt");
+                var thumbSummaryPth = Path.Combine(
+                    new[] { expectedDir, "thumbnail.txt" });
 
                 var thumbUriText = thumbnail == null
                     ? "Not available"
@@ -221,7 +226,7 @@ namespace AasCore.Aas3.Package.Tests
                 var firstBytesText = string.Join(
                     ", ",
                     firstBytes.Select(
-                        aByte => aByte is > 32 and < 127
+                        aByte => aByte > 32 && aByte < 127
                             ? Convert.ToChar(aByte).ToString()
                             : aByte.ToString()));
 
@@ -248,7 +253,7 @@ namespace AasCore.Aas3.Package.Tests
         {
             foreach (string pth in SampleAasxDir.ListPaths())
             {
-                Packaging packaging = new();
+                Packaging packaging = new Packaging();
 
                 using var pkgPathOrErr = packaging.OpenRead(pth);
                 var pkgPath = pkgPathOrErr.Must();
@@ -272,7 +277,7 @@ namespace AasCore.Aas3.Package.Tests
         {
             var pth = SampleAasxDir.Path34Festo();
 
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
             using var pkgPathOrErr = packaging.OpenRead(pth);
             var pkg = pkgPathOrErr.Must();
@@ -288,7 +293,7 @@ namespace AasCore.Aas3.Package.Tests
         {
             var pth = SampleAasxDir.Path34Festo();
 
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
             using var pkgPathOrErr = packaging.OpenRead(pth);
             var pkg = pkgPathOrErr.Must();
@@ -303,14 +308,14 @@ namespace AasCore.Aas3.Package.Tests
         [Test]
         public void Test_that_opening_a_non_package_file_returns_the_exception()
         {
-            using TemporaryDirectory tmpdir = new();
-            string pth = Path.Join(tmpdir.Path, "dummy.aasx");
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
             {
                 // Create an invalid file w.r.t. Open Package Convention
                 File.WriteAllText(pth, "This is not OPC.");
             }
 
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
             {
                 using var pkgOrErr = packaging.OpenRead(pth);
@@ -323,8 +328,8 @@ namespace AasCore.Aas3.Package.Tests
         [Test]
         public void Test_that_opening_a_file_without_origin_returns_the_exception()
         {
-            using TemporaryDirectory tmpdir = new();
-            string pth = Path.Join(tmpdir.Path, "dummy.aasx");
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
             {
                 // Create an empty Open Package Convention package, *i.e.* an invalid
                 // AAS package
@@ -332,7 +337,7 @@ namespace AasCore.Aas3.Package.Tests
                     pth, FileMode.Create, FileAccess.Write);
             }
 
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
             {
                 using var pkgOrErr = packaging.OpenRead(pth);
@@ -345,7 +350,7 @@ namespace AasCore.Aas3.Package.Tests
         [Test]
         public void Test_that_opening_a_stream_without_origin_returns_the_exception()
         {
-            MemoryStream stream = new();
+            MemoryStream stream = new MemoryStream();
             {
                 // Create an empty Open Package Convention package, *i.e.* an invalid
                 // AAS package
@@ -353,7 +358,7 @@ namespace AasCore.Aas3.Package.Tests
                     stream, FileMode.Create, FileAccess.Write);
             }
 
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
             {
                 using var pkgOrErr = packaging.OpenRead(stream);
@@ -366,9 +371,9 @@ namespace AasCore.Aas3.Package.Tests
         [Test]
         public void Test_that_opening_an_empty_stream_returns_the_exception()
         {
-            Packaging packaging = new();
+            Packaging packaging = new Packaging();
 
-            using MemoryStream stream = new();
+            using MemoryStream stream = new MemoryStream();
 
             using var pkgOrErr = packaging.OpenRead(stream);
 
