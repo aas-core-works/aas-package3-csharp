@@ -1,0 +1,20 @@
+/src/.vs
+*~
+
+# VIM
+*.swp
+
+# Tools for building etc.
+tools/
+
+# Installation of development dependencies
+installation-dev-dependencies/
+
+# Build artefacts
+artefacts/
+
+# Sample AASXs
+sample-aasx/
+
+obj/
+bin/

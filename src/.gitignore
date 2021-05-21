@@ -1,0 +1,6 @@
+bin/
+obj/
+out/
+*.sln.DotSettings.user
+coverage.json
+coverage.opencover.xml

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <Configurations>Debug;Release;DebugSlow</Configurations>
+        <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
+      <PackageReference Include="System.IO.Packaging" Version="5.0.0" />
+      <PackageReference Include="System.Security.Cryptography.Xml" Version="5.0.0" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,3 @@
+Content Type | URIs
+-------------+----------------------------------------------------------------
+text/xml     | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
