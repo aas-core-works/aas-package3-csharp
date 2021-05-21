@@ -10,8 +10,12 @@
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/aas-core-works/aas-package3-csharp</projectUrl>
     <description>
-        A library for reading and writing packaged file format of an Asset Administration Shell (AAS) v3
+A library for reading and writing packaged file format of an Asset Administration Shell (AAS) v3
     </description>
     <copyright>Copyright (c) 2021</copyright>
+    <releaseNotes>
+v1.0.0-pre1
+- This is the very first pre-release.
+    </releaseNotes>
   </metadata>
 </package>
