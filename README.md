@@ -1,5 +1,14 @@
 # aas-package3-csharp
 
+[![Test](https://github.com/aas-core-works/aas-package3-csharp/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/aas-core-works/aas-package3-csharp/actions/workflows/test.yml
+) [![Check style](https://github.com/aas-core-works/aas-package3-csharp/actions/workflows/check-style.yml/badge.svg)](https://github.com/aas-core-works/aas-package3-csharp/actions/workflows/check-style.yml
+) [![Check Doc](https://github.com/aas-core-works/aas-package3-csharp/actions/workflows/check-doc.yml/badge.svg)](https://github.com/aas-core-works/aas-package3-csharp/actions/workflows/check-doc.yml
+) [![Coverage Status](https://coveralls.io/repos/github/aas-core-works/aas-package3-csharp9-dotnet5/badge.svg?branch=main)](https://coveralls.io/github/aas-core-works/aas-package3-csharp9-dotnet5?branch=main
+) [![Nuget](
+https://img.shields.io/nuget/v/AasCore.Aas3.Package)](
+https://www.nuget.org/packages/AasCore.Aas3.Package
+)
+
 Aas-package3-csharp is a library for reading and writing packaged file format of an [Asset Administration Shell (AAS)] in C#.
 
 [Asset Administration Shell (AAS)]: https://www.plattform-i40.de/PI40/Redaktion/DE/Downloads/Publikation/Details_of_the_Asset_Administration_Shell_Part1_V3.html
