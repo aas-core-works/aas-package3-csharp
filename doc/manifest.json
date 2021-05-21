@@ -237,7 +237,7 @@
       "output": {
         ".html": {
           "relative_path": "getting-started/entry-point.html",
-          "hash": "SueIY+wkY1lnMQaaf1dDCQ=="
+          "hash": "iz9UeBHF8EhpVldKxLkOFw=="
         }
       },
       "is_incremental": false,
@@ -273,7 +273,7 @@
       "output": {
         ".html": {
           "relative_path": "getting-started/read-write.html",
-          "hash": "hA65+hNeFGTFHmey+ftVOA=="
+          "hash": "JuHEKgOcuvD656EJkzAtdg=="
         }
       },
       "is_incremental": false,
@@ -285,7 +285,7 @@
       "output": {
         ".html": {
           "relative_path": "getting-started/reading.html",
-          "hash": "W/6EhDHkDKNZgx9mqyEdug=="
+          "hash": "vUjiHUSwzRIcFFseyOUgGA=="
         }
       },
       "is_incremental": false,

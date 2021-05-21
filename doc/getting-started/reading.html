@@ -79,7 +79,7 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="reading">Reading</h1>
 
-<p>Using the <code>packaging</code> instance (see [entry-point.md]), we open a package for reading:</p>
+<p>Using the instance <code>packaging</code> of class <a href="../api/AasCore.Aas3.Package.Packaging.html"><code>Packaging</code></a> (see [entry-point.md]), we open a package for reading:</p>
 <pre><code class="lang-csharp">var packaging = new AasCore.Aas3.Package.Packaging();
 
 using var pkgOrErr = packaging.OpenRead(
@@ -106,7 +106,7 @@ We distinguish between three categories of parts in context of AAS package:</p>
 <li>Thumbnail.</li>
 </ul>
 <p>Each part has a content type (given as a <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types">MIME type</a>) and gives you access to its content.</p>
-<p>A part is modeled as [api/AasCore.Aas3.Package.Part].
+<p>A part is modeled as an instance of class <a href="../api/AasCore.Aas3.Package.Part.html"><code>Part</code></a>.
 You can read all bytes or all text from it, or open a read stream:</p>
 <pre><code class="lang-csharp">var part = ...;
 
