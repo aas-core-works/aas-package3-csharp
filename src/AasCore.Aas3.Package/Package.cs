@@ -936,6 +936,7 @@ namespace AasCore.Aas3.Package
 
                 var part = UnderlyingPackage.GetPart(uri);
                 using var target = part.GetStream();
+                target.SetLength(0);
                 stream.CopyTo(target);
             }
             else
@@ -1067,6 +1068,7 @@ namespace AasCore.Aas3.Package
 
                 var part = UnderlyingPackage.GetPart(uri);
                 using var target = part.GetStream();
+                target.SetLength(0);
                 stream.CopyTo(target);
             }
             else
@@ -1308,13 +1310,17 @@ namespace AasCore.Aas3.Package
 
                 if (rel is null)
                 {
-                    UnderlyingPackage.DeletePart(uri);
+                    throw new InvalidDataException(
+                            $"The part exists at the URI {uri}, " +
+                            "but there was no relationship " +
+                            $"of the type {Packaging.RelationType.AasxSpec} " +
+                            "targeting it." +
+                            (Path != null ? $" Path to the package: {Path}" : "")
+                        );
                 }
-                else
-                {
-                    OriginPart.DeleteRelationship(rel.Id);
-                    UnderlyingPackage.DeletePart(uri);
-                }
+
+                OriginPart.DeleteRelationship(rel.Id);
+                UnderlyingPackage.DeletePart(uri);
 
                 #region Postconditions
 
@@ -1362,13 +1368,17 @@ namespace AasCore.Aas3.Package
 
                 if (rel is null)
                 {
-                    UnderlyingPackage.DeletePart(uri);
+                    throw new InvalidDataException(
+                        $"The part exists at the URI {uri}, " +
+                        "but there was no relationship " +
+                        $"of the type {Packaging.RelationType.AasxSupplementary} " +
+                        "targeting it." +
+                        (Path != null ? $" Path to the package: {Path}" : "")
+                    );
                 }
-                else
-                {
-                    OriginPart.DeleteRelationship(rel.Id);
-                    UnderlyingPackage.DeletePart(uri);
-                }
+
+                OriginPart.DeleteRelationship(rel.Id);
+                UnderlyingPackage.DeletePart(uri);
 
                 #region Postconditions
 

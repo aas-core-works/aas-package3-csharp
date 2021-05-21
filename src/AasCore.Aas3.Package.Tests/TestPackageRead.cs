@@ -1,5 +1,6 @@
 using Convert = System.Convert;
 using Directory = System.IO.Directory;
+using Encoding = System.Text.Encoding;
 using File = System.IO.File;
 using FileAccess = System.IO.FileAccess;
 using FileFormatException = System.IO.FileFormatException;
@@ -11,9 +12,10 @@ using Path = System.IO.Path;
 using SystemPackage = System.IO.Packaging.Package; // renamed
 using Uri = System.Uri;
 using UriKind = System.UriKind;
+
 using System.Collections.Generic; // can't alias
 using System.Linq; // can't alias
-using NUnit.Framework; // can't alias
+using NUnit.Framework;  // can't alias
 
 namespace AasCore.Aas3.Package.Tests
 {
@@ -70,6 +72,79 @@ namespace AasCore.Aas3.Package.Tests
                 var pkg = pkgOrErr.Must();
 
                 action(pkg, expectedDir);
+            }
+        }
+
+        [Test]
+        public void Test_that_must_returns_the_exception()
+        {
+            using var stream = new MemoryStream();
+
+            var packaging = new Packaging();
+
+            using var pkgOrErr = packaging.OpenRead(stream);
+
+            Assert.Catch<FileFormatException>(() =>
+            {
+                pkgOrErr.Must();
+            });
+        }
+
+        [Test]
+        public void Test_grouping_specs_by_content_type()
+        {
+            var packaging = new Packaging();
+
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
+
+            {
+                using var pkg = packaging.Create(pth);
+                pkg.PutSpec(
+                    new Uri("/aasx/some-company/data.json", UriKind.Relative),
+                    "text/json",
+                    Encoding.UTF8.GetBytes("{}"));
+
+                pkg.PutSpec(
+                    new Uri("/aasx/some-company/data1.json", UriKind.Relative),
+                    "text/json",
+                    Encoding.UTF8.GetBytes("{x: 1}"));
+
+                pkg.PutSpec(
+                    new Uri("/aasx/some-company/data.xml", UriKind.Relative),
+                    "text/xml",
+                    Encoding.UTF8.GetBytes("<something></something>"));
+
+                pkg.Flush();
+            }
+
+            {
+                using var pkgOrErr = packaging.OpenRead(pth);
+                var pkg = pkgOrErr.Must();
+
+                var specsByContentType = pkg.SpecsByContentType();
+
+                Assert.That(specsByContentType.Keys.ToList(),
+                    Is.EquivalentTo(new List<string> { "text/json", "text/xml" }));
+
+                foreach (var item in specsByContentType)
+                {
+                    var contentType = item.Key;
+                    var specs = item.Value;
+
+                    // Test only the values for JSON as it is the only relevant case.
+                    // The case with XML is trivial.
+                    if (contentType != "text/json") continue;
+
+                    Assert.AreEqual(2, specs.Count);
+                    Assert.AreEqual(
+                        "/aasx/some-company/data.json",
+                        specs[0].Uri.ToString());
+
+                    Assert.AreEqual(
+                        "/aasx/some-company/data1.json",
+                        specs[1].Uri.ToString());
+                }
             }
         }
 
@@ -379,6 +454,26 @@ namespace AasCore.Aas3.Package.Tests
 
             Assert.IsNotNull(pkgOrErr.MaybeException);
             Assert.IsInstanceOf<FileFormatException>(pkgOrErr.MaybeException);
+        }
+
+        [Test]
+        public void Test_querying_a_thumbnail_in_a_package_without_one()
+        {
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
+
+            Packaging packaging = new Packaging();
+
+            {
+                using var pkg = packaging.Create(pth);
+                pkg.Flush();
+            }
+
+            {
+                using var pkgOrErr = packaging.OpenRead(pth);
+                var pkg = pkgOrErr.Must();
+                Assert.IsNull(pkg.Thumbnail());
+            }
         }
     }
 }
