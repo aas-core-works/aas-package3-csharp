@@ -34,7 +34,7 @@ jobs:
           Write-Host "The repository is: ${env:REPOSITORY}"
 
       - name: Install coveralls.net (to send test coverage)
-        if: github.repository == 'aas-core-works/aas-package3-csharp' && matrix.dotnet == '5.0.202'
+        if: github.repository == 'aas-core-works/aas-package3-csharp'
         working-directory: src
         run: dotnet tool install coveralls.net --version 2.0.0-beta0002
 
@@ -47,7 +47,7 @@ jobs:
         run: powershell .\Test.ps1
 
       - name: Send to Coveralls
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'  && matrix.dotnet == '5.0.202'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         working-directory: src
         env:
           HEAD_REF: ${{ github.head_ref }}
