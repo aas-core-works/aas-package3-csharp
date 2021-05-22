@@ -575,12 +575,22 @@ namespace AasCore.Aas3.Package.Tests
 
             var uri = new Uri("/aasx/some-company/data.txt", UriKind.Relative);
 
+            // Add another spec just to make sure that not *all* specs are deleted
+            var anotherUri = new Uri(
+                "/aasx/some-company/anotherData.txt", UriKind.Relative);
+
             {
                 using var pkg = packaging.Create(pth);
                 pkg.PutSpec(
                     uri,
                     "text/plain",
                     Encoding.UTF8.GetBytes("some content"));
+
+                pkg.PutSpec(
+                    anotherUri,
+                    "text/plain",
+                    Encoding.UTF8.GetBytes("another content"));
+
                 pkg.Flush();
             }
 
@@ -669,12 +679,23 @@ namespace AasCore.Aas3.Package.Tests
 
             var uri = new Uri("/aasx/some-company/suppl.txt", UriKind.Relative);
 
+            // Add another supplementary to make sure that only *one* supplementary
+            // is deleted
+            var anotherUri = new Uri(
+                "/aasx/some-company/suppl1.txt", UriKind.Relative);
+
             {
                 using var pkg = packaging.Create(pth);
                 pkg.PutSupplementary(
                     uri,
                     "text/plain",
                     Encoding.UTF8.GetBytes("some content"));
+
+                pkg.PutSupplementary(
+                    anotherUri,
+                    "text/plain",
+                    Encoding.UTF8.GetBytes("another content"));
+
                 pkg.Flush();
             }
 
