@@ -1,4 +1,6 @@
-﻿using Encoding = System.Text.Encoding;
+﻿using ArgumentException = System.ArgumentException;
+using DirectoryNotFoundException = System.IO.DirectoryNotFoundException;
+using Encoding = System.Text.Encoding;
 using File = System.IO.File;
 using FileAccess = System.IO.FileAccess;
 using FileFormatException = System.IO.FileFormatException;
@@ -15,7 +17,7 @@ using NUnit.Framework;  // can't alias
 
 namespace AasCore.Aas3.Package.Tests
 {
-    public class TestPackageReadWrite
+    public class TestCreate
     {
         [Test]
         public void Test_adding_spec_to_new_package()
@@ -128,6 +130,111 @@ namespace AasCore.Aas3.Package.Tests
         }
 
         [Test]
+        public void Test_the_exception_when_creating_a_package_at_non_reachable_path()
+        {
+            var packaging = new Packaging();
+
+            Assert.Catch<DirectoryNotFoundException>(() =>
+            {
+                packaging.Create("/this/path/can/not/possibly/exist");
+            });
+        }
+
+        [Test]
+        public void Test_the_exception_when_creating_a_package_in_read_only_stream()
+        {
+            var packaging = new Packaging();
+
+            Assert.Catch<ArgumentException>(() =>
+            {
+                using var stream = new MemoryStream(new byte[] { }, false);
+                packaging.Create(stream);
+            });
+        }
+    }
+
+    public class TestOpening
+    {
+        [Test]
+        public void Test_that_opening_a_non_package_file_returns_the_exception()
+        {
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
+            {
+                // Create an invalid file w.r.t. Open Package Convention
+                File.WriteAllText(pth, "This is not OPC.");
+            }
+
+            Packaging packaging = new Packaging();
+
+            {
+                using var pkgOrErr = packaging.OpenReadWrite(pth);
+
+                Assert.IsNotNull(pkgOrErr.MaybeException);
+                Assert.IsInstanceOf<FileFormatException>(pkgOrErr.MaybeException);
+            }
+        }
+
+        [Test]
+        public void Test_that_opening_a_file_without_origin_returns_the_exception()
+        {
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
+            {
+                // Create an empty Open Package Convention package, *i.e.* an invalid
+                // AAS package
+                using var pkgOpc = SystemPackage.Open(
+                    pth, FileMode.Create, FileAccess.Write);
+            }
+
+            Packaging packaging = new Packaging();
+
+            {
+                using var pkgOrErr = packaging.OpenReadWrite(pth);
+
+                Assert.IsNotNull(pkgOrErr.MaybeException);
+                Assert.IsInstanceOf<InvalidDataException>(pkgOrErr.MaybeException);
+            }
+        }
+
+        [Test]
+        public void Test_that_opening_a_stream_without_origin_returns_the_exception()
+        {
+            MemoryStream stream = new MemoryStream();
+            {
+                // Create an empty Open Package Convention package, *i.e.* an invalid
+                // AAS package
+                using var pkgOpc = SystemPackage.Open(
+                    stream, FileMode.Create, FileAccess.Write);
+            }
+
+            Packaging packaging = new Packaging();
+
+            {
+                using var pkgOrErr = packaging.OpenReadWrite(stream);
+
+                Assert.IsNotNull(pkgOrErr.MaybeException);
+                Assert.IsInstanceOf<InvalidDataException>(pkgOrErr.MaybeException);
+            }
+        }
+
+        [Test]
+        public void Test_that_opening_an_empty_stream_returns_the_exception()
+        {
+            Packaging packaging = new Packaging();
+
+            using MemoryStream stream = new MemoryStream();
+
+            using var pkgOrErr = packaging.OpenReadWrite(stream);
+
+            Assert.IsNotNull(pkgOrErr.MaybeException);
+            Assert.IsInstanceOf<FileFormatException>(pkgOrErr.MaybeException);
+        }
+    }
+
+    public class TestModify
+    {
+        [Test]
         public void Test_modify_package_in_a_stream()
         {
             Packaging packaging = new Packaging();
@@ -168,6 +275,159 @@ namespace AasCore.Aas3.Package.Tests
                 Assert.IsNotNull(pkg.Thumbnail());
                 var gotContent = pkg.Thumbnail()!.ReadAllBytes();
                 Assert.That(gotContent, Is.EqualTo(newContent));
+            }
+        }
+
+        [Test]
+        public void Test_overwriting_a_spec()
+        {
+            var originalContent = Encoding.UTF8.GetBytes("some old content");
+            var newContent = Encoding.UTF8.GetBytes("new content");
+
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
+
+            Packaging packaging = new Packaging();
+
+            {
+                using var pkg = packaging.Create(pth);
+                pkg.PutSpec(
+                    new Uri("/aasx/some-company/data.txt", UriKind.Relative),
+                    "text/plain",
+                    originalContent);
+                pkg.Flush();
+            }
+
+            {
+                using var pkgOrErr = packaging.OpenReadWrite(pth);
+                var pkg = pkgOrErr.Must();
+                pkg.PutSpec(
+                    new Uri("/aasx/some-company/data.txt", UriKind.Relative),
+                    "text/plain",
+                    newContent);
+                pkg.Flush();
+            }
+
+            {
+                using var pkgOrErr = packaging.OpenRead(pth);
+                var pkg = pkgOrErr.Must();
+                var content = pkg.Specs().First().ReadAllBytes();
+                Assert.AreEqual(
+                    Encoding.UTF8.GetString(newContent),
+                    Encoding.UTF8.GetString(content));
+            }
+        }
+
+        [Test]
+        public void Test_overwriting_a_supplementary()
+        {
+            var originalContent = Encoding.UTF8.GetBytes("some old content");
+            var newContent = Encoding.UTF8.GetBytes("new content");
+
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
+
+            Packaging packaging = new Packaging();
+
+            var uri = new Uri("/aasx/suppl/data.txt", UriKind.Relative);
+
+            {
+                using var pkg = packaging.Create(pth);
+                pkg.PutSupplementary(uri, "text/plain", originalContent);
+                pkg.Flush();
+            }
+
+            {
+                using var pkgOrErr = packaging.OpenReadWrite(pth);
+                var pkg = pkgOrErr.Must();
+                pkg.PutSupplementary(uri, "text/plain", newContent);
+                pkg.Flush();
+            }
+
+            {
+                using var pkgOrErr = packaging.OpenRead(pth);
+                var pkg = pkgOrErr.Must();
+                var content = pkg.FindPart(uri)?.ReadAllBytes();
+
+                if (content == null)
+                {
+                    throw new AssertionException("Unexpected null content");
+                }
+                Assert.AreEqual(
+                    Encoding.UTF8.GetString(newContent),
+                    Encoding.UTF8.GetString(content));
+            }
+        }
+
+        [Test]
+        public void Test_the_exception_when_overwriting_a_spec_as_non_spec()
+        {
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
+
+            Packaging packaging = new Packaging();
+
+            var uri = new Uri("/aasx/suppl/data.txt", UriKind.Relative);
+
+            {
+                using var pkg = packaging.Create(pth);
+
+                // We put a supplementary here.
+                pkg.PutSupplementary(
+                    uri,
+                    "text/plain",
+                    Encoding.UTF8.GetBytes("some old content"));
+                pkg.Flush();
+            }
+
+            {
+                using var pkgOrErr = packaging.OpenReadWrite(pth);
+                var pkg = pkgOrErr.Must();
+
+                // We try to overwrite a supplementary as a spec here.
+                Assert.Catch<InvalidDataException>(() =>
+                {
+                    pkg.PutSpec(
+                        uri,
+                        "text/plain",
+                        Encoding.UTF8.GetBytes("new content"));
+                });
+            }
+        }
+
+        [Test]
+        public void Test_the_exception_when_overwriting_a_suppl_as_non_suppl()
+        {
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
+
+            Packaging packaging = new Packaging();
+
+            var uri = new Uri("/aasx/data.txt", UriKind.Relative);
+
+            {
+                using var pkg = packaging.Create(pth);
+
+                // We put a spec here.
+                pkg.PutSpec(
+                    uri,
+                    "text/plain",
+                    Encoding.UTF8.GetBytes("some old content"));
+                pkg.Flush();
+            }
+
+            {
+                using var pkgOrErr = packaging.OpenReadWrite(pth);
+                var pkg = pkgOrErr.Must();
+
+                // We try to overwrite a spec as a supplementary here.
+                Assert.Catch<InvalidDataException>(() =>
+                {
+                    pkg.PutSupplementary(
+                        uri,
+                        "text/plain",
+                        Encoding.UTF8.GetBytes("new content"));
+                });
             }
         }
 
@@ -266,6 +526,46 @@ namespace AasCore.Aas3.Package.Tests
         }
 
         [Test]
+        public void Test_the_exception_when_putting_a_thumb_on_a_non_thumb()
+        {
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
+
+            Packaging packaging = new Packaging();
+
+            var uri = new Uri("/aasx/suppl/data.txt", UriKind.Relative);
+
+            {
+                using var pkg = packaging.Create(pth);
+
+                // We put a supplementary here.
+                pkg.PutSupplementary(
+                    uri,
+                    "text/plain",
+                    Encoding.UTF8.GetBytes("some old content"));
+                pkg.Flush();
+            }
+
+            {
+                using var pkgOrErr = packaging.OpenReadWrite(pth);
+                var pkg = pkgOrErr.Must();
+
+                // We try to overwrite a supplementary as a thumbnail here.
+                Assert.Catch<InvalidDataException>(() =>
+                {
+                    pkg.PutThumbnail(
+                        uri,
+                        "text/plain",
+                        Encoding.UTF8.GetBytes("new content"),
+                        true);
+                });
+            }
+        }
+    }
+
+    public class TestDelete
+    {
+        [Test]
         public void Test_deleting_a_spec()
         {
             using TemporaryDirectory tmpdir = new TemporaryDirectory();
@@ -290,6 +590,72 @@ namespace AasCore.Aas3.Package.Tests
                 pkg.RemoveSpec(uri);
                 Assert.IsNull(pkg.FindPart(uri));
                 ((System.IDisposable)pkgOrErr).Dispose();
+            }
+        }
+
+
+        [Test]
+        public void Test_the_exception_when_deleting_a_non_spec_as_spec()
+        {
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
+
+            Packaging packaging = new Packaging();
+
+            var uri = new Uri("/this-is-not-a/spec.txt", UriKind.Relative);
+
+            {
+                using var pkg = packaging.Create(pth);
+
+                // We put a supplementary here instead of spec.
+                pkg.PutSupplementary(
+                    uri,
+                    "text/plain",
+                    Encoding.UTF8.GetBytes("some content"));
+                pkg.Flush();
+            }
+
+            {
+                using var pkgOrErr = packaging.OpenReadWrite(pth);
+                var pkg = pkgOrErr.Must();
+
+                Assert.Catch<InvalidDataException>(() =>
+                {
+                    pkg.RemoveSpec(uri);
+                });
+            }
+        }
+
+        [Test]
+        public void Test_the_exception_when_deleting_a_non_suppl_as_suppl()
+        {
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
+
+            Packaging packaging = new Packaging();
+
+            var uri = new Uri(
+                "/this-is-not-a/supplementary.txt", UriKind.Relative);
+
+            {
+                using var pkg = packaging.Create(pth);
+
+                // We put a spec here instead of a supplementary.
+                pkg.PutSpec(
+                    uri,
+                    "text/plain",
+                    Encoding.UTF8.GetBytes("some content"));
+                pkg.Flush();
+            }
+
+            {
+                using var pkgOrErr = packaging.OpenReadWrite(pth);
+                var pkg = pkgOrErr.Must();
+
+                Assert.Catch<InvalidDataException>(() =>
+                {
+                    pkg.RemoveSupplementary(uri);
+                });
             }
         }
 
@@ -346,82 +712,6 @@ namespace AasCore.Aas3.Package.Tests
                 pkg.RemoveThumbnail();
                 Assert.IsNull(pkg.FindPart(uri));
             }
-        }
-
-        [Test]
-        public void Test_that_opening_a_non_package_file_returns_the_exception()
-        {
-            using TemporaryDirectory tmpdir = new TemporaryDirectory();
-            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
-            {
-                // Create an invalid file w.r.t. Open Package Convention
-                File.WriteAllText(pth, "This is not OPC.");
-            }
-
-            Packaging packaging = new Packaging();
-
-            {
-                using var pkgOrErr = packaging.OpenReadWrite(pth);
-
-                Assert.IsNotNull(pkgOrErr.MaybeException);
-                Assert.IsInstanceOf<FileFormatException>(pkgOrErr.MaybeException);
-            }
-        }
-
-        [Test]
-        public void Test_that_opening_a_file_without_origin_returns_the_exception()
-        {
-            using TemporaryDirectory tmpdir = new TemporaryDirectory();
-            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
-            {
-                // Create an empty Open Package Convention package, *i.e.* an invalid
-                // AAS package
-                using var pkgOpc = SystemPackage.Open(
-                    pth, FileMode.Create, FileAccess.Write);
-            }
-
-            Packaging packaging = new Packaging();
-
-            {
-                using var pkgOrErr = packaging.OpenReadWrite(pth);
-
-                Assert.IsNotNull(pkgOrErr.MaybeException);
-                Assert.IsInstanceOf<InvalidDataException>(pkgOrErr.MaybeException);
-            }
-        }
-
-        [Test]
-        public void Test_that_opening_a_stream_without_origin_returns_the_exception()
-        {
-            MemoryStream stream = new MemoryStream();
-            {
-                // Create an empty Open Package Convention package, *i.e.* an invalid
-                // AAS package
-                using var pkgOpc = SystemPackage.Open(
-                    stream, FileMode.Create, FileAccess.Write);
-            }
-
-            Packaging packaging = new Packaging();
-
-            {
-                using var pkgOrErr = packaging.OpenReadWrite(stream);
-
-                Assert.IsNotNull(pkgOrErr.MaybeException);
-                Assert.IsInstanceOf<InvalidDataException>(pkgOrErr.MaybeException);
-            }
-        }
-
-        [Test]
-        public void Test_that_opening_an_empty_stream_returns_the_exception()
-        {
-            Packaging packaging = new Packaging();
-
-            using MemoryStream stream = new MemoryStream();
-
-            using var pkgOrErr = packaging.OpenReadWrite(stream);
-
-            Assert.IsNotNull(pkgOrErr.MaybeException);
-            Assert.IsInstanceOf<FileFormatException>(pkgOrErr.MaybeException);
         }
     }
 }
