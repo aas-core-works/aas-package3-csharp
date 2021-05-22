@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>AasCore.Aas3.Package</id>
-    <version>1.0.0-pre1</version>
+    <version>1.0.0-pre2</version>
     <title>AAS v3 Package Library</title>
     <authors>Marko Ristin, Nico Braunisch, Robert Lehmann</authors>
     <owners>$author$</owners>
@@ -14,8 +14,12 @@ A library for reading and writing packaged file format of an Asset Administratio
     </description>
     <copyright>Copyright (c) 2021</copyright>
     <releaseNotes>
+v1.0.0-pre2
+* Introduce a DBC class for contracts (#12)
+* Fix a couple of edge cases (#11)
+
 v1.0.0-pre1
-- This is the very first pre-release.
+* This is the very first pre-release.
     </releaseNotes>
   </metadata>
 </package>
