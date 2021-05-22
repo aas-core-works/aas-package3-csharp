@@ -1,5 +1,4 @@
-﻿using ArgumentException = System.ArgumentException;
-using CompressionOption = System.IO.Packaging.CompressionOption;
+﻿using CompressionOption = System.IO.Packaging.CompressionOption;
 using Encoding = System.Text.Encoding;
 using Exception = System.Exception;
 using File = System.IO.File;
@@ -18,7 +17,6 @@ using SystemPackage = System.IO.Packaging.Package; // renamed
 using TargetMode = System.IO.Packaging.TargetMode;
 using Uri = System.Uri;
 using UriKind = System.UriKind;
-
 using System.Collections.Generic; // can't alias
 using System.IO; // can't alias
 using System.Linq; // can't alias
@@ -51,13 +49,12 @@ namespace AasCore.Aas3.Package
         {
             try
             {
-                if (!(package is null ^ exception is null))
-                {
-                    throw new ArgumentException(
-                        $"{nameof(package)} is {package}, " +
-                        $"{nameof(exception)} is {exception}; " +
-                        "exclusivity expected, not both or none");
-                }
+                #region Preconditions
+
+                Dbc.Require(package is null ^ exception is null,
+                    "Exclusivity expected, not both or none");
+
+                #endregion
 
                 _package = package;
                 MaybeException = exception;
@@ -83,11 +80,7 @@ namespace AasCore.Aas3.Package
                 throw MaybeException;
             }
 
-            if (_package is null)
-            {
-                throw new InvalidOperationException(
-                    $"Unexpected {nameof(_package)} null");
-            }
+            Dbc.AssertIsNotNull(_package);
 
             return _package;
         }
@@ -333,10 +326,7 @@ namespace AasCore.Aas3.Package
                 result = new PackageOrException<PackageRead>(null, exception);
             }
 
-            if (result is null)
-            {
-                throw new InvalidOperationException("unexpected");
-            }
+            Dbc.AssertIsNotNull(result);
 
             // Dispose the toBeDisposed pre-emptively here so that they do not have to
             // linger unnecessarily in the resulting object.
@@ -352,11 +342,9 @@ namespace AasCore.Aas3.Package
 
 #if DEBUG || DEBUGSLOW
 
-            if (result.MaybeException is null && result.Must().Path != path)
-            {
-                throw new InvalidOperationException(
-                    "The Path property of the package must match the input path.");
-            }
+            Dbc.Ensure(
+                result.MaybeException != null || result.Must().Path == path,
+                "The Path property of the package must match the input path.");
 
 #endif
 
@@ -407,10 +395,7 @@ namespace AasCore.Aas3.Package
                 result = new PackageOrException<PackageRead>(null, exception);
             }
 
-            if (result is null)
-            {
-                throw new InvalidOperationException("unexpected");
-            }
+            Dbc.AssertIsNotNull(result);
 
             // Dispose the toBeDisposed pre-emptively here so that they do not have to
             // linger unnecessarily in the resulting object.
@@ -426,12 +411,10 @@ namespace AasCore.Aas3.Package
 
 #if DEBUG || DEBUGSLOW
 
-            if (result.MaybeException is null && result.Must().Path != null)
-            {
-                throw new InvalidOperationException(
-                    "The Path property of the package must be null " +
-                    "if reading from a stream.");
-            }
+            Dbc.Ensure(
+                result.MaybeException != null || result.Must().Path == null,
+                "The Path property of the package must be null " +
+                "if reading from a stream.");
 
 #endif
 
@@ -464,10 +447,12 @@ namespace AasCore.Aas3.Package
                 // We have to open a stream ourselves. The official NET 5 implementation
                 // of Open Package Convention leaks file descriptors if the file format
                 // is invalid.
-                Stream stream = new FileStream(path, FileMode.Open, FileAccess.ReadWrite);
+                Stream stream =
+                    new FileStream(path, FileMode.Open, FileAccess.ReadWrite);
                 toBeDisposed.Add(stream);
 
-                var pkg = SystemPackage.Open(stream, FileMode.Open, FileAccess.ReadWrite);
+                var pkg =
+                    SystemPackage.Open(stream, FileMode.Open, FileAccess.ReadWrite);
                 toBeDisposed.Add(pkg);
 
                 var originPart = FindOriginPart(pkg);
@@ -489,10 +474,7 @@ namespace AasCore.Aas3.Package
                 result = new PackageOrException<PackageReadWrite>(null, exception);
             }
 
-            if (result is null)
-            {
-                throw new InvalidOperationException("unexpected");
-            }
+            Dbc.AssertIsNotNull(result);
 
             // Dispose the toBeDisposed pre-emptively here so that they do not have to
             // linger unnecessarily in the resulting object.
@@ -508,11 +490,10 @@ namespace AasCore.Aas3.Package
 
 #if DEBUG || DEBUGSLOW
 
-            if (result.MaybeException is null && result.Must().Path != path)
-            {
-                throw new InvalidOperationException(
-                    "The Path property of the package must match the input path.");
-            }
+            Dbc.Ensure(
+                result.MaybeException != null || result.Must().Path == path,
+                "The Path property of the package must match the input path."
+            );
 
 #endif
 
@@ -566,10 +547,7 @@ namespace AasCore.Aas3.Package
                 result = new PackageOrException<PackageReadWrite>(null, exception);
             }
 
-            if (result is null)
-            {
-                throw new InvalidOperationException("unexpected");
-            }
+            Dbc.AssertIsNotNull(result);
 
             // Dispose the toBeDisposed pre-emptively here so that they do not have to
             // linger unnecessarily in the resulting object.
@@ -585,12 +563,9 @@ namespace AasCore.Aas3.Package
 
 #if DEBUG || DEBUGSLOW
 
-            if (result.MaybeException is null && result.Must().Path != null)
-            {
-                throw new InvalidOperationException(
-                    "The Path property of the package must be null " +
-                    "if read/writing to a stream.");
-            }
+            Dbc.Ensure(result.MaybeException != null || result.Must().Path == null,
+                "The Path property of the package must be null " +
+                "if read/writing to a stream.");
 
 #endif
 
@@ -629,23 +604,17 @@ namespace AasCore.Aas3.Package
 
 #if DEBUG || DEBUGSLOW
 
-            if (result.Specs().Count() != 0)
-            {
-                throw new InvalidOperationException(
-                    "Specs must be empty in a new package.");
-            }
+            Dbc.Ensure(
+                !result.Specs().Any(),
+                "Specs must be empty in a new package.");
 
-            if (result.Supplementaries().Count() != 0)
-            {
-                throw new InvalidOperationException(
-                    "Supplementaries must be empty in a new package.");
-            }
+            Dbc.Ensure(
+                !result.Supplementaries().Any(),
+                "Supplementaries must be empty in a new package.");
 
-            if (result.Thumbnail() != null)
-            {
-                throw new InvalidOperationException(
-                    "There must be no thumbnail in a new package.");
-            }
+            Dbc.Ensure(
+                result.Thumbnail() == null,
+                "There must be no thumbnail in a new package.");
 
 #endif
 
@@ -749,19 +718,19 @@ namespace AasCore.Aas3.Package
             #region Postconditions
 
 #if DEBUG || DEBUGSLOW
-            if (!result.All(
-                item => item.Value.All(
-                    spec => spec.ContentType == item.Key)))
-            {
-                throw new InvalidOperationException(
-                    "The content type of spec must match its group.");
-            }
 
-            if (!result.All(item => item.Value.Count > 0))
-            {
-                throw new InvalidOperationException(
-                    "Every entry in the result must contain non-empty specs.");
-            }
+            Dbc.Ensure(
+                result.All(
+                    item => item.Value.All(
+                        spec => spec.ContentType == item.Key)),
+                "The content type of spec must match its group."
+            );
+
+            Dbc.Ensure(
+                result.All(item => item.Value.Count > 0),
+                "Every entry in the result must contain non-empty specs."
+            );
+
 #endif
 
             #endregion
@@ -878,16 +847,12 @@ namespace AasCore.Aas3.Package
 #if DEBUGSLOW
 
             var spec = Specs().FirstOrDefault(aSpec => aSpec.Uri == uri);
-            if (spec is null)
-            {
-                throw new InvalidOperationException("Spec must be listed.");
-            }
 
-            if (!spec.ReadAllBytes().SequenceEqual(content))
-            {
-                throw new InvalidOperationException(
-                    "Input content and re-read content must coincide on put.");
-            }
+            Dbc.Ensure(spec != null, "Spec must be listed.");
+
+            Dbc.Ensure(
+                spec!.ReadAllBytes().SequenceEqual(content),
+                "Input content and re-read content must coincide on put.");
 
 #endif
 
@@ -952,35 +917,25 @@ namespace AasCore.Aas3.Package
 
 #if DEBUG || DEBUGSLOW
             var spec = Specs().FirstOrDefault(aSpec => aSpec.Uri == uri);
-            if (spec is null)
-            {
-                throw new InvalidOperationException(
-                    $"Spec must exist in Specs: {uri}");
-            }
 
-            if (spec.ContentType != contentType)
-            {
-                throw new InvalidOperationException(
-                    $"Spec content type must coincide: {uri} {contentType}");
-            }
+            Dbc.Ensure(spec != null, "Spec must exist in Specs().");
 
-            if (oldPartExists && Specs().Count() != oldSpecCount)
-            {
-                throw new InvalidOperationException(
-                    "Spec count must remain constant on overwriting a spec.");
-            }
+            Dbc.Ensure(
+                spec!.ContentType == contentType,
+                "Spec content type must coincide.");
 
-            if (!oldPartExists && Specs().Count() != oldSpecCount + 1)
-            {
-                throw new InvalidOperationException(
-                    "Spec count must increment 1 when creating a spec.");
-            }
+            Dbc.Ensure(
+                !oldPartExists || Specs().Count() == oldSpecCount,
+                "Spec count must remain constant on overwriting a spec.");
 
-            if (FindPart(uri) is null)
-            {
-                throw new InvalidOperationException(
-                    $"The part must exist on put: {uri}");
-            }
+            Dbc.Ensure(
+                oldPartExists || Specs().Count() == oldSpecCount + 1,
+                "Spec count must increment 1 when creating a spec.");
+
+            Dbc.Ensure(
+                FindPart(uri) != null,
+                "The part must exist on put.");
+
 #endif
 
             #endregion
@@ -1009,17 +964,11 @@ namespace AasCore.Aas3.Package
             var suppl = Supplementaries().FirstOrDefault(
                 aSuppl => aSuppl.Uri == uri);
 
-            if (suppl is null)
-            {
-                throw new InvalidOperationException(
-                    "The supplementary must be listed.");
-            }
+            Dbc.Ensure(suppl != null, "The supplementary must be listed.");
 
-            if (!suppl.ReadAllBytes().SequenceEqual(content))
-            {
-                throw new InvalidOperationException(
-                    "Input content and re-read content must coincide on put.");
-            }
+            Dbc.Ensure(
+                suppl!.ReadAllBytes().SequenceEqual(content),
+                "Input content and re-read content must coincide on put.");
 
 #endif
 
@@ -1086,37 +1035,25 @@ namespace AasCore.Aas3.Package
             var suppl = Supplementaries().FirstOrDefault(
                 aSuppl => aSuppl.Uri == uri);
 
-            if (suppl is null)
-            {
-                throw new InvalidOperationException(
-                    $"The supplementary must be listed in Supplementaries: {uri}");
-            }
+            Dbc.Ensure(
+                suppl != null,
+                "The supplementary must be listed in Supplementaries().");
 
-            if (suppl.ContentType != contentType)
-            {
-                throw new InvalidOperationException(
-                    $"The content type must coincide: {uri} {contentType}");
-            }
+            Dbc.Ensure(
+                suppl!.ContentType == contentType,
+                "The content type must coincide.");
 
-            if (oldPartExists && Supplementaries().Count() != oldSupplementaryCount)
-            {
-                throw new InvalidOperationException(
-                    "The supplementary count must remain constant " +
-                    "on overwriting.");
-            }
+            Dbc.Ensure(
+                !oldPartExists || Supplementaries().Count() == oldSupplementaryCount,
+                "The supplementary count must remain constant on overwriting.");
 
-            if (!oldPartExists && Supplementaries().Count() != oldSupplementaryCount + 1)
-            {
-                throw new InvalidOperationException(
-                    "Supplementary count must increment 1 on " +
-                    "creating a supplementary.");
-            }
+            Dbc.Ensure(
+                oldPartExists || Supplementaries().Count() == oldSupplementaryCount + 1,
+                "Supplementary count must increment 1 on " +
+                "creating a supplementary.");
 
-            if (FindPart(uri) is null)
-            {
-                throw new InvalidOperationException(
-                    $"The part must exist on put: {uri}");
-            }
+            Dbc.Ensure(FindPart(uri) != null, "The part must exist on put.");
+
 #endif
 
             #endregion
@@ -1149,17 +1086,11 @@ namespace AasCore.Aas3.Package
 
             var thumb = Thumbnail();
 
-            if (thumb is null)
-            {
-                throw new InvalidOperationException(
-                    "The thumbnail must be available.");
-            }
+            Dbc.Ensure(thumb != null, "The thumbnail must be available.");
 
-            if (!thumb.ReadAllBytes().SequenceEqual(content))
-            {
-                throw new InvalidOperationException(
-                    "Input content and re-read content must coincide on put.");
-            }
+            Dbc.Ensure(
+                thumb!.ReadAllBytes().SequenceEqual(content),
+                "Input content and re-read content must coincide on put.");
 
 #endif
 
@@ -1246,44 +1177,39 @@ namespace AasCore.Aas3.Package
 #if DEBUG || DEBUGSLOW
             var thumbnail = Thumbnail();
 
-            if (thumbnail is null)
-            {
-                throw new InvalidOperationException(
-                    $"The thumbnail must be available: {uri}");
-            }
+            Dbc.Ensure(
+                thumbnail != null,
+                "The thumbnail must be available.");
 
-            if (thumbnail.ContentType != contentType)
-            {
-                throw new InvalidOperationException(
-                    $"The content type must coincide: {uri} {contentType}");
-            }
+            Dbc.Ensure(
+                thumbnail!.ContentType == contentType,
+                "The content type must coincide.");
 
-            if (FindPart(uri) is null)
-            {
-                throw new InvalidOperationException(
-                    $"The part must exist on put: {uri}");
-            }
+            Dbc.Ensure(
+                FindPart(uri) != null,
+                "The part must exist on put.");
 
-            if (oldThumbnailUri != uri
-                && deleteExisting
-                && oldThumbnailUri != null
-                && UnderlyingPackage.PartExists(oldThumbnailUri))
-            {
-                throw new InvalidOperationException(
-                    $"The previous thumbnail at {oldThumbnailUri} must be " +
-                    $"deleted when replaced with a new thumbnail at {uri}.");
-            }
+            Dbc.Ensure(
+                !(
+                    oldThumbnailUri != uri
+                    && deleteExisting
+                    && oldThumbnailUri != null)
+                || !UnderlyingPackage.PartExists(oldThumbnailUri),
+                "The previous thumbnail must be deleted " +
+                "when replaced with a new thumbnail.");
 
-            if (oldThumbnailUri != uri
-                && !deleteExisting
-                && oldThumbnailUri != null
-                && !UnderlyingPackage.PartExists(oldThumbnailUri))
-            {
-                throw new InvalidOperationException(
-                    $"The previous thumbnail at {oldThumbnailUri} must be " +
-                    $"kept when replaced with a new thumbnail at {uri} " +
-                    $"and {nameof(deleteExisting)} is set.");
-            }
+            // DONT-CHECK-IN: test dbc class
+
+            Dbc.Ensure(
+                !(
+                    oldThumbnailUri != uri
+                    && !deleteExisting
+                    && oldThumbnailUri != null)
+                || UnderlyingPackage.PartExists(oldThumbnailUri),
+                "The previous thumbnail must be kept " +
+                "when replaced with a new thumbnail " +
+                "and we want to delete the existing thumbnail.");
+
 #endif
 
             #endregion
@@ -1302,6 +1228,17 @@ namespace AasCore.Aas3.Package
          */
         public void RemoveSpec(Uri uri)
         {
+            #region Snapshots
+
+#if DEBUGSLOW
+
+            var oldSpecUriSet = Specs()
+                .Select(spec => spec.Uri.ToString()).ToHashSet();
+
+#endif
+
+            #endregion
+
             if (UnderlyingPackage.PartExists(uri))
             {
                 var rel = OriginPart
@@ -1311,12 +1248,12 @@ namespace AasCore.Aas3.Package
                 if (rel is null)
                 {
                     throw new InvalidDataException(
-                            $"The part exists at the URI {uri}, " +
-                            "but there was no relationship " +
-                            $"of the type {Packaging.RelationType.AasxSpec} " +
-                            "targeting it." +
-                            (Path != null ? $" Path to the package: {Path}" : "")
-                        );
+                        $"The part exists at the URI {uri}, " +
+                        "but there was no relationship " +
+                        $"of the type {Packaging.RelationType.AasxSpec} " +
+                        "targeting it." +
+                        (Path != null ? $" Path to the package: {Path}" : "")
+                    );
                 }
 
                 OriginPart.DeleteRelationship(rel.Id);
@@ -1325,19 +1262,26 @@ namespace AasCore.Aas3.Package
                 #region Postconditions
 
 #if DEBUG || DEBUGSLOW
-                if (UnderlyingPackage.PartExists(uri))
-                {
-                    throw new InvalidOperationException(
-                        $"The part must have been deleted: {uri}");
-                }
+
+                Dbc.Ensure(
+                    !UnderlyingPackage.PartExists(uri),
+                    "The part must have been deleted.");
+
 #endif
 
 #if DEBUGSLOW
-                if (Specs().Any(aSpec => aSpec.Uri == uri))
-                {
-                    throw new InvalidOperationException(
-                        $"The spec must not be listed in the Specs: {uri}");
-                }
+
+                Dbc.Ensure(
+                    Specs().All(aSpec => aSpec.Uri != uri),
+                    "The spec must not be listed in the Specs().");
+
+                var specUriSet = Specs()
+                    .Select(spec => spec.Uri.ToString()).ToHashSet();
+
+                Dbc.Ensure(
+                    specUriSet.Count == oldSpecUriSet.Count - 1
+                    && oldSpecUriSet.Except(specUriSet).First() == uri.ToString(),
+                    "No other spec has been removed.");
 
 #endif
 
@@ -1360,6 +1304,18 @@ namespace AasCore.Aas3.Package
          */
         public void RemoveSupplementary(Uri uri)
         {
+            #region Snapshots
+
+#if DEBUGSLOW
+
+            var oldSupplUriSet = Supplementaries()
+                .Select(suppl => suppl.Uri.ToString()).ToHashSet();
+
+#endif
+
+            #endregion
+
+
             if (UnderlyingPackage.PartExists(uri))
             {
                 var rel = OriginPart
@@ -1383,20 +1339,25 @@ namespace AasCore.Aas3.Package
                 #region Postconditions
 
 #if DEBUG || DEBUGSLOW
-                if (UnderlyingPackage.PartExists(uri))
-                {
-                    throw new InvalidOperationException(
-                        $"The part must have been deleted: {uri}");
-                }
+
+                Dbc.Ensure(!UnderlyingPackage.PartExists(uri),
+                    "The part must have been deleted.");
 #endif
 
 #if DEBUGSLOW
-                if (Supplementaries().Any(suppl => suppl.Uri == uri))
-                {
-                    throw new InvalidOperationException(
-                        "The supplementary file must not be " +
-                        $"listed in the Supplementaries: {uri}");
-                }
+
+                Dbc.Ensure(
+                    Supplementaries().All(suppl => suppl.Uri != uri),
+                    "The supplementary file must not be " +
+                    "listed in the Supplementaries().");
+
+                var supplUriSet = Supplementaries()
+                    .Select(suppl => suppl.Uri.ToString()).ToHashSet();
+
+                Dbc.Ensure(
+                    supplUriSet.Count == oldSupplUriSet.Count - 1
+                    && oldSupplUriSet.Except(supplUriSet).First() == uri.ToString(),
+                    "No other supplementary has been removed.");
 
 #endif
 
@@ -1429,11 +1390,9 @@ namespace AasCore.Aas3.Package
             #region Postconditions
 
 #if DEBUG || DEBUGSLOW
-            if (Thumbnail() != null)
-            {
-                throw new InvalidOperationException(
-                    "The thumbnail must not exist any more");
-            }
+
+            Dbc.Ensure(Thumbnail() == null,
+                "The thumbnail must not exist any more");
 #endif
 
             #endregion

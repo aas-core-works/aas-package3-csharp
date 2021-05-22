@@ -17,7 +17,7 @@ Aas-package3-csharp is a library for reading and writing packaged file format of
 
 The library is thoroughly tested and ready to be used in production.
 
-Both NETStandard 2.0 and NET 5 are supported.
+Both NET Standard 2.1 and NET 5 are supported.
 
 ## Documentation
 
