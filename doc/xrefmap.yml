@@ -7,6 +7,51 @@ references:
   commentId: N:AasCore.Aas3.Package
   fullName: AasCore.Aas3.Package
   nameWithType: AasCore.Aas3.Package
+- uid: AasCore.Aas3.Package.Dbc
+  name: Dbc
+  href: api/AasCore.Aas3.Package.Dbc.html
+  commentId: T:AasCore.Aas3.Package.Dbc
+  fullName: AasCore.Aas3.Package.Dbc
+  nameWithType: Dbc
+- uid: AasCore.Aas3.Package.Dbc.AssertIsNotNull(System.Object)
+  name: AssertIsNotNull(Object)
+  href: api/AasCore.Aas3.Package.Dbc.html#AasCore_Aas3_Package_Dbc_AssertIsNotNull_System_Object_
+  commentId: M:AasCore.Aas3.Package.Dbc.AssertIsNotNull(System.Object)
+  fullName: AasCore.Aas3.Package.Dbc.AssertIsNotNull(System.Object)
+  nameWithType: Dbc.AssertIsNotNull(Object)
+- uid: AasCore.Aas3.Package.Dbc.AssertIsNotNull*
+  name: AssertIsNotNull
+  href: api/AasCore.Aas3.Package.Dbc.html#AasCore_Aas3_Package_Dbc_AssertIsNotNull_
+  commentId: Overload:AasCore.Aas3.Package.Dbc.AssertIsNotNull
+  isSpec: "True"
+  fullName: AasCore.Aas3.Package.Dbc.AssertIsNotNull
+  nameWithType: Dbc.AssertIsNotNull
+- uid: AasCore.Aas3.Package.Dbc.Ensure(System.Boolean,System.String)
+  name: Ensure(Boolean, String)
+  href: api/AasCore.Aas3.Package.Dbc.html#AasCore_Aas3_Package_Dbc_Ensure_System_Boolean_System_String_
+  commentId: M:AasCore.Aas3.Package.Dbc.Ensure(System.Boolean,System.String)
+  fullName: AasCore.Aas3.Package.Dbc.Ensure(System.Boolean, System.String)
+  nameWithType: Dbc.Ensure(Boolean, String)
+- uid: AasCore.Aas3.Package.Dbc.Ensure*
+  name: Ensure
+  href: api/AasCore.Aas3.Package.Dbc.html#AasCore_Aas3_Package_Dbc_Ensure_
+  commentId: Overload:AasCore.Aas3.Package.Dbc.Ensure
+  isSpec: "True"
+  fullName: AasCore.Aas3.Package.Dbc.Ensure
+  nameWithType: Dbc.Ensure
+- uid: AasCore.Aas3.Package.Dbc.Require(System.Boolean,System.String)
+  name: Require(Boolean, String)
+  href: api/AasCore.Aas3.Package.Dbc.html#AasCore_Aas3_Package_Dbc_Require_System_Boolean_System_String_
+  commentId: M:AasCore.Aas3.Package.Dbc.Require(System.Boolean,System.String)
+  fullName: AasCore.Aas3.Package.Dbc.Require(System.Boolean, System.String)
+  nameWithType: Dbc.Require(Boolean, String)
+- uid: AasCore.Aas3.Package.Dbc.Require*
+  name: Require
+  href: api/AasCore.Aas3.Package.Dbc.html#AasCore_Aas3_Package_Dbc_Require_
+  commentId: Overload:AasCore.Aas3.Package.Dbc.Require
+  isSpec: "True"
+  fullName: AasCore.Aas3.Package.Dbc.Require
+  nameWithType: Dbc.Require
 - uid: AasCore.Aas3.Package.PackageOrException`1
   name: PackageOrException<TPackage>
   href: api/AasCore.Aas3.Package.PackageOrException-1.html
