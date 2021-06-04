@@ -2,6 +2,7 @@
   <dictionary name="rist">
     <words>
       <w>csharp</w>
+      <w>nuspec</w>
       <w>versioning</w>
       <w>workflows</w>
     </words>
