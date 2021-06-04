@@ -79,7 +79,7 @@ byte[] supplementaryContent;
 
     // Read the specs
     var specsByContentType = pkg.SpecsByContentType();
-    if (!specsByContentType.Contains("text/json"))
+    if (!specsByContentType.ContainsKey("text/json"))
     {
         throw new ArgumentException("No json specs");
     }
