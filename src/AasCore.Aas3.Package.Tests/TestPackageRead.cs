@@ -127,6 +127,10 @@ namespace AasCore.Aas3.Package.Tests
                 Assert.That(specsByContentType.Keys.ToList(),
                     Is.EquivalentTo(new List<string> { "text/json", "text/xml" }));
 
+                // Test this for the Readme.
+                Assert.That(specsByContentType.ContainsKey("text/json"));
+                Assert.That(specsByContentType.ContainsKey("text/xml"));
+
                 foreach (var item in specsByContentType)
                 {
                     var contentType = item.Key;
