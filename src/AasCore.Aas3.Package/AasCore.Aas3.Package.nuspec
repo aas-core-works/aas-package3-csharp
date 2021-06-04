@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>AasCore.Aas3.Package</id>
-    <version>1.0.0-pre3</version>
+    <version>1.0.0-pre4</version>
     <title>AAS v3 Package Library</title>
     <authors>Marko Ristin, Nico Braunisch, Robert Lehmann</authors>
     <owners>$author$</owners>
@@ -27,4 +27,7 @@ v1.0.0-pre1
   <files>
      <file src="bin\Release\**\*.dll" target="lib" />
   </files>
+  <dependencies>
+    <dependency id="System.IO.Packaging" version="[5,6)" />
+  </dependencies>
 </package>

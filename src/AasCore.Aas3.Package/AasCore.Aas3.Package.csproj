@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="System.IO.Packaging" Version="5.0.0" />
+      <!-- don't forget to update the .nuspec. -->
+      <PackageReference Include="System.IO.Packaging" Version="5.*" />
     </ItemGroup>
 </Project>
