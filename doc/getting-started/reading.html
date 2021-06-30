@@ -146,7 +146,7 @@ else
 </code></pre>
 <p>According to [Details of the Asset Administration Shell v3], specs should all represent the same data model albeit in a different format.
 Multiple equivalent models per content type are also possible.</p>
-<h2 id="supplementaries">Supplementaries</h2>
+<h2 id="supplementary-materials">Supplementary Materials</h2>
 <p>If you know the <a href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier">URI</a> of a supplementary part within the package, you can directly access it:</p>
 <pre><code class="lang-csharp">using Uri = System.Uri;
 using UriKind = System.UriKind;
@@ -161,8 +161,10 @@ if(suppl != null)
     byte[] content = suppl.ReadAllBytes();
 }
 </code></pre>
-<p>Otherwise, if you want to inspect all the supplementary parts, you can list them:</p>
-<pre><code class="lang-csharp">foreach(AasCore.Aas3.Package.Part suppl in pkg.Supplementaries())
+<p>Otherwise, if you want to inspect all the supplementary parts for a given spec, you can list them:</p>
+<pre><code class="lang-csharp">var spec = pkg.MustPart(...);
+
+foreach(AasCore.Aas3.Package.Part suppl in pkg.SupplementariesFor(spec))
 {
     // Do something with suppl
 }

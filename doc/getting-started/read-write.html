@@ -102,17 +102,17 @@ Please see [intro] for more details.</p>
 <p>or to get the package (which will throw the exception for you, if any):</p>
 <pre><code class="lang-csharp">var pkg = pkgOrErr.Must();
 </code></pre>
-<h2 id="writing-specs">Writing Specs</h2>
-<p>Whether you want to over-write existing specs or add a new spec, call <code>PutSpec</code>:</p>
-<pre><code class="lang-csharp">using Uri = System.Uri;
-using UriKind = System.UriKind;
-
-byte[] content = ...;
-
-pkg.PutSpec(
-    new Uri(&quot;/aasx/data.json&quot;, UriKind.Relative),
+<h2 id="putting-parts-together">Putting <code>Part</code>'s together</h2>
+<p>The <a href="https://en.wikipedia.org/wiki/Open_Packaging_Conventions">Open Packaging Conventions</a> format is based on parts and relationships.
+The parts represent the pieces of data, while relationships model how these pieces relate to each other.</p>
+<p>We wanted to encapsulate as much as possible the underlying format, but we decided to keep the structure of <a href="https://en.wikipedia.org/wiki/Open_Packaging_Conventions">Open Packaging Conventions</a>.
+This means that you need to first write a part, and then establish its relation to other parts (or package itself).</p>
+<p>The parts are put to the package using <code>PutPart</code> (see <a href="../api/AasCore.Aas3.Package.PackageReadWrite.yml">PackageReadWrite</a> class).</p>
+<p>For example:</p>
+<pre><code class="lang-csharp">var part = pkg.PutPart(
+    new Uri(&quot;/aasx/some-company/data.json&quot;, UriKind.Relative),
     &quot;text/json&quot;,
-    content);
+    Encoding.UTF8.GetBytes(&quot;{}&quot;);
 </code></pre>
 <p>You can also use streams:</p>
 <pre><code class="lang-csharp">using Stream = System.IO.Stream;
@@ -121,62 +121,52 @@ using UriKind = System.UriKind;
 
 using Stream stream = ...;
 
-pkg.PutSpec(
+pkg.PutPart(
     new Uri(&quot;/aasx/data.json&quot;, UriKind.Relative),
     &quot;text/json&quot;,
     stream);
 </code></pre>
-<h2 id="writing-supplementary-parts">Writing Supplementary Parts</h2>
-<p>Similar to how you write specs, you write supplementary parts with <code>PutSupplementary</code>:</p>
-<pre><code class="lang-csharp">using Uri = System.Uri;
-using UriKind = System.UriKind;
-
-byte[] content = ...;
-
-pkg.PutSupplementary(
-    new Uri(&quot;/aasx/suppl/something.pdf&quot;, UriKind.Relative),
-    &quot;application/pdf&quot;,
-    content);
+<p>The <code>PutPart</code> function returns a <code>Part</code> so that you can easily chain it with other functions (see below for examples).</p>
+<h4 id="overwriting--deleting">Overwriting &amp; Deleting</h4>
+<p>If a part already exists at the given URI, it is silently overwritten.
+Therefore you need to be careful when you overwrite a part and make sure that the relationships are updated accordingly.</p>
+<p>This also applies when deleting the parts.
+Since it would be unfortunately inefficient to enforce consistency, the library indeed allows you make your package inconsistent (where relationships point to dangling parts).</p>
+<h3 id="specs">Specs</h3>
+<p>You establish a part as a spec by calling <code>MakeSpec</code> (from <a href="../api/AasCore.Aas3.Package.PackageReadWrite.yml">PackageReadWrite</a> class):</p>
+<pre><code class="lang-csharp">var part = pkg.PutPart(
+    new Uri(&quot;/aasx/some-company/data.json&quot;, UriKind.Relative),
+    &quot;text/json&quot;,
+    Encoding.UTF8.GetBytes(&quot;{}&quot;));
+ 
+pkg.MakeSpec(part);
 </code></pre>
-<p>Streams can also be written:</p>
-<pre><code class="lang-csharp">using Stream = System.IO.Stream;
-using Uri = System.Uri;
-using UriKind = System.UriKind;
-
-Stream stream = ...;
-
-pkg.PutSupplementary(
-    new Uri(&quot;/aasx/suppl/something.pdf&quot;, UriKind.Relative),
-    &quot;application/pdf&quot;,
-    stream);
+<p>Usually you want to chain the calls:</p>
+<pre><code class="lang-csharp">pkg.MakeSpec(
+    pkg.PutPart(
+        new Uri(&quot;/aasx/some-company/data.json&quot;, UriKind.Relative),
+        &quot;text/json&quot;,
+        Encoding.UTF8.GetBytes(&quot;{}&quot;)));
 </code></pre>
-<h2 id="writing-a-thumbnail">Writing a Thumbnail</h2>
-<p>There can be only one thumbnail per package.
-You can add a thumbnail (or overwrite it if it already exists) with:</p>
-<pre><code class="lang-csharp">using Uri = System.Uri;
-using UriKind = System.UriKind;
+<h2 id="supplementary-parts">Supplementary Parts</h2>
+<p>Similar to how you make parts into specs, you relate supplementary parts to the spec parts with <code>RelateSupplementaryToSpec</code>:</p>
+<pre><code class="lang-csharp">Part spec = pkg.PutPart(...);
+Part supplementary = pkg.PutPart(...); 
 
-byte[] content = ...;
-
-pkg.PutThumbnail(
-    new Uri(&quot;/thumbnail.png&quot;, UriKind.Relative),
-    &quot;image/png&quot;,
-    content,
-    true);
+pkg.RelateSupplementaryToSpec(supplementary, spec);
 </code></pre>
-<p>The last parameter (here set to <code>true</code>) determines whether the part of the previous thumbnail should be deleted (or kept in the package).</p>
-<p>You can also write a thumbnail from a stream:</p>
-<pre><code class="lang-csharp">using Stream = System.IO.Stream;
-using Uri = System.Uri;
-using UriKind = System.UriKind;
+<p>The relation can also be undone:</p>
+<pre><code class="lang-csharp">pkg.UnrelateSupplementaryFromSpec(supplementary, spec);
+</code></pre>
+<h2 id="thumbnail">Thumbnail</h2>
+<p>There can be only one thumbnail per package.</p>
+<p>Similar to specs, you make a thumbnail relation from a package to a part:</p>
+<pre><code class="lang-csharp">var thumbnail = pkg.PutPart(...);
 
-Stream stream = ...;
-
-pkg.PutThumbnail(
-    new Uri(&quot;/thumbnail.png&quot;, UriKind.Relative),
-    &quot;image/png&quot;,
-    stream,
-    true);
+pkg.MakeThumbnail(thumbnail);
+</code></pre>
+<p>If you want to undo the thumbnail, call:</p>
+<pre><code class="lang-csharp">pkg.UnmakeThumbnail();
 </code></pre>
 <h2 id="flushing">Flushing</h2>
 <p>Flushing is necessary if you want to make sure that the changes you made to the package are persisted properly.</p>
@@ -184,7 +174,7 @@ pkg.PutThumbnail(
 <p>To flush:</p>
 <pre><code class="lang-csharp">pkg.Flush();
 </code></pre>
-<h2 id="conflicts">Conflicts</h2>
+<h2 id="concurrency">Concurrency</h2>
 <p>Please be careful if you read parts while you are writing.
 The library is <strong>NOT</strong> thread-safe, and you need to take care of locking issues yourself.</p>
 <p>Additionally, be careful to re-read the proper nuggets of information if you changed them.
@@ -193,7 +183,9 @@ For example, capturing the groups of specs by content type becomes invalid if yo
 
 foreach(var (contentType, specs) in specsByContentType)
 {
-    pkg.PutSpec(...);
+    // PutPart with a different content type
+    pkg.PutPart(...);
+
     // specsByContentType is now stale and needs to be re-read.
 }
 </code></pre>
