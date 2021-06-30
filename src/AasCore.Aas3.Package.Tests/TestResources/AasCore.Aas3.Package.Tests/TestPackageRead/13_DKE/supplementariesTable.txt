@@ -1,2 +1,6 @@
-Content Type | URI
--------------+----
+Supplementary Content Type | Supplementary URI      | Spec Content Type | Spec URI
+---------------------------+------------------------+-------------------+--------------------------------------------------------------------------------------------
+image/jpeg                 | /aasx/dke-logo.jpg     | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+text/plain                 | /aasx/dke-logo-all.tif | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+image/png                  | /aasx/dke-qr.png       | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+image/jpeg                 | /aasx/dke-dose.jpg     | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml

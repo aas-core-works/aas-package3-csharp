@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>AasCore.Aas3.Package</id>
-    <version>1.0.0-pre5-debug</version>
+    <version>1.0.0-pre5-debug3</version>
     <title>AAS v3 Package Library</title>
     <authors>Marko Ristin, Nico Braunisch, Robert Lehmann</authors>
     <owners>$author$</owners>

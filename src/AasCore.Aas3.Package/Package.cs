@@ -110,29 +110,29 @@ namespace AasCore.Aas3.Package
     public class Part
     {
         public Uri Uri { get; }
-        private readonly PackagePart _part;
+        internal readonly PackagePart PackagePart;
 
-        public Part(Uri uri, PackagePart part)
+        public Part(Uri uri, PackagePart packagePart)
         {
             Uri = uri;
-            _part = part;
+            PackagePart = packagePart;
         }
 
         /**
          * MIME type
          */
-        public string ContentType => _part.ContentType;
+        public string ContentType => PackagePart.ContentType;
 
         /**
          * <returns>
          * Open a read stream.
-         * 
+         *
          * The caller is responsible for disposing it.
          * </returns>
          */
         public Stream Stream()
         {
-            return _part.GetStream(FileMode.Open, FileAccess.Read);
+            return PackagePart.GetStream(FileMode.Open, FileAccess.Read);
         }
 
         /**
@@ -625,8 +625,9 @@ namespace AasCore.Aas3.Package
                 "Specs must be empty in a new package.");
 
             Dbc.Ensure(
-                !result.Supplementaries().Any(),
-                "Supplementaries must be empty in a new package.");
+                !result.SupplementaryRelationships().Any(),
+                "There must be no supplementary relationships " +
+                "in a new package.");
 
             Dbc.Ensure(
                 result.Thumbnail() == null,
@@ -724,7 +725,7 @@ namespace AasCore.Aas3.Package
 
             foreach (string contentType in result.Keys)
             {
-                // Sort the list of specs by URI to make the code reproducible 
+                // Sort the list of specs by URI to make the code reproducible
                 result[contentType].Sort((spec1, spec2) => string.Compare(
                     spec1.Uri.ToString(),
                     spec2.Uri.ToString(),
@@ -755,18 +756,70 @@ namespace AasCore.Aas3.Package
         }
 
         /**
+         * <summary>
+         * Check that the <paramref name="part"/> is related to the origin
+         * of the package as spec.
+         * </summary>
+         */
+        // ReSharper disable once MemberCanBeProtected.Global
+        public bool IsSpec(Part part)
+        {
+            return OriginPart
+                .GetRelationshipsByType(Packaging.RelationType.AasxSpec)
+                .Any(rel => rel.TargetUri == part.Uri);
+        }
+
+        /**
          * <summary>List supplementary files contained in the package.</summary>
          */
-        public IEnumerable<Part> Supplementaries()
+        // ReSharper disable once MemberCanBeProtected.Global
+        public IEnumerable<Part> SupplementariesFor(Part spec)
         {
-            var xs = OriginPart.GetRelationshipsByType(
+            var xs = spec.PackagePart.GetRelationshipsByType(
                 Packaging.RelationType.AasxSupplementary);
 
             foreach (var x in xs)
             {
                 var supplUri = x.TargetUri;
+
+                if (!UnderlyingPackage.PartExists(supplUri))
+                {
+                    throw new InvalidDataException(
+                        $"The relationship from spec {spec.Uri} " +
+                        $"as supplementary material to {supplUri} exists, " +
+                        "but the underlying part does not.");
+                }
+
                 var supplPart = UnderlyingPackage.GetPart(supplUri);
                 yield return new Part(supplUri, supplPart);
+            }
+        }
+
+        public class SupplementaryRelationship
+        {
+            public readonly Part Spec;
+            public readonly Part Supplementary;
+
+            public SupplementaryRelationship(Part spec, Part supplementary)
+            {
+                Spec = spec;
+                Supplementary = supplementary;
+            }
+        }
+
+        /**
+         * <summary>
+         * Iterate over all the supplementary relationships from all the specs.
+         * </summary>
+         */
+        public IEnumerable<SupplementaryRelationship> SupplementaryRelationships()
+        {
+            foreach (var spec in Specs())
+            {
+                foreach (var suppl in SupplementariesFor(spec))
+                {
+                    yield return new SupplementaryRelationship(spec, suppl);
+                }
             }
         }
 
@@ -802,6 +855,9 @@ namespace AasCore.Aas3.Package
         /**
          * <summary>Retrieve the thumbnail from the AAS package.</summary>
          * <returns>The thumbnail, or null if no thumbnail in the package.</returns>
+         * <exception cref="InvalidDataException">
+         * If the relationship exists, but the part does not.
+         * </exception>
          */
         public Part? Thumbnail()
         {
@@ -814,6 +870,12 @@ namespace AasCore.Aas3.Package
             {
                 if (x.SourceUri.ToString() == "/")
                 {
+                    if (!UnderlyingPackage.PartExists(x.TargetUri))
+                    {
+                        throw new InvalidDataException(
+                            "The thumbnail relation from the origin exists, " +
+                            $"but the target part does not: {x.TargetUri}");
+                    }
                     result = new Part(
                         x.TargetUri, UnderlyingPackage.GetPart(x.TargetUri));
                     break;
@@ -844,348 +906,398 @@ namespace AasCore.Aas3.Package
 
         /**
          * <summary>
-         * Write the <paramref name="content"/> of the spec to <paramref name="uri"/>.
+         * Write the <paramref name="content"/> to the package as a package part
+         * with <paramref name="contentType"/>.
          * </summary>
          * <remarks>
-         * If the spec already exists at <paramref name="uri"/>, it will be overwritten.
+         * This function needs to be used to put <i>any content</i> into the package.
+         *
+         * You have to introduce the relations by calling, <i>e.g.</i>,
+         * <see cref="RelateSupplementaryToSpec"/>.
+         *
+         * The caller needs to be careful not to unintentionally overwrite
+         * existing parts which are already related to each other (<i>e.g.</i>,
+         * do not overwrite a part as a supplementary material which has been made
+         * a spec).
          * </remarks>
-         * <exception cref="InvalidDataException">
-         * if the part exists, but the relationship has not been set appropriately.
-         * </exception>
          */
-        public void PutSpec(Uri uri, string contentType, byte[] content)
+        public Part PutPart(Uri uri, string contentType, byte[] content)
         {
             using MemoryStream ms = new MemoryStream(content, false);
-            PutSpec(uri, contentType, ms);
+            var result = PutPart(uri, contentType, ms);
 
             #region Postconditions
 
+#if DEBUG || DEBUGSLOW
+
+            var maybePart = FindPart(uri);
+
+            Dbc.Ensure(maybePart != null,
+                "The part should be included in the package.");
+#endif
+
 #if DEBUGSLOW
-
-            var spec = Specs().FirstOrDefault(aSpec => aSpec.Uri == uri);
-
-            Dbc.Ensure(spec != null, "Spec must be listed.");
-
             Dbc.Ensure(
-                spec!.ReadAllBytes().SequenceEqual(content),
+                maybePart == null
+                || maybePart.ReadAllBytes().SequenceEqual(content),
                 "Input content and re-read content must coincide on put.");
-
 #endif
 
             #endregion
+
+            return result;
         }
 
-        /**
-         * <summary>
-         * Write the content of the <paramref name="stream"/> to the spec at
-         * <paramref name="uri"/>.
-         * </summary>
-         * <remarks>
-         * If the spec already exists at <paramref name="uri"/>, it will be overwritten.
-         * </remarks>
-         * <exception cref="InvalidDataException">
-         * if the part exists, but the relationship has not been set appropriately.
-         * </exception>
-         */
         // ReSharper disable once MemberCanBePrivate.Global
-        public void PutSpec(Uri uri, string contentType, Stream stream)
+        public Part PutPart(Uri uri, string contentType, Stream stream)
         {
-            #region Snapshots
-
-#if DEBUG || DEBUGSLOW
-            var oldSpecCount = Specs().Count();
-            var oldPartExists = UnderlyingPackage.PartExists(uri);
-#endif
-
-            #endregion
+            Part? result;
 
             if (UnderlyingPackage.PartExists(uri))
             {
-                var rels = OriginPart.GetRelationshipsByType(
-                    Packaging.RelationType.AasxSpec);
-
-                bool found = rels.Any(rel => rel.TargetUri == uri);
-                if (!found)
-                {
-                    throw new InvalidDataException(
-                        $"The spec exists at the URI {uri}, " +
-                        "but there was no relationship " +
-                        $"of the type {Packaging.RelationType.AasxSpec} targeting it." +
-                        (Path != null ? $" Path to the package: {Path}" : "")
-                    );
-                }
-
                 var part = UnderlyingPackage.GetPart(uri);
                 using var target = part.GetStream();
                 target.SetLength(0);
                 stream.CopyTo(target);
+
+                result = new Part(uri, part);
             }
             else
             {
                 var part = UnderlyingPackage.CreatePart(uri, contentType);
                 using var target = part.GetStream();
                 stream.CopyTo(target);
-                OriginPart.CreateRelationship(uri, TargetMode.Internal,
-                    Packaging.RelationType.AasxSpec);
+
+                result = new Part(uri, part);
             }
 
             #region Postconditions
 
 #if DEBUG || DEBUGSLOW
-            var spec = Specs().FirstOrDefault(aSpec => aSpec.Uri == uri);
 
-            Dbc.Ensure(spec != null, "Spec must exist in Specs().");
-
-            Dbc.Ensure(
-                spec!.ContentType == contentType,
-                "Spec content type must coincide.");
-
-            Dbc.Ensure(
-                !oldPartExists || Specs().Count() == oldSpecCount,
-                "Spec count must remain constant on overwriting a spec.");
-
-            Dbc.Ensure(
-                oldPartExists || Specs().Count() == oldSpecCount + 1,
-                "Spec count must increment 1 when creating a spec.");
-
-            Dbc.Ensure(
-                FindPart(uri) != null,
-                "The part must exist on put.");
-
+            Dbc.Ensure(FindPart(uri) != null,
+                "The part should be included in the package.");
 #endif
 
             #endregion
+
+            return result;
+        }
+
+        /**
+         * <summary>Remove the part from the package.</summary>
+         * <remarks>
+         * This function will not check whether you removed the relations corresponding
+         * to this part. Please use <see cref="UnrelateSupplementaryFromSpec"/> to
+         * that end.
+         * </remarks>
+         */
+        public void RemovePart(Part part)
+        {
+            if (UnderlyingPackage.PartExists(part.Uri))
+            {
+                UnderlyingPackage.DeletePart(part.Uri);
+            }
+
+#if DEBUG || DEBUGSLOW
+
+            Dbc.Ensure(FindPart(part.Uri) == null,
+                "The part should not exist in the package anymore.");
+#endif
         }
 
         /**
          * <summary>
-         * Write the <paramref name="content"/> of the supplementary file
-         * to <paramref name="uri"/>.
+         * Relate the <paramref name="part"/> to the package origin as a spec.
          * </summary>
-         * <remarks>If the supplementary file already exists at <paramref name="uri"/>,
-         * it will be overwritten.</remarks>
-         * <exception cref="InvalidDataException">
-         * if the part exists, but the relationship has not been set appropriately.
-         * </exception>
+         * <returns>
+         * The same unchanged <paramref name="part"/>.
+         *
+         * This is practical if you want to chain function calls.
+         * </returns>
          */
-        public void PutSupplementary(Uri uri, string contentType, byte[] content)
+        public Part MakeSpec(Part part)
         {
-            using MemoryStream ms = new MemoryStream(content, false);
-            PutSupplementary(uri, contentType, ms);
+            OriginPart.CreateRelationship(
+                part.Uri, TargetMode.Internal, Packaging.RelationType.AasxSpec);
 
             #region Postconditions
 
 #if DEBUGSLOW
 
-            var suppl = Supplementaries().FirstOrDefault(
-                aSuppl => aSuppl.Uri == uri);
-
-            Dbc.Ensure(suppl != null, "The supplementary must be listed.");
+            Dbc.Ensure(
+                Specs().FirstOrDefault(aSpec => aSpec.Uri == part.Uri) != null,
+                "Spec must be listed.");
 
             Dbc.Ensure(
-                suppl!.ReadAllBytes().SequenceEqual(content),
-                "Input content and re-read content must coincide on put.");
+                IsSpec(part),
+                "The part fulfills the spec property.");
 
 #endif
 
             #endregion
+
+            return part;
         }
 
         /**
          * <summary>
-         * Write the content of the <paramref name="stream"/> to the given supplementary
-         * file at <paramref name="uri"/>.
+         * Remove the relationship from the origin to the <paramref name="part"/>
+         * as a spec.
          * </summary>
-         * <remarks>If the supplementary file already exists at <paramref name="uri"/>,
-         * it will be overwritten.</remarks>
-         * <exception cref="InvalidDataException">
-         * if the part exists, but the relationship has not been set appropriately.
-         * </exception>
+         * <remarks>The caller needs to delete the part herself by calling
+         * <see cref="RemovePart"/>.</remarks>
+         * <returns>
+         * The same unchanged <paramref name="part"/>.
+         *
+         * This is practical if you want to chain function calls.
+         * </returns>
          */
-        // ReSharper disable once MemberCanBePrivate.Global
-        public void PutSupplementary(Uri uri, string contentType, Stream stream)
+        public Part UnmakeSpec(Part part)
         {
+            #region Preconditions
+
+#if DEBUGSLOW
+
+            Dbc.Require(
+                IsSpec(part),
+                "The part fulfills the spec property.");
+
+#endif
+
+            #endregion
+
             #region Snapshots
 
-#if DEBUG || DEBUGSLOW
-            var oldSupplementaryCount = Supplementaries().Count();
-            var oldPartExists = UnderlyingPackage.PartExists(uri);
-#endif
+#if DEBUGSLOW
 
-            #endregion
-
-            if (UnderlyingPackage.PartExists(uri))
-            {
-                var rels = OriginPart.GetRelationshipsByType(
-                    Packaging.RelationType.AasxSupplementary);
-
-                bool found = rels.Any(rel => rel.TargetUri == uri);
-                if (!found)
-                {
-                    throw new InvalidDataException(
-                        $"The supplementary exists at the URI {uri}, " +
-                        "but there was no relationship " +
-                        $"of the type {Packaging.RelationType.AasxSupplementary} " +
-                        "targeting it." +
-                        (Path != null ? $" Path to the package: {Path}" : "")
-                    );
-                }
-
-                var part = UnderlyingPackage.GetPart(uri);
-                using var target = part.GetStream();
-                target.SetLength(0);
-                stream.CopyTo(target);
-            }
-            else
-            {
-                var part = UnderlyingPackage.CreatePart(uri, contentType);
-                using var target = part.GetStream();
-                stream.CopyTo(target);
-                OriginPart.CreateRelationship(uri, TargetMode.Internal,
-                    Packaging.RelationType.AasxSupplementary);
-            }
-
-            #region Postconditions
-
-#if DEBUG || DEBUGSLOW
-            var suppl = Supplementaries().FirstOrDefault(
-                aSuppl => aSuppl.Uri == uri);
-
-            Dbc.Ensure(
-                suppl != null,
-                "The supplementary must be listed in Supplementaries().");
-
-            Dbc.Ensure(
-                suppl!.ContentType == contentType,
-                "The content type must coincide.");
-
-            Dbc.Ensure(
-                !oldPartExists || Supplementaries().Count() == oldSupplementaryCount,
-                "The supplementary count must remain constant on overwriting.");
-
-            Dbc.Ensure(
-                oldPartExists || Supplementaries().Count() == oldSupplementaryCount + 1,
-                "Supplementary count must increment 1 on " +
-                "creating a supplementary.");
-
-            Dbc.Ensure(FindPart(uri) != null, "The part must exist on put.");
+            var oldSpecUriSet = new HashSet<Uri>(
+                Specs().Select(spec => spec.Uri));
 
 #endif
 
             #endregion
-        }
 
-        /**
-         * <summary>
-         * Set the thumbnail to the <paramref name="content"/> at <paramref name="uri"/>.
-         *
-         * If there is already a thumbnail at a different URI,
-         * the <paramref name="deleteExisting"/> decides whether the existing part
-         * will be deleted (or we update only the relationship).
-         * </summary>
-         * <remarks>If the thumbnail already exists at <paramref name="uri"/>,
-         * it will be overwritten.</remarks>
-         * <exception cref="InvalidDataException">
-         * if the part exists at <paramref name="uri"/>,
-         * but the relationship has not been set appropriately.
-         * </exception>
-         */
-        public void PutThumbnail(
-            Uri uri, string contentType, byte[] content, bool deleteExisting)
-        {
-            using MemoryStream ms = new MemoryStream(content, false);
-            PutThumbnail(uri, contentType, ms, deleteExisting);
+            var morituri = new List<string>();
+
+            var rels = OriginPart
+                .GetRelationshipsByType(Packaging.RelationType.AasxSpec)
+                .Where(aRel => aRel.TargetUri == part.Uri);
+
+            foreach (var rel in rels)
+            {
+                morituri.Add(rel.Id);
+            }
+
+            foreach (var relId in morituri)
+            {
+                OriginPart.DeleteRelationship(relId);
+            }
 
             #region Postconditions
 
 #if DEBUGSLOW
 
-            var thumb = Thumbnail();
+            Dbc.Ensure(
+                Specs().All(aSpec => aSpec.Uri != part.Uri),
+                "The spec must not be listed in the Specs().");
 
-            Dbc.Ensure(thumb != null, "The thumbnail must be available.");
+            var specUriSet = new HashSet<Uri>(
+                Specs().Select(spec => spec.Uri));
 
             Dbc.Ensure(
-                thumb!.ReadAllBytes().SequenceEqual(content),
-                "Input content and re-read content must coincide on put.");
+                !oldSpecUriSet.Contains(part.Uri)
+                || (
+                    specUriSet.Count == oldSpecUriSet.Count - 1
+                    && oldSpecUriSet.Except(specUriSet).First() == part.Uri
+                ),
+                "No other spec has been removed.");
 
 #endif
 
             #endregion
+
+            return part;
         }
 
         /**
          * <summary>
-         * Set the thumbnail to the content of the <paramref name="stream"/>
-         * at <paramref name="uri"/>.
-         *
-         * If there is already a thumbnail at a different URI,
-         * the <paramref name="deleteExisting"/> decides whether the existing part
-         * will be deleted (or we update only the relationship).
+         * Relate the <paramref name="supplementary"/> to the <paramref name="spec"/>
+         * as a supplementary material.
          * </summary>
-         * <remarks>If the thumbnail already exists at <paramref name="uri"/>,
-         * it will be overwritten.</remarks>
-         * <exception cref="InvalidDataException">
-         * if the part exists at <paramref name="uri"/>,
-         * but the relationship has not been set appropriately.
-         * </exception>
+         * <returns>
+         * The same unchanged <paramref name="supplementary"/>.
+         *
+         * This is practical if you want to chain function calls.
+         * </returns>
          */
-        // ReSharper disable once MemberCanBePrivate.Global
-        public void PutThumbnail(Uri uri, string contentType, Stream stream,
-            bool deleteExisting = true)
+        // ReSharper disable once UnusedMethodReturnValue.Global
+        public Part RelateSupplementaryToSpec(Part supplementary, Part spec)
         {
-            #region Snapshots
+            #region Preconditions
 
-#if DEBUG || DEBUGSLOW
+#if DEBUGSLOW
 
-            var oldThumbnailUri = Thumbnail()?.Uri;
+            Dbc.Require(
+                IsSpec(spec),
+                "The part fulfills the spec property.");
 
 #endif
 
             #endregion
 
-            if (UnderlyingPackage.PartExists(uri))
+
+            var rels = spec.PackagePart.GetRelationshipsByType(
+                Packaging.RelationType.AasxSupplementary);
+
+            if (rels.All(rel => rel.TargetUri != supplementary.Uri))
             {
-                var rels = UnderlyingPackage.GetRelationshipsByType(
-                    Packaging.RelationType.Thumbnail);
-
-                if (rels.All(rel => rel.TargetUri != uri))
-                {
-                    throw new InvalidDataException(
-                        $"The thumbnail exists at the URI {uri}, " +
-                        "but there was no relationship " +
-                        $"of the type {Packaging.RelationType.Thumbnail} " +
-                        "targeting it." +
-                        (Path != null ? $" Path to the package: {Path}" : "")
-                    );
-                }
-
-                var part = UnderlyingPackage.GetPart(uri);
-                using var target = part.GetStream();
-                stream.CopyTo(target);
+                spec.PackagePart.CreateRelationship(
+                    supplementary.Uri,
+                    TargetMode.Internal,
+                    Packaging.RelationType.AasxSupplementary);
             }
-            else
+
+            #region Postconditions
+
+#if DEBUGSLOW
+
+            Dbc.Ensure(
+                SupplementariesFor(spec)
+                    .FirstOrDefault(
+                        suppl => suppl.Uri == supplementary.Uri) != null,
+                "The supplementary must be listed.");
+
+#endif
+
+            #endregion
+
+            return supplementary;
+        }
+
+        /**
+         * <summary>
+         * Remove the relation as supplementary between
+         * the <paramref name="supplementary"/> and the <paramref name="spec"/>.
+         * </summary>
+         * <remarks>
+         * If the relationship has not been previously established, do nothing.
+         *
+         * The caller needs to delete the part(s) herself by calling
+         * <see cref="RemovePart"/>.</remarks>
+         * <returns>
+         * The same unchanged <paramref name="supplementary"/>.
+         *
+         * This is practical if you want to chain function calls.
+         * </returns>
+         */
+        // ReSharper disable once UnusedMethodReturnValue.Global
+        public Part UnrelateSupplementaryFromSpec(Part supplementary, Part spec)
+        {
+            #region Preconditions
+
+#if DEBUGSLOW
+
+            Dbc.Require(
+                IsSpec(spec),
+                "The part fulfills the spec property.");
+
+#endif
+
+            #endregion
+
+            #region Snapshots
+
+#if DEBUGSLOW
+            var oldSupplUriSet = new HashSet<Uri>(
+                SupplementariesFor(spec).Select(suppl => suppl.Uri));
+
+#endif
+
+            #endregion
+
+            var morituri = new List<string>();
+
+            var rels = spec
+                .PackagePart
+                .GetRelationshipsByType(Packaging.RelationType.AasxSupplementary)
+                .Where(
+                    aRel => aRel.TargetUri == supplementary.Uri);
+
+            foreach (var rel in rels)
             {
-                var morituri =
-                    UnderlyingPackage.GetRelationshipsByType(
-                            Packaging.RelationType.Thumbnail)
-                        .Where(rel => rel.SourceUri.ToString() == "/")
-                        .ToList();
+                morituri.Add(rel.Id);
+            }
 
-                foreach (var moriturus in morituri)
+            foreach (var relId in morituri)
+            {
+                spec.PackagePart.DeleteRelationship(relId);
+            }
+
+            #region Postconditions
+
+#if DEBUGSLOW
+
+            Dbc.Ensure(
+                SupplementariesFor(spec)
+                    .All(suppl => suppl.Uri != supplementary.Uri),
+                "The supplementary file must not be " +
+                "listed in the Supplementaries().");
+
+            var supplUriSet = new HashSet<Uri>(
+                SupplementariesFor(spec).Select(suppl => suppl.Uri));
+
+            Dbc.Ensure(
+                !oldSupplUriSet.Contains(supplementary.Uri)
+                || (
+                    supplUriSet.Count == oldSupplUriSet.Count - 1
+                    && oldSupplUriSet.Except(supplUriSet).First() == supplementary.Uri
+                ),
+                "No other supplementary has been removed.");
+
+#endif
+
+            #endregion
+
+            return supplementary;
+        }
+
+        /**
+         * <summary>
+         * Establish the relation from package origin to <paramref name="part"/>
+         * as a thumbnail.
+         * </summary>
+         * <remarks>
+         * If there is a relationship to a thumbnail already, it will be unmade first.
+         * </remarks>
+         * <returns>
+         * The same unchanged <paramref name="part"/>.
+         *
+         * This is practical if you want to chain function calls.
+         * </returns>
+         */
+        // ReSharper disable once UnusedMethodReturnValue.Global
+        public Part MakeThumbnail(Part part)
+        {
+            bool createRelation = true;
+
+            var maybeThumbnail = Thumbnail();
+            if (maybeThumbnail != null)
+            {
+                if (maybeThumbnail.Uri != part.Uri)
                 {
-                    UnderlyingPackage.DeleteRelationship(moriturus.Id);
-                    if (deleteExisting)
-                    {
-                        UnderlyingPackage.DeletePart(moriturus.TargetUri);
-                    }
+                    UnmakeThumbnail();
                 }
+                else
+                {
+                    createRelation = false;
+                }
+            }
 
-                var part = UnderlyingPackage.CreatePart(uri, contentType);
-                using var target = part.GetStream();
-                stream.CopyTo(target);
+            if (createRelation)
+            {
                 UnderlyingPackage.CreateRelationship(
-                    uri, TargetMode.Internal,
-                    Packaging.RelationType.Thumbnail);
+                    part.Uri, TargetMode.Internal, Packaging.RelationType.Thumbnail);
             }
 
             #region Postconditions
@@ -1198,210 +1310,36 @@ namespace AasCore.Aas3.Package
                 "The thumbnail must be available.");
 
             Dbc.Ensure(
-                thumbnail!.ContentType == contentType,
-                "The content type must coincide.");
-
-            Dbc.Ensure(
-                FindPart(uri) != null,
-                "The part must exist on put.");
-
-            Dbc.Ensure(
-                !(
-                    oldThumbnailUri != uri
-                    && deleteExisting
-                    && oldThumbnailUri != null)
-                || !UnderlyingPackage.PartExists(oldThumbnailUri),
-                "The previous thumbnail must be deleted " +
-                "when replaced with a new thumbnail.");
-
-            // DONT-CHECK-IN: test dbc class
-
-            Dbc.Ensure(
-                !(
-                    oldThumbnailUri != uri
-                    && !deleteExisting
-                    && oldThumbnailUri != null)
-                || UnderlyingPackage.PartExists(oldThumbnailUri),
-                "The previous thumbnail must be kept " +
-                "when replaced with a new thumbnail " +
-                "and we want to delete the existing thumbnail.");
-
-#endif
-
-            #endregion
-        }
-
-        /**
-         * <summary>Remove the spec by the given <paramref name="uri"/>.</summary>
-         * <remarks>
-         * If the part corresponding to <paramref name="uri"/> does not exist,
-         * do nothing.
-         * </remarks>
-         * <exception cref="InvalidDataException">
-         * if the part exists at <paramref name="uri"/>,
-         * but the relationship has not been set appropriately.
-         * </exception>
-         */
-        public void RemoveSpec(Uri uri)
-        {
-            #region Snapshots
-
-#if DEBUGSLOW
-
-            var oldSpecUriSet = new HashSet<string>(
-                Specs()
-                .Select(spec => spec.Uri.ToString()));
+                thumbnail == null || thumbnail.Uri == part.Uri,
+                "The thumbnail must point to the part.");
 
 #endif
 
             #endregion
 
-            if (UnderlyingPackage.PartExists(uri))
-            {
-                var rel = OriginPart
-                    .GetRelationshipsByType(Packaging.RelationType.AasxSpec)
-                    .FirstOrDefault(aRel => aRel.TargetUri == uri);
-
-                if (rel is null)
-                {
-                    throw new InvalidDataException(
-                        $"The part exists at the URI {uri}, " +
-                        "but there was no relationship " +
-                        $"of the type {Packaging.RelationType.AasxSpec} " +
-                        "targeting it." +
-                        (Path != null ? $" Path to the package: {Path}" : "")
-                    );
-                }
-
-                OriginPart.DeleteRelationship(rel.Id);
-                UnderlyingPackage.DeletePart(uri);
-
-                #region Postconditions
-
-#if DEBUG || DEBUGSLOW
-
-                Dbc.Ensure(
-                    !UnderlyingPackage.PartExists(uri),
-                    "The part must have been deleted.");
-
-#endif
-
-#if DEBUGSLOW
-
-                Dbc.Ensure(
-                    Specs().All(aSpec => aSpec.Uri != uri),
-                    "The spec must not be listed in the Specs().");
-
-                var specUriSet = new HashSet<string>(Specs()
-                    .Select(spec => spec.Uri.ToString()));
-
-                Dbc.Ensure(
-                    specUriSet.Count == oldSpecUriSet.Count - 1
-                    && oldSpecUriSet.Except(specUriSet).First() == uri.ToString(),
-                    "No other spec has been removed.");
-
-#endif
-
-                #endregion
-            }
+            return part;
         }
 
         /**
          * <summary>
-         * Remove the supplementary file by the given <paramref name="uri"/>.
+         * Remove the relation from package origin to any thumbnail, if specified.
          * </summary>
          * <remarks>
-         * If the part corresponding to <paramref name="uri"/> does not exist,
-         * do nothing.
+         * The caller needs to delete the part herself by calling
+         * <see cref="RemovePart"/>.
          * </remarks>
-         * <exception cref="InvalidDataException">
-         * if the part exists at <paramref name="uri"/>,
-         * but the relationship has not been set appropriately.
-         * </exception>
          */
-        public void RemoveSupplementary(Uri uri)
+        public void UnmakeThumbnail()
         {
-            #region Snapshots
+            var morituri =
+                UnderlyingPackage.GetRelationshipsByType(
+                        Packaging.RelationType.Thumbnail)
+                    .Where(rel => rel.SourceUri.ToString() == "/")
+                    .ToList();
 
-#if DEBUGSLOW
-
-            var oldSupplUriSet = new HashSet<string>(Supplementaries()
-                .Select(suppl => suppl.Uri.ToString()));
-
-#endif
-
-            #endregion
-
-
-            if (UnderlyingPackage.PartExists(uri))
+            foreach (var moriturus in morituri)
             {
-                var rel = OriginPart
-                    .GetRelationshipsByType(Packaging.RelationType.AasxSupplementary)
-                    .FirstOrDefault(aRel => aRel.TargetUri == uri);
-
-                if (rel is null)
-                {
-                    throw new InvalidDataException(
-                        $"The part exists at the URI {uri}, " +
-                        "but there was no relationship " +
-                        $"of the type {Packaging.RelationType.AasxSupplementary} " +
-                        "targeting it." +
-                        (Path != null ? $" Path to the package: {Path}" : "")
-                    );
-                }
-
-                OriginPart.DeleteRelationship(rel.Id);
-                UnderlyingPackage.DeletePart(uri);
-
-                #region Postconditions
-
-#if DEBUG || DEBUGSLOW
-
-                Dbc.Ensure(!UnderlyingPackage.PartExists(uri),
-                    "The part must have been deleted.");
-#endif
-
-#if DEBUGSLOW
-
-                Dbc.Ensure(
-                    Supplementaries().All(suppl => suppl.Uri != uri),
-                    "The supplementary file must not be " +
-                    "listed in the Supplementaries().");
-
-                var supplUriSet = new HashSet<string>(Supplementaries()
-                    .Select(suppl => suppl.Uri.ToString()));
-
-                Dbc.Ensure(
-                    supplUriSet.Count == oldSupplUriSet.Count - 1
-                    && oldSupplUriSet.Except(supplUriSet).First() == uri.ToString(),
-                    "No other supplementary has been removed.");
-
-#endif
-
-                #endregion
-            }
-        }
-
-        /**
-         * <summary>Remove the thumbnail.</summary>
-         * <remarks>If the thumbnail does not exist, do nothing.</remarks>
-         */
-        public void RemoveThumbnail()
-        {
-            var thumb = Thumbnail();
-            if (thumb != null)
-            {
-                var morituri =
-                    UnderlyingPackage.GetRelationshipsByType(
-                            Packaging.RelationType.Thumbnail)
-                        .Where(rel => rel.SourceUri.ToString() == "/")
-                        .ToList();
-
-                foreach (var moriturus in morituri)
-                {
-                    UnderlyingPackage.DeleteRelationship(moriturus.Id);
-                    UnderlyingPackage.DeletePart(moriturus.TargetUri);
-                }
+                UnderlyingPackage.DeleteRelationship(moriturus.Id);
             }
 
             #region Postconditions

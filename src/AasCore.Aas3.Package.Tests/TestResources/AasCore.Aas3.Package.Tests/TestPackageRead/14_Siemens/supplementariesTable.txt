@@ -1,2 +1,11 @@
-Content Type | URI
--------------+----
+Supplementary Content Type | Supplementary URI                                                    | Spec Content Type | Spec URI
+---------------------------+----------------------------------------------------------------------+-------------------+------------------------------------------------------------------------------------------------------
+image/png                  | /aasx/Identification/qrcode_P320.png                                 | text/xml          | /aasx/www_company_com_ids_aas_9460_8042_0191_4407/www_company_com_ids_aas_9460_8042_0191_4407.aas.xml
+image/jpeg                 | /aasx/Identification/sie-logo-layer-petrol-rgb.jpg                   | text/xml          | /aasx/www_company_com_ids_aas_9460_8042_0191_4407/www_company_com_ids_aas_9460_8042_0191_4407.aas.xml
+application/pdf            | /aasx/Document/cert_EU-DoC_SitP320_P420_A5E44320812A_002.pdf         | text/xml          | /aasx/www_company_com_ids_aas_9460_8042_0191_4407/www_company_com_ids_aas_9460_8042_0191_4407.aas.xml
+application/pdf            | /aasx/Document/cert__SIP320_P420_Exi_Exd_de_en_BVS_18_ATEX_E049X.pdf | text/xml          | /aasx/www_company_com_ids_aas_9460_8042_0191_4407/www_company_com_ids_aas_9460_8042_0191_4407.aas.xml
+application/pdf            | /aasx/Document/A5E41285171-ABde_P320P420_HART_OI_de-DE.pdf           | text/xml          | /aasx/www_company_com_ids_aas_9460_8042_0191_4407/www_company_com_ids_aas_9460_8042_0191_4407.aas.xml
+application/pdf            | /aasx/Document/A5E44852162-ABen_P320P420_HART_OI_en-US.pdf           | text/xml          | /aasx/www_company_com_ids_aas_9460_8042_0191_4407/www_company_com_ids_aas_9460_8042_0191_4407.aas.xml
+application/pdf            | /aasx/Document/A5E38874562-ABde_P320P420_COI_de-DE.pdf               | text/xml          | /aasx/www_company_com_ids_aas_9460_8042_0191_4407/www_company_com_ids_aas_9460_8042_0191_4407.aas.xml
+application/pdf            | /aasx/Document/A5E38874562-ABen_P320P420_COI_en-US.pdf               | text/xml          | /aasx/www_company_com_ids_aas_9460_8042_0191_4407/www_company_com_ids_aas_9460_8042_0191_4407.aas.xml
+image/png                  | /aasx/Nameplate/marking_ce.png                                       | text/xml          | /aasx/www_company_com_ids_aas_9460_8042_0191_4407/www_company_com_ids_aas_9460_8042_0191_4407.aas.xml

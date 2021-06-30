@@ -102,7 +102,7 @@ else
 According to [Details of the Asset Administration Shell v3], specs should all represent the same data model albeit in a different format.
 Multiple equivalent models per content type are also possible.
 
-## Supplementaries
+## Supplementary Materials
 
 If you know the [URI] of a supplementary part within the package, you can directly access it:
 
@@ -123,10 +123,12 @@ if(suppl != null)
 }
 ```
 
-Otherwise, if you want to inspect all the supplementary parts, you can list them:
+Otherwise, if you want to inspect all the supplementary parts for a given spec, you can list them:
 
 ```csharp
-foreach(AasCore.Aas3.Package.Part suppl in pkg.Supplementaries())
+var spec = pkg.MustPart(...);
+
+foreach(AasCore.Aas3.Package.Part suppl in pkg.SupplementariesFor(spec))
 {
     // Do something with suppl
 }

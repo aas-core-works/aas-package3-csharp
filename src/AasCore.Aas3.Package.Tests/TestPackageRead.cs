@@ -12,10 +12,9 @@ using Path = System.IO.Path;
 using SystemPackage = System.IO.Packaging.Package; // renamed
 using Uri = System.Uri;
 using UriKind = System.UriKind;
-
 using System.Collections.Generic; // can't alias
 using System.Linq; // can't alias
-using NUnit.Framework;  // can't alias
+using NUnit.Framework; // can't alias
 
 namespace AasCore.Aas3.Package.Tests
 {
@@ -26,10 +25,13 @@ namespace AasCore.Aas3.Package.Tests
             return Path.Combine(
                 TestContext.CurrentContext.TestDirectory,
                 Path.Combine(
-                    new[]{
-                    "TestResources",
-                    $"{nameof(AasCore)}.{nameof(Aas3)}.{nameof(Package)}.{nameof(Tests)}",
-                    nameof(TestPackageRead)}
+                    new[]
+                    {
+                        "TestResources",
+                        $"{nameof(AasCore)}.{nameof(Aas3)}.{nameof(Package)}" +
+                        $".{nameof(Tests)}",
+                        nameof(TestPackageRead)
+                    }
                 ));
         }
 
@@ -84,10 +86,7 @@ namespace AasCore.Aas3.Package.Tests
 
             using var pkgOrErr = packaging.OpenRead(stream);
 
-            Assert.Catch<FileFormatException>(() =>
-            {
-                pkgOrErr.Must();
-            });
+            Assert.Catch<FileFormatException>(() => { pkgOrErr.Must(); });
         }
 
         [Test]
@@ -100,20 +99,24 @@ namespace AasCore.Aas3.Package.Tests
 
             {
                 using var pkg = packaging.Create(pth);
-                pkg.PutSpec(
-                    new Uri("/aasx/some-company/data.json", UriKind.Relative),
-                    "text/json",
-                    Encoding.UTF8.GetBytes("{}"));
+                pkg.MakeSpec(
+                    pkg.PutPart(
+                        new Uri("/aasx/some-company/data.json", UriKind.Relative),
+                        "text/json",
+                        Encoding.UTF8.GetBytes("{}")));
 
-                pkg.PutSpec(
-                    new Uri("/aasx/some-company/data1.json", UriKind.Relative),
-                    "text/json",
-                    Encoding.UTF8.GetBytes("{x: 1}"));
+                pkg.MakeSpec(
+                    pkg.PutPart(
+                        new Uri(
+                            "/aasx/some-company/data1.json", UriKind.Relative),
+                        "text/json",
+                        Encoding.UTF8.GetBytes("{x: 1}")));
 
-                pkg.PutSpec(
-                    new Uri("/aasx/some-company/data.xml", UriKind.Relative),
-                    "text/xml",
-                    Encoding.UTF8.GetBytes("<something></something>"));
+                pkg.MakeSpec(
+                    pkg.PutPart(
+                        new Uri("/aasx/some-company/data.xml", UriKind.Relative),
+                        "text/xml",
+                        Encoding.UTF8.GetBytes("<something></something>")));
 
                 pkg.Flush();
             }
@@ -255,12 +258,33 @@ namespace AasCore.Aas3.Package.Tests
 
             ForEachReadOfSampleAasx((pkg, expectedDir) =>
             {
-                Table tbl = new Table(new List<string> { "Content Type", "URI" });
-                foreach (var suppl in pkg.Supplementaries())
+                Table tbl = new Table(new List<string>
+                {
+                    "Supplementary Content Type", "Supplementary URI",
+                    "Spec Content Type", "Spec URI"
+                });
+
+                try
+                {
+                    foreach (var supplRel in pkg.SupplementaryRelationships())
+                    {
+                        tbl.Add(new List<string>
+                        {
+                            supplRel.Supplementary.ContentType,
+                            supplRel.Supplementary.Uri.ToString(),
+                            supplRel.Spec.ContentType,
+                            supplRel.Spec.Uri.ToString()
+                        });
+                    }
+                }
+                catch (InvalidDataException err)
                 {
                     tbl.Add(new List<string>
                     {
-                        suppl.ContentType, suppl.Uri.ToString()
+                        "N/A",
+                        "N/A",
+                        "N/A",
+                        err.Message
                     });
                 }
 
@@ -477,6 +501,50 @@ namespace AasCore.Aas3.Package.Tests
                 using var pkgOrErr = packaging.OpenRead(pth);
                 var pkg = pkgOrErr.Must();
                 Assert.IsNull(pkg.Thumbnail());
+            }
+        }
+
+        [Test]
+        public void Test_the_exception_if_thumbnail_relationship_exists_without_part()
+        {
+            using TemporaryDirectory tmpdir = new TemporaryDirectory();
+            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
+
+            Packaging packaging = new Packaging();
+
+            // Initialize
+            {
+                using var pkg = packaging.Create(pth);
+                pkg.MakeThumbnail(
+                    pkg.PutPart(
+                        new Uri("/some-thumbnail.txt", UriKind.Relative),
+                        "text/plain",
+                        Encoding.UTF8.GetBytes("some content")));
+                pkg.Flush();
+            }
+
+            // Remove the thumbnail as part, but not as relationship
+            {
+                using var pkgOrErr = packaging.OpenReadWrite(pth);
+                var pkg = pkgOrErr.Must();
+
+                var oldThumbnail = pkg.Thumbnail();
+                if (oldThumbnail == null)
+                {
+                    throw new AssertionException(
+                        $"Unexpected {nameof(oldThumbnail)}");
+                }
+
+                pkg.RemovePart(oldThumbnail);
+                pkg.Flush();
+            }
+
+            // Try to read the non-existing thumbnail part
+            {
+                using var pkgOrErr = packaging.OpenRead(pth);
+                var pkg = pkgOrErr.Must();
+
+                Assert.Catch<InvalidDataException>(() => pkg.Thumbnail());
             }
         }
     }

@@ -7,7 +7,7 @@ The library allows you to read and write `.aasx` packages, a package format for 
 
 As it name goes, the library operates on packages complying to the [version 3 of the AAS].
 
-The library runs both on NET Standard 2.1 and NET 5. It is thoroughly tested and ready for production.
+The library runs on NET Standard 2.0, NET Standard 2.1 and NET 5. It is thoroughly tested and ready for production.
 
 [version 3 of the AAS]: https://www.plattform-i40.de/PI40/Redaktion/DE/Downloads/Publikation/Details_of_the_Asset_Administration_Shell_Part1_V3.html
 

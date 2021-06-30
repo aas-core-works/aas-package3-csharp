@@ -1,2 +1,5 @@
-Content Type | URI
--------------+----
+Supplementary Content Type | Supplementary URI                             | Spec Content Type | Spec URI
+---------------------------+-----------------------------------------------+-------------------+--------------------------------------------------------------------------------------------
+application/pdf            | /aasx/Document/EU-Konformitaetserklaerung.pdf | text/xml          | /aasx/wwwcompanycomidsaas8403_3140_0191_8844/wwwcompanycomidsaas8403_3140_0191_8844.aas.xml
+application/pdf            | /aasx/Document/267075-100078_eng.pdf          | text/xml          | /aasx/wwwcompanycomidsaas8403_3140_0191_8844/wwwcompanycomidsaas8403_3140_0191_8844.aas.xml
+image/jpeg                 | /aasx/Identification/PF_Logo_RGB.jpg          | text/xml          | /aasx/wwwcompanycomidsaas8403_3140_0191_8844/wwwcompanycomidsaas8403_3140_0191_8844.aas.xml

@@ -1,2 +1,18 @@
-Content Type | URI
--------------+----
+Supplementary Content Type | Supplementary URI                                         | Spec Content Type | Spec URI
+---------------------------+-----------------------------------------------------------+-------------------+--------------------------------------------------------------------------------------------
+image/png                  | /aasx/assetIdentification/logo.png                        | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+image/png                  | /aasx/Nameplate/marking_ce.png                            | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+image/png                  | /aasx/Nameplate/marking_WEEE.png                          | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+application/pdf            | /aasx/Document/CE_Kennzeichnung_2016_de.pdf               | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+application/pdf            | /aasx/Document/RoHS_2011_65_EU_Konzern_Information_de.pdf | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+image/jpeg                 | /aasx/Nameplate/marking_cruus.jpg                         | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+image/jpeg                 | /aasx/Nameplate/marking_rcm.jpg                           | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+application/pdf            | /aasx/Document/SPAE_UL_4531318_-_2_EN.pdf                 | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+application/pdf            | /aasx/Document/OVEL_IO_Link_5439356_-_3_EN.pdf            | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+application/pdf            | /aasx/Document/OVEL_DNVGL_5309107_-_3_EN.pdf              | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+application/pdf            | /aasx/Document/OVEL_2017-05_8070876g1_EN.pdf              | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+application/pdf            | /aasx/Document/OVEL_2017-05_8070875d1_DE.pdf              | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+application/pdf            | /aasx/Document/SPAE_2017-03b_8058481d1_DE.pdf             | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+application/pdf            | /aasx/Document/SPAE_2017-03b_8058481d1_EN.pdf             | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+application/pdf            | /aasx/Document/SPAE_100017_ApplNote.pdf                   | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+text/plain                 | /aasx/Software/Festo-SPAE-kPa-20171025-IODD1.1.zip        | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml

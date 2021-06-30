@@ -2,7 +2,7 @@
 
 The following articles describe how you can install and use the library.
 
-The library supports both NET Standard 2.1 and Net 5.
+The library supports NET Standard 2.0, NET Standard 2.1 and Net 5.
 
 Unless a version is indicated as a pre-release, the library has been thoroughly tested and is thus ready for use in production.
 

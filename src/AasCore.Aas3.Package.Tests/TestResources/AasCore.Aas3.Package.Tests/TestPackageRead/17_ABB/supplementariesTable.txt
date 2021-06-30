@@ -1,2 +1,8 @@
-Content Type | URI
--------------+----
+Supplementary Content Type | Supplementary URI                        | Spec Content Type | Spec URI
+---------------------------+------------------------------------------+-------------------+------------------------------------------------------------------------------
+application/pdf            | /aasx/OI_TTF300_DE_G01.pdf               | text/xml          | /aasx/www_abb_com_8055_9070_1191_2593/www_abb_com_8055_9070_1191_2593.aas.xml
+application/pdf            | /aasx/OI_TTF300_EN_G01.pdf               | text/xml          | /aasx/www_abb_com_8055_9070_1191_2593/www_abb_com_8055_9070_1191_2593.aas.xml
+application/pdf            | /aasx/CE_TTX300_TTX200_ATEX_2016X-DE.pdf | text/xml          | /aasx/www_abb_com_8055_9070_1191_2593/www_abb_com_8055_9070_1191_2593.aas.xml
+image/png                  | /aasx/ABB_Logo_320.png                   | text/xml          | /aasx/www_abb_com_8055_9070_1191_2593/www_abb_com_8055_9070_1191_2593.aas.xml
+image/png                  | /aasx/QR_9AAC129110_3K650000548505.png   | text/xml          | /aasx/www_abb_com_8055_9070_1191_2593/www_abb_com_8055_9070_1191_2593.aas.xml
+image/png                  | /aasx/Nameplate/marking_ce.png           | text/xml          | /aasx/www_abb_com_8055_9070_1191_2593/www_abb_com_8055_9070_1191_2593.aas.xml
