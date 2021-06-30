@@ -23,22 +23,6 @@ namespace AasCore.Aas3.Package.Tests
         }
 
         [Test]
-        public void Test_that_assert_not_null_works()
-        {
-            var something = new byte[3];
-            Dbc.AssertIsNotNull(something);
-        }
-
-        [Test]
-        public void Test_the_exception_from_assert_not_null_with_null()
-        {
-            Assert.Catch<InvalidOperationException>(() =>
-            {
-                Dbc.AssertIsNotNull(null);
-            });
-        }
-
-        [Test]
         public void Test_that_ensure_doesnt_throw_if_ok()
         {
             Dbc.Ensure(true, "something");

@@ -80,7 +80,10 @@ namespace AasCore.Aas3.Package
                 throw MaybeException;
             }
 
-            Dbc.AssertIsNotNull(_package);
+            if (_package == null)
+            {
+                throw new InvalidOperationException("Unexpected null _package");
+            }
 
             return _package;
         }
@@ -326,7 +329,11 @@ namespace AasCore.Aas3.Package
                 result = new PackageOrException<PackageRead>(null, exception);
             }
 
-            Dbc.AssertIsNotNull(result);
+            if (result == null)
+            {
+                throw new InvalidOperationException("Unexpected null result");
+            }
+
 
             // Dispose the toBeDisposed pre-emptively here so that they do not have to
             // linger unnecessarily in the resulting object.
@@ -395,7 +402,10 @@ namespace AasCore.Aas3.Package
                 result = new PackageOrException<PackageRead>(null, exception);
             }
 
-            Dbc.AssertIsNotNull(result);
+            if (result == null)
+            {
+                throw new InvalidOperationException("Unexpected null result");
+            }
 
             // Dispose the toBeDisposed pre-emptively here so that they do not have to
             // linger unnecessarily in the resulting object.
@@ -474,7 +484,10 @@ namespace AasCore.Aas3.Package
                 result = new PackageOrException<PackageReadWrite>(null, exception);
             }
 
-            Dbc.AssertIsNotNull(result);
+            if (result == null)
+            {
+                throw new InvalidOperationException("Unexpected null result");
+            }
 
             // Dispose the toBeDisposed pre-emptively here so that they do not have to
             // linger unnecessarily in the resulting object.
@@ -547,7 +560,10 @@ namespace AasCore.Aas3.Package
                 result = new PackageOrException<PackageReadWrite>(null, exception);
             }
 
-            Dbc.AssertIsNotNull(result);
+            if (result == null)
+            {
+                throw new InvalidOperationException("Unexpected null result");
+            }
 
             // Dispose the toBeDisposed pre-emptively here so that they do not have to
             // linger unnecessarily in the resulting object.
@@ -1232,8 +1248,9 @@ namespace AasCore.Aas3.Package
 
 #if DEBUGSLOW
 
-            var oldSpecUriSet = Specs()
-                .Select(spec => spec.Uri.ToString()).ToHashSet();
+            var oldSpecUriSet = new HashSet<string>(
+                Specs()
+                .Select(spec => spec.Uri.ToString()));
 
 #endif
 
@@ -1275,8 +1292,8 @@ namespace AasCore.Aas3.Package
                     Specs().All(aSpec => aSpec.Uri != uri),
                     "The spec must not be listed in the Specs().");
 
-                var specUriSet = Specs()
-                    .Select(spec => spec.Uri.ToString()).ToHashSet();
+                var specUriSet = new HashSet<string>(Specs()
+                    .Select(spec => spec.Uri.ToString()));
 
                 Dbc.Ensure(
                     specUriSet.Count == oldSpecUriSet.Count - 1
@@ -1308,8 +1325,8 @@ namespace AasCore.Aas3.Package
 
 #if DEBUGSLOW
 
-            var oldSupplUriSet = Supplementaries()
-                .Select(suppl => suppl.Uri.ToString()).ToHashSet();
+            var oldSupplUriSet = new HashSet<string>(Supplementaries()
+                .Select(suppl => suppl.Uri.ToString()));
 
 #endif
 
@@ -1351,8 +1368,8 @@ namespace AasCore.Aas3.Package
                     "The supplementary file must not be " +
                     "listed in the Supplementaries().");
 
-                var supplUriSet = Supplementaries()
-                    .Select(suppl => suppl.Uri.ToString()).ToHashSet();
+                var supplUriSet = new HashSet<string>(Supplementaries()
+                    .Select(suppl => suppl.Uri.ToString()));
 
                 Dbc.Ensure(
                     supplUriSet.Count == oldSupplUriSet.Count - 1
