@@ -1,2 +1,11 @@
-Content Type | URI
--------------+----
+Supplementary Content Type | Supplementary URI                                                                 | Spec Content Type | Spec URI
+---------------------------+-----------------------------------------------------------------------------------+-------------------+--------------------------------------------------------------------------------------------
+image/png                  | /aasx/Nameplate/marking_ce.png                                                    | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+image/png                  | /aasx/Identification/M262.PNG                                                     | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+image/png                  | /aasx/Identification/logo_SE.png                                                  | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+application/pdf            | /aasx/Document/MOD2019002.00_DeclarationOfConformity_TM262_TMS_TM3XHSC_signed.pdf | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+image/png                  | /aasx/Nameplate/UL.png                                                            | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+application/pdf            | /aasx/Document/M262_20190513_Notice_of_Authorization.pdf                          | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+image/jpeg                 | /aasx/Identification/QRCode_M262.JPG                                              | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+image/png                  | /aasx/Nameplate/Marking_WEEE.png                                                  | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+application/pdf            | /aasx/Document/IS_M262.pdf                                                        | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml

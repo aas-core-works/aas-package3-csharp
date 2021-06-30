@@ -1,2 +1,12 @@
-Content Type | URI
--------------+----
+Supplementary Content Type | Supplementary URI                                                        | Spec Content Type | Spec URI
+---------------------------+--------------------------------------------------------------------------+-------------------+--------------------------------------------------------------------------------------------
+image/png                  | /aasx/Nameplate/marking_ce.png                                           | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+application/pdf            | /aasx/Document/Lohr_Bosch-Rexroth-AG_ISO_14001_BR_Matrix_en_20090723.pdf | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+image/png                  | /aasx/Identification/logo.png                                            | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+application/pdf            | /aasx/Document/EU_Declaration_of_Conformity.pdf                          | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+application/pdf            | /aasx/Document/Anleitung-R320103187_2006_09_2.pdf                        | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+application/pdf            | /aasx/Document/Katalog-DE_R999000480_2015-12_PSK_24_10_2018_Gy.pdf       | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+application/pdf            | /aasx/Document/Katalog-EN_R999000500_2015-12_PSK_24_10_2018_Gy.pdf       | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+application/pdf            | /aasx/Document/R320103141_2015_06_Einbauerklaerung_einachsig.pdf         | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+application/pdf            | /aasx/Document/R320103152_2015_01_DE_Safety_LS_Media_22_01_2015.pdf      | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+application/pdf            | /aasx/Document/R320103152_2015_01_EN_Safety_LS_22_01_2015_web.pdf        | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml

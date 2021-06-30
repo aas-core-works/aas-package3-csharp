@@ -1,2 +1,37 @@
-Content Type | URI
--------------+----
+Supplementary Content Type | Supplementary URI                                           | Spec Content Type | Spec URI
+---------------------------+-------------------------------------------------------------+-------------------+----------------------------------------------------------------
+image/png                  | /aasx/nameplate/marking__atex.png                           | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+image/png                  | /aasx/VDI2770/marking_ce_5fa922fa.png                       | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+image/png                  | /aasx/VDI2770/marking_rcm_d9effd37.png                      | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+image/png                  | /aasx/VDI2770/thumbnail_3e8440cf.png                        | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+image/png                  | /aasx/VDI2770/AssetQrCode_c67e237a.png                      | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+image/png                  | /aasx/VDI2770/FestoLogo_fd4760bc.png                        | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+image/png                  | /aasx/VDI2770/FestoLogo_ba43692f.png                        | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+image/png                  | /aasx/VDI2770/thumbnail_996abd44.png                        | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+image/jpeg                 | /aasx/VDI2770/00991433_6522fecf.jpg                         | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+image/png                  | /aasx/VDI2770/thumbnail_181f37c2.png                        | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+image/png                  | /aasx/VDI2770/cULUS_717e0f15.png                            | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+image/png                  | /aasx/VDI2770/thumbnail_e19ef8d6.png                        | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+image/png                  | /aasx/VDI2770/thumbnail_91e1ec5c.png                        | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+image/png                  | /aasx/VDI2770/00991153_c8b39ba3.png                         | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+image/png                  | /aasx/VDI2770/thumbnail_b5448fbf.png                        | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+image/png                  | /aasx/VDI2770/00991153_1ca23d68.png                         | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+image/png                  | /aasx/VDI2770/thumbnail_594ff872.png                        | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+image/png                  | /aasx/VDI2770/00991153_c14f51f5.png                         | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+application/pdf            | /aasx/VDI2770/574337_SMT-8M-A-PS-24V-E-03-M12_18cc19e9.pdf  | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+application/step           | /aasx/VDI2770/574337_SMT-8M-A-PS-24V-E-03-M12_4d610db1.stp  | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+text/plain                 | /aasx/VDI2770/FES.574337_d361125a.edz                       | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+application/pdf            | /aasx/VDI2770/SMT-8M-A_2017-11d_8082624g3_15edb0c3.pdf      | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+application/pdf            | /aasx/VDI2770/EU-LANGUAGES_2016-06c_8062970g1_a8f4a750.pdf  | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+application/pdf            | /aasx/VDI2770/Techinfo_en_41658035.pdf                      | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+application/pdf            | /aasx/VDI2770/smx8_de_9567a097.pdf                          | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+application/pdf            | /aasx/VDI2770/smx8_en_7425f6c4.pdf                          | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+application/pdf            | /aasx/VDI2770/Entsorgungshinweise_de_ef974885.pdf           | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+application/pdf            | /aasx/VDI2770/Waste_Management_Instructions_en_05b26eb6.pdf | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+application/pdf            | /aasx/VDI2770/Einsatz_072011_de_a3988c74.pdf                | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+application/pdf            | /aasx/VDI2770/Use_82011_en_df930930.pdf                     | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+application/pdf            | /aasx/VDI2770/Ersatzteilfinder_8dda6155.pdf                 | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+application/pdf            | /aasx/VDI2770/Spare_parts_catalogue_37e1de33.pdf            | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+application/pdf            | /aasx/VDI2770/EMC_Checklist_aa008d14.pdf                    | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+application/pdf            | /aasx/VDI2770/5436023_-_2_bdbee314.pdf                      | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml
+application/pdf            | /aasx/VDI2770/5468038_-_5_8608d292.pdf                      | text/xml          | /aasx/pk_festo_com_3S7PN93V62Q/pk_festo_com_3S7PN93V62Q.aas.xml

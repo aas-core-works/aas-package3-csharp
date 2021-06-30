@@ -1,2 +1,10 @@
-Content Type | URI
--------------+----
+Supplementary Content Type | Supplementary URI                                                 | Spec Content Type | Spec URI
+---------------------------+-------------------------------------------------------------------+-------------------+--------------------------------------------------------------------------------------------------------------
+image/png                  | /aasx/Nameplate/marking_ce.png                                    | text/xml          | /aasx/www_company_com_demo_aas_1234554842136874684321/www_company_com_demo_aas_1234554842136874684321.aas.xml
+image/jpeg                 | /aasx/Identification/sie-logo-layer-petrol-rgb.jpg                | text/xml          | /aasx/www_company_com_demo_aas_1234554842136874684321/www_company_com_demo_aas_1234554842136874684321.aas.xml
+image/jpeg                 | /aasx/Nameplate/marking_UL.jpg                                    | text/xml          | /aasx/www_company_com_demo_aas_1234554842136874684321/www_company_com_demo_aas_1234554842136874684321.aas.xml
+text/plain                 | /aasx/Identification/dmc.gif                                      | text/xml          | /aasx/www_company_com_demo_aas_1234554842136874684321/www_company_com_demo_aas_1234554842136874684321.aas.xml
+application/pdf            | /aasx/Document/106_CE_S7_1500_general_A3_10_2019_d_e.pdf          | text/xml          | /aasx/www_company_com_demo_aas_1234554842136874684321/www_company_com_demo_aas_1234554842136874684321.aas.xml
+application/pdf            | /aasx/Document/s71200_1500_f_cpus_product_information_x_de-DE.pdf | text/xml          | /aasx/www_company_com_demo_aas_1234554842136874684321/www_company_com_demo_aas_1234554842136874684321.aas.xml
+application/pdf            | /aasx/Document/S7-1500_Vol.9_Sec.1_E222109.pdf                    | text/xml          | /aasx/www_company_com_demo_aas_1234554842136874684321/www_company_com_demo_aas_1234554842136874684321.aas.xml
+application/pdf            | /aasx/Document/ProgFAILenUS_en-US.pdf                             | text/xml          | /aasx/www_company_com_demo_aas_1234554842136874684321/www_company_com_demo_aas_1234554842136874684321.aas.xml

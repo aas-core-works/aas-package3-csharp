@@ -43,20 +43,27 @@ or to get the package (which will throw the exception for you, if any):
 var pkg = pkgOrErr.Must();
 ```
 
-## Writing Specs
+## Putting `Part`'s together
 
-Whether you want to over-write existing specs or add a new spec, call `PutSpec`:
+The [Open Packaging Conventions] format is based on parts and relationships.
+The parts represent the pieces of data, while relationships model how these pieces relate to each other. 
+
+[Open Packaging Conventions]: https://en.wikipedia.org/wiki/Open_Packaging_Conventions
+
+We wanted to encapsulate as much as possible the underlying format, but we decided to keep the structure of [Open Packaging Conventions].
+This means that you need to first write a part, and then establish its relation to other parts (or package itself).
+
+The parts are put to the package using `PutPart` (see [PackageReadWrite] class).
+
+[PackageReadWrite]: ../api/AasCore.Aas3.Package.PackageReadWrite.yml
+
+For example:
 
 ```csharp
-using Uri = System.Uri;
-using UriKind = System.UriKind;
-
-byte[] content = ...;
-
-pkg.PutSpec(
-    new Uri("/aasx/data.json", UriKind.Relative),
+var part = pkg.PutPart(
+    new Uri("/aasx/some-company/data.json", UriKind.Relative),
     "text/json",
-    content);
+    Encoding.UTF8.GetBytes("{}");
 ```
 
 You can also use streams:
@@ -68,77 +75,78 @@ using UriKind = System.UriKind;
 
 using Stream stream = ...;
 
-pkg.PutSpec(
+pkg.PutPart(
     new Uri("/aasx/data.json", UriKind.Relative),
     "text/json",
     stream);
 ```
 
-## Writing Supplementary Parts
+The `PutPart` function returns a `Part` so that you can easily chain it with other functions (see below for examples).
 
-Similar to how you write specs, you write supplementary parts with `PutSupplementary`:
+#### Overwriting & Deleting
 
+If a part already exists at the given URI, it is silently overwritten.
+Therefore you need to be careful when you overwrite a part and make sure that the relationships are updated accordingly.
+
+This also applies when deleting the parts.
+Since it would be unfortunately inefficient to enforce consistency, the library indeed allows you make your package inconsistent (where relationships point to dangling parts).
+
+### Specs
+
+You establish a part as a spec by calling `MakeSpec` (from [PackageReadWrite] class):
+ 
 ```csharp
-using Uri = System.Uri;
-using UriKind = System.UriKind;
-
-byte[] content = ...;
-
-pkg.PutSupplementary(
-    new Uri("/aasx/suppl/something.pdf", UriKind.Relative),
-    "application/pdf",
-    content);
+var part = pkg.PutPart(
+    new Uri("/aasx/some-company/data.json", UriKind.Relative),
+    "text/json",
+    Encoding.UTF8.GetBytes("{}"));
+ 
+pkg.MakeSpec(part);
 ```
 
-Streams can also be written:
+Usually you want to chain the calls:
 
 ```csharp
-using Stream = System.IO.Stream;
-using Uri = System.Uri;
-using UriKind = System.UriKind;
-
-Stream stream = ...;
-
-pkg.PutSupplementary(
-    new Uri("/aasx/suppl/something.pdf", UriKind.Relative),
-    "application/pdf",
-    stream);
+pkg.MakeSpec(
+    pkg.PutPart(
+        new Uri("/aasx/some-company/data.json", UriKind.Relative),
+        "text/json",
+        Encoding.UTF8.GetBytes("{}")));
 ```
 
-## Writing a Thumbnail
+## Supplementary Parts
+
+Similar to how you make parts into specs, you relate supplementary parts to the spec parts with `RelateSupplementaryToSpec`:
+
+```csharp
+Part spec = pkg.PutPart(...);
+Part supplementary = pkg.PutPart(...); 
+
+pkg.RelateSupplementaryToSpec(supplementary, spec);
+```
+
+The relation can also be undone:
+
+```csharp
+pkg.UnrelateSupplementaryFromSpec(supplementary, spec);
+````
+
+## Thumbnail
 
 There can be only one thumbnail per package.
-You can add a thumbnail (or overwrite it if it already exists) with:
+
+Similar to specs, you make a thumbnail relation from a package to a part:
 
 ```csharp
-using Uri = System.Uri;
-using UriKind = System.UriKind;
+var thumbnail = pkg.PutPart(...);
 
-byte[] content = ...;
-
-pkg.PutThumbnail(
-    new Uri("/thumbnail.png", UriKind.Relative),
-    "image/png",
-    content,
-    true);
+pkg.MakeThumbnail(thumbnail);
 ```
 
-The last parameter (here set to `true`) determines whether the part of the previous thumbnail should be deleted (or kept in the package).
-
-You can also write a thumbnail from a stream:
+If you want to undo the thumbnail, call:
 
 ```csharp
-using Stream = System.IO.Stream;
-using Uri = System.Uri;
-using UriKind = System.UriKind;
-
-Stream stream = ...;
-
-pkg.PutThumbnail(
-    new Uri("/thumbnail.png", UriKind.Relative),
-    "image/png",
-    stream,
-    true);
+pkg.UnmakeThumbnail();
 ```
 
 ## Flushing
@@ -155,7 +163,7 @@ To flush:
 pkg.Flush();
 ```
 
-## Conflicts
+## Concurrency
 
 Please be careful if you read parts while you are writing.
 The library is **NOT** thread-safe, and you need to take care of locking issues yourself.
@@ -168,7 +176,9 @@ var specsByContentType = pkg.SpecsByContentType();
 
 foreach(var (contentType, specs) in specsByContentType)
 {
-    pkg.PutSpec(...);
+    // PutPart with a different content type
+    pkg.PutPart(...);
+
     // specsByContentType is now stale and needs to be re-read.
 }
 ```

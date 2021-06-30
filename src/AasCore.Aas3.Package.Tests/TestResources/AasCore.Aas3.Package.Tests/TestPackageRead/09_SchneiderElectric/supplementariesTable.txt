@@ -1,2 +1,12 @@
-Content Type | URI
--------------+----
+Supplementary Content Type | Supplementary URI                                           | Spec Content Type | Spec URI
+---------------------------+-------------------------------------------------------------+-------------------+--------------------------------------------------------------------------------------------
+image/png                  | /aasx/Nameplate/marking_ce.png                              | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+image/png                  | /aasx/Identification/logo_SE.png                            | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+image/png                  | /aasx/Nameplate/UL.png                                      | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+application/pdf            | /aasx/Document/PROGRAMMABLE_CONTROLLERS___UL_Product_iQ.pdf | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+application/pdf            | /aasx/Document/Instal_EN.pdf                                | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+application/pdf            | /aasx/Document/Instal_DE.pdf                                | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+image/png                  | /aasx/Nameplate/Marking_WEEE.png                            | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+image/png                  | /aasx/Identification/TPRVM001.PNG                           | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+application/pdf            | /aasx/Document/CE_TPRVM_SC19062503.pdf                      | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+image/jpeg                 | /aasx/Identification/QRCode_Tesys_Island_Power.jpg          | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml

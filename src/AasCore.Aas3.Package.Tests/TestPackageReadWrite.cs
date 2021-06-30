@@ -8,12 +8,11 @@ using FileMode = System.IO.FileMode;
 using InvalidDataException = System.IO.InvalidDataException;
 using MemoryStream = System.IO.MemoryStream;
 using Path = System.IO.Path;
-using SystemPackage = System.IO.Packaging.Package;  // renamed
+using SystemPackage = System.IO.Packaging.Package; // renamed
 using Uri = System.Uri;
 using UriKind = System.UriKind;
-
-using System.Linq;  // can't alias
-using NUnit.Framework;  // can't alias
+using System.Linq; // can't alias
+using NUnit.Framework; // can't alias
 
 namespace AasCore.Aas3.Package.Tests
 {
@@ -31,10 +30,13 @@ namespace AasCore.Aas3.Package.Tests
 
             {
                 using var pkg = packaging.Create(pth);
-                pkg.PutSpec(
-                    new Uri("/aasx/some-company/data.txt", UriKind.Relative),
-                    "text/plain",
-                    originalContent);
+
+                pkg.MakeSpec(
+                    pkg.PutPart(
+                        new Uri("/aasx/some-company/data.txt", UriKind.Relative),
+                        "text/plain",
+                        originalContent));
+
                 pkg.Flush();
             }
 
@@ -49,7 +51,8 @@ namespace AasCore.Aas3.Package.Tests
         [Test]
         public void Test_adding_supplementary_file_to_new_package()
         {
-            var originalContent = Encoding.UTF8.GetBytes("some content");
+            var supplContent = Encoding.UTF8.GetBytes(
+                "some supplementary content");
 
             using TemporaryDirectory tmpdir = new TemporaryDirectory();
             string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
@@ -58,18 +61,35 @@ namespace AasCore.Aas3.Package.Tests
 
             {
                 using var pkg = packaging.Create(pth);
-                pkg.PutSupplementary(
-                    new Uri("/aasx/some-company/suppl.txt", UriKind.Relative),
-                    "text/plain",
-                    originalContent);
+
+                var spec = pkg.MakeSpec(
+                    pkg.PutPart(
+                        new Uri("/aasx/some-company/data.txt", UriKind.Relative),
+                        "text/plain",
+                        Encoding.UTF8.GetBytes("some spec content")));
+
+                pkg.RelateSupplementaryToSpec(
+                    pkg.PutPart(
+                        new Uri(
+                            "/aasx/some-company/suppl.txt", UriKind.Relative),
+                        "text/plain",
+                        supplContent),
+                    spec);
+
                 pkg.Flush();
             }
 
             {
                 using var pkgOrErr = packaging.OpenRead(pth);
                 var pkg = pkgOrErr.Must();
-                var gotContent = pkg.Supplementaries().First().ReadAllBytes();
-                Assert.That(gotContent, Is.EqualTo(originalContent));
+
+                var gotContent = pkg
+                    .SupplementaryRelationships()
+                    .First()
+                    .Supplementary
+                    .ReadAllBytes();
+
+                Assert.That(gotContent, Is.EqualTo(supplContent));
             }
         }
 
@@ -85,11 +105,11 @@ namespace AasCore.Aas3.Package.Tests
 
             {
                 using var pkg = packaging.Create(pth);
-                pkg.PutThumbnail(
-                    new Uri("/some-thumbnail.txt", UriKind.Relative),
-                    "text/plain",
-                    originalContent,
-                    true);
+                pkg.MakeThumbnail(
+                    pkg.PutPart(
+                        new Uri("/some-thumbnail.txt", UriKind.Relative),
+                        "text/plain",
+                        originalContent));
                 pkg.Flush();
             }
 
@@ -112,11 +132,11 @@ namespace AasCore.Aas3.Package.Tests
             MemoryStream stream = new MemoryStream();
             {
                 using var pkg = packaging.Create(stream);
-                pkg.PutThumbnail(
-                    new Uri("/some-thumbnail.txt", UriKind.Relative),
-                    "text/plain",
-                    originalContent,
-                    true);
+                pkg.MakeThumbnail(
+                    pkg.PutPart(
+                        new Uri("/some-thumbnail.txt", UriKind.Relative),
+                        "text/plain",
+                        originalContent));
                 pkg.Flush();
             }
 
@@ -247,11 +267,11 @@ namespace AasCore.Aas3.Package.Tests
             // Create
             {
                 using var pkg = packaging.Create(stream);
-                pkg.PutThumbnail(
-                    uri,
-                    "text/plain",
-                    originalContent,
-                    true);
+                pkg.MakeThumbnail(
+                    pkg.PutPart(
+                        uri,
+                        "text/plain",
+                        originalContent));
                 pkg.Flush();
             }
 
@@ -261,11 +281,11 @@ namespace AasCore.Aas3.Package.Tests
             {
                 using var pkgOrErr = packaging.OpenReadWrite(stream);
                 var pkg = pkgOrErr.Must();
-                pkg.PutThumbnail(
-                    uri,
-                    "text/plain",
-                    newContent,
-                    true);
+                pkg.MakeThumbnail(
+                    pkg.PutPart(
+                        uri,
+                        "text/plain",
+                        newContent));
             }
 
             // Read
@@ -287,24 +307,28 @@ namespace AasCore.Aas3.Package.Tests
             using TemporaryDirectory tmpdir = new TemporaryDirectory();
             string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
 
+            var uri = new Uri("/aasx/some-company/data.txt", UriKind.Relative);
+
             Packaging packaging = new Packaging();
 
             {
                 using var pkg = packaging.Create(pth);
-                pkg.PutSpec(
-                    new Uri("/aasx/some-company/data.txt", UriKind.Relative),
-                    "text/plain",
-                    originalContent);
+                pkg.MakeSpec(
+                    pkg.PutPart(
+                        uri,
+                        "text/plain",
+                        originalContent));
                 pkg.Flush();
             }
 
             {
                 using var pkgOrErr = packaging.OpenReadWrite(pth);
                 var pkg = pkgOrErr.Must();
-                pkg.PutSpec(
-                    new Uri("/aasx/some-company/data.txt", UriKind.Relative),
-                    "text/plain",
-                    newContent);
+                pkg.MakeSpec(
+                    pkg.PutPart(
+                        uri,
+                        "text/plain",
+                        newContent));
                 pkg.Flush();
             }
 
@@ -333,14 +357,23 @@ namespace AasCore.Aas3.Package.Tests
 
             {
                 using var pkg = packaging.Create(pth);
-                pkg.PutSupplementary(uri, "text/plain", originalContent);
+
+                var spec = pkg.MakeSpec(
+                    pkg.PutPart(
+                        new Uri("/aasx/some-company/data.txt", UriKind.Relative),
+                        "text/plain",
+                        Encoding.UTF8.GetBytes("some spec content")));
+
+                pkg.RelateSupplementaryToSpec(
+                    pkg.PutPart(uri, "text/plain", originalContent),
+                    spec);
                 pkg.Flush();
             }
 
             {
                 using var pkgOrErr = packaging.OpenReadWrite(pth);
                 var pkg = pkgOrErr.Must();
-                pkg.PutSupplementary(uri, "text/plain", newContent);
+                pkg.PutPart(uri, "text/plain", newContent);
                 pkg.Flush();
             }
 
@@ -353,81 +386,10 @@ namespace AasCore.Aas3.Package.Tests
                 {
                     throw new AssertionException("Unexpected null content");
                 }
+
                 Assert.AreEqual(
                     Encoding.UTF8.GetString(newContent),
                     Encoding.UTF8.GetString(content));
-            }
-        }
-
-        [Test]
-        public void Test_the_exception_when_overwriting_a_spec_as_non_spec()
-        {
-            using TemporaryDirectory tmpdir = new TemporaryDirectory();
-            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
-
-            Packaging packaging = new Packaging();
-
-            var uri = new Uri("/aasx/suppl/data.txt", UriKind.Relative);
-
-            {
-                using var pkg = packaging.Create(pth);
-
-                // We put a supplementary here.
-                pkg.PutSupplementary(
-                    uri,
-                    "text/plain",
-                    Encoding.UTF8.GetBytes("some old content"));
-                pkg.Flush();
-            }
-
-            {
-                using var pkgOrErr = packaging.OpenReadWrite(pth);
-                var pkg = pkgOrErr.Must();
-
-                // We try to overwrite a supplementary as a spec here.
-                Assert.Catch<InvalidDataException>(() =>
-                {
-                    pkg.PutSpec(
-                        uri,
-                        "text/plain",
-                        Encoding.UTF8.GetBytes("new content"));
-                });
-            }
-        }
-
-        [Test]
-        public void Test_the_exception_when_overwriting_a_suppl_as_non_suppl()
-        {
-            using TemporaryDirectory tmpdir = new TemporaryDirectory();
-            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
-
-            Packaging packaging = new Packaging();
-
-            var uri = new Uri("/aasx/data.txt", UriKind.Relative);
-
-            {
-                using var pkg = packaging.Create(pth);
-
-                // We put a spec here.
-                pkg.PutSpec(
-                    uri,
-                    "text/plain",
-                    Encoding.UTF8.GetBytes("some old content"));
-                pkg.Flush();
-            }
-
-            {
-                using var pkgOrErr = packaging.OpenReadWrite(pth);
-                var pkg = pkgOrErr.Must();
-
-                // We try to overwrite a spec as a supplementary here.
-                Assert.Catch<InvalidDataException>(() =>
-                {
-                    pkg.PutSupplementary(
-                        uri,
-                        "text/plain",
-                        Encoding.UTF8.GetBytes("new content"));
-                });
             }
         }
 
@@ -442,11 +404,11 @@ namespace AasCore.Aas3.Package.Tests
             // Initialize
             {
                 using var pkg = packaging.Create(pth);
-                pkg.PutThumbnail(
-                    new Uri("/some-thumbnail.txt", UriKind.Relative),
-                    "text/plain",
-                    Encoding.UTF8.GetBytes("some content"),
-                    true);
+                pkg.MakeThumbnail(
+                    pkg.PutPart(
+                        new Uri("/some-thumbnail.txt", UriKind.Relative),
+                        "text/plain",
+                        Encoding.UTF8.GetBytes("some content")));
                 pkg.Flush();
             }
 
@@ -457,11 +419,21 @@ namespace AasCore.Aas3.Package.Tests
                 using var pkgOrErr = packaging.OpenReadWrite(pth);
                 var pkg = pkgOrErr.Must();
 
-                pkg.PutThumbnail(
-                    new Uri("/another-thumbnail.txt", UriKind.Relative),
-                    "text/plain",
-                    newContent,
-                    true);
+                var oldThumbnail = pkg.Thumbnail();
+                if (oldThumbnail == null)
+                {
+                    throw new AssertionException(
+                        $"Unexpected {nameof(oldThumbnail)}");
+                }
+
+                pkg.UnmakeThumbnail();
+                pkg.RemovePart(oldThumbnail);
+
+                pkg.MakeThumbnail(
+                    pkg.PutPart(
+                        new Uri("/another-thumbnail.txt", UriKind.Relative),
+                        "text/plain",
+                        newContent));
                 pkg.Flush();
             }
 
@@ -489,11 +461,11 @@ namespace AasCore.Aas3.Package.Tests
             // Initialize
             {
                 using var pkg = packaging.Create(pth);
-                pkg.PutThumbnail(
-                    originalUri,
-                    "text/plain",
-                    originalContent,
-                    true);
+                pkg.MakeThumbnail(
+                    pkg.PutPart(
+                        originalUri,
+                        "text/plain",
+                        originalContent));
                 pkg.Flush();
             }
 
@@ -504,11 +476,11 @@ namespace AasCore.Aas3.Package.Tests
                 using var pkgOrErr = packaging.OpenReadWrite(pth);
                 var pkg = pkgOrErr.Must();
 
-                pkg.PutThumbnail(
-                    new Uri("/another-thumbnail.txt", UriKind.Relative),
-                    "text/plain",
-                    newContent,
-                    false);
+                pkg.MakeThumbnail(
+                    pkg.PutPart(
+                        new Uri("/another-thumbnail.txt", UriKind.Relative),
+                        "text/plain",
+                        newContent));
                 pkg.Flush();
             }
 
@@ -525,213 +497,145 @@ namespace AasCore.Aas3.Package.Tests
             }
         }
 
-        [Test]
-        public void Test_the_exception_when_putting_a_thumb_on_a_non_thumb()
+        public class TestDelete
         {
-            using TemporaryDirectory tmpdir = new TemporaryDirectory();
-            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
-
-            Packaging packaging = new Packaging();
-
-            var uri = new Uri("/aasx/suppl/data.txt", UriKind.Relative);
-
+            [Test]
+            public void Test_deleting_a_spec()
             {
-                using var pkg = packaging.Create(pth);
+                using TemporaryDirectory tmpdir = new TemporaryDirectory();
+                string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
 
-                // We put a supplementary here.
-                pkg.PutSupplementary(
-                    uri,
-                    "text/plain",
-                    Encoding.UTF8.GetBytes("some old content"));
-                pkg.Flush();
-            }
+                Packaging packaging = new Packaging();
 
-            {
-                using var pkgOrErr = packaging.OpenReadWrite(pth);
-                var pkg = pkgOrErr.Must();
+                var uri = new Uri("/aasx/some-company/data.txt", UriKind.Relative);
 
-                // We try to overwrite a supplementary as a thumbnail here.
-                Assert.Catch<InvalidDataException>(() =>
+                // Add another spec just to make sure that not *all* specs are deleted
+                var anotherUri = new Uri(
+                    "/aasx/some-company/anotherData.txt", UriKind.Relative);
+
                 {
-                    pkg.PutThumbnail(
-                        uri,
-                        "text/plain",
-                        Encoding.UTF8.GetBytes("new content"),
-                        true);
-                });
-            }
-        }
-    }
+                    using var pkg = packaging.Create(pth);
+                    pkg.MakeSpec(
+                        pkg.PutPart(
+                            uri,
+                            "text/plain",
+                            Encoding.UTF8.GetBytes("some content")));
 
-    public class TestDelete
-    {
-        [Test]
-        public void Test_deleting_a_spec()
-        {
-            using TemporaryDirectory tmpdir = new TemporaryDirectory();
-            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
+                    pkg.MakeSpec(
+                        pkg.PutPart(
+                            anotherUri,
+                            "text/plain",
+                            Encoding.UTF8.GetBytes("another content")));
 
-            Packaging packaging = new Packaging();
+                    pkg.Flush();
+                }
 
-            var uri = new Uri("/aasx/some-company/data.txt", UriKind.Relative);
-
-            // Add another spec just to make sure that not *all* specs are deleted
-            var anotherUri = new Uri(
-                "/aasx/some-company/anotherData.txt", UriKind.Relative);
-
-            {
-                using var pkg = packaging.Create(pth);
-                pkg.PutSpec(
-                    uri,
-                    "text/plain",
-                    Encoding.UTF8.GetBytes("some content"));
-
-                pkg.PutSpec(
-                    anotherUri,
-                    "text/plain",
-                    Encoding.UTF8.GetBytes("another content"));
-
-                pkg.Flush();
-            }
-
-            {
-                using var pkgOrErr = packaging.OpenReadWrite(pth);
-                var pkg = pkgOrErr.Must();
-                pkg.RemoveSpec(uri);
-                Assert.IsNull(pkg.FindPart(uri));
-                ((System.IDisposable)pkgOrErr).Dispose();
-            }
-        }
-
-
-        [Test]
-        public void Test_the_exception_when_deleting_a_non_spec_as_spec()
-        {
-            using TemporaryDirectory tmpdir = new TemporaryDirectory();
-            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
-
-            Packaging packaging = new Packaging();
-
-            var uri = new Uri("/this-is-not-a/spec.txt", UriKind.Relative);
-
-            {
-                using var pkg = packaging.Create(pth);
-
-                // We put a supplementary here instead of spec.
-                pkg.PutSupplementary(
-                    uri,
-                    "text/plain",
-                    Encoding.UTF8.GetBytes("some content"));
-                pkg.Flush();
-            }
-
-            {
-                using var pkgOrErr = packaging.OpenReadWrite(pth);
-                var pkg = pkgOrErr.Must();
-
-                Assert.Catch<InvalidDataException>(() =>
                 {
-                    pkg.RemoveSpec(uri);
-                });
-            }
-        }
+                    using var pkgOrErr = packaging.OpenReadWrite(pth);
+                    var pkg = pkgOrErr.Must();
 
-        [Test]
-        public void Test_the_exception_when_deleting_a_non_suppl_as_suppl()
-        {
-            using TemporaryDirectory tmpdir = new TemporaryDirectory();
-            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
+                    var part = pkg.MustPart(uri);
 
-            Packaging packaging = new Packaging();
+                    pkg.RemovePart(pkg.UnmakeSpec(part));
 
-            var uri = new Uri(
-                "/this-is-not-a/supplementary.txt", UriKind.Relative);
-
-            {
-                using var pkg = packaging.Create(pth);
-
-                // We put a spec here instead of a supplementary.
-                pkg.PutSpec(
-                    uri,
-                    "text/plain",
-                    Encoding.UTF8.GetBytes("some content"));
-                pkg.Flush();
+                    Assert.IsNull(pkg.FindPart(uri));
+                    ((System.IDisposable)pkgOrErr).Dispose();
+                }
             }
 
+            [Test]
+            public void Test_deleting_a_supplementary()
             {
-                using var pkgOrErr = packaging.OpenReadWrite(pth);
-                var pkg = pkgOrErr.Must();
+                using TemporaryDirectory tmpdir = new TemporaryDirectory();
+                string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
 
-                Assert.Catch<InvalidDataException>(() =>
+                Packaging packaging = new Packaging();
+
+                var uri = new Uri("/aasx/some-company/suppl.txt", UriKind.Relative);
+                var uriSpec = new Uri("/aasx/some-company/data.txt", UriKind.Relative);
+
+                // Add another supplementary to make sure that only *one* supplementary
+                // is deleted
+                var anotherUri = new Uri(
+                    "/aasx/some-company/suppl1.txt", UriKind.Relative);
+
                 {
-                    pkg.RemoveSupplementary(uri);
-                });
-            }
-        }
+                    using var pkg = packaging.Create(pth);
 
-        [Test]
-        public void Test_deleting_a_supplementary()
-        {
-            using TemporaryDirectory tmpdir = new TemporaryDirectory();
-            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
+                    var spec = pkg.MakeSpec(
+                        pkg.PutPart(
+                            uriSpec,
+                            "text/plain",
+                            Encoding.UTF8.GetBytes("some spec content")));
 
-            Packaging packaging = new Packaging();
+                    pkg.RelateSupplementaryToSpec(
+                        pkg.PutPart(
+                            uri,
+                            "text/plain",
+                            Encoding.UTF8.GetBytes("some content")),
+                        spec);
 
-            var uri = new Uri("/aasx/some-company/suppl.txt", UriKind.Relative);
+                    pkg.RelateSupplementaryToSpec(
+                        pkg.PutPart(
+                            anotherUri,
+                            "text/plain",
+                            Encoding.UTF8.GetBytes("another content")),
+                        spec);
 
-            // Add another supplementary to make sure that only *one* supplementary
-            // is deleted
-            var anotherUri = new Uri(
-                "/aasx/some-company/suppl1.txt", UriKind.Relative);
 
-            {
-                using var pkg = packaging.Create(pth);
-                pkg.PutSupplementary(
-                    uri,
-                    "text/plain",
-                    Encoding.UTF8.GetBytes("some content"));
+                    pkg.Flush();
+                }
 
-                pkg.PutSupplementary(
-                    anotherUri,
-                    "text/plain",
-                    Encoding.UTF8.GetBytes("another content"));
+                {
+                    using var pkgOrErr = packaging.OpenReadWrite(pth);
+                    var pkg = pkgOrErr.Must();
 
-                pkg.Flush();
-            }
+                    var suppl = pkg.MustPart(uri);
+                    var spec = pkg.MustPart(uriSpec);
 
-            {
-                using var pkgOrErr = packaging.OpenReadWrite(pth);
-                var pkg = pkgOrErr.Must();
-                pkg.RemoveSupplementary(uri);
-                Assert.IsNull(pkg.FindPart(uri));
-            }
-        }
+                    pkg.UnrelateSupplementaryFromSpec(suppl, spec);
+                    pkg.RemovePart(suppl);
 
-        [Test]
-        public void Test_deleting_a_thumbnail()
-        {
-            using TemporaryDirectory tmpdir = new TemporaryDirectory();
-            string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
-
-            Packaging packaging = new Packaging();
-
-            var uri = new Uri("/aasx/some-company/thumb.txt", UriKind.Relative);
-
-            {
-                using var pkg = packaging.Create(pth);
-                pkg.PutThumbnail(
-                    uri,
-                    "text/plain",
-                    Encoding.UTF8.GetBytes("some content"),
-                    true);
-                pkg.Flush();
+                    Assert.IsNull(pkg.FindPart(uri));
+                }
             }
 
+            [Test]
+            public void Test_deleting_a_thumbnail()
             {
-                using var pkgOrErr = packaging.OpenReadWrite(pth);
-                var pkg = pkgOrErr.Must();
-                pkg.RemoveThumbnail();
-                Assert.IsNull(pkg.FindPart(uri));
+                using TemporaryDirectory tmpdir = new TemporaryDirectory();
+                string pth = Path.Combine(new[] { tmpdir.Path, "dummy.aasx" });
+
+                Packaging packaging = new Packaging();
+
+                var uri = new Uri("/aasx/some-company/thumb.txt", UriKind.Relative);
+
+                {
+                    using var pkg = packaging.Create(pth);
+                    pkg.MakeThumbnail(
+                        pkg.PutPart(
+                            uri,
+                            "text/plain",
+                            Encoding.UTF8.GetBytes("some content")));
+                    pkg.Flush();
+                }
+
+                {
+                    using var pkgOrErr = packaging.OpenReadWrite(pth);
+                    var pkg = pkgOrErr.Must();
+
+                    var thumbnail = pkg.Thumbnail();
+                    if (thumbnail == null)
+                    {
+                        throw new AssertionException(
+                            "Unexpected null thumbnail");
+                    }
+
+                    pkg.UnmakeThumbnail();
+                    pkg.RemovePart(thumbnail);
+
+                    Assert.IsNull(pkg.FindPart(uri));
+                }
             }
         }
     }

@@ -1,2 +1,14 @@
-Content Type | URI
--------------+----
+Supplementary Content Type | Supplementary URI                                              | Spec Content Type | Spec URI
+---------------------------+----------------------------------------------------------------+-------------------+--------------------------------------------------------------------------------------------
+image/png                  | /aasx/assetIdentification/logo.png                             | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+image/png                  | /aasx/Nameplate/marking_ce.png                                 | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+image/jpeg                 | /aasx/Nameplate/marking_cruus.jpg                              | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+image/jpeg                 | /aasx/Nameplate/marking_rcm.jpg                                | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+image/png                  | /aasx/assetIdentification/Hitachi_logo.png                     | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+application/pdf            | /aasx/Document/NJI-637A(X)_HX-CPU_Hardware_Rev_01.pdf          | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+application/pdf            | /aasx/Document/CE_DLR_EH-150_REV17.pdf                         | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+application/pdf            | /aasx/Document/NJI-638X_HX-CPU_Software.pdf                    | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+application/pdf            | /aasx/Document/CODESYS_Installation_und_Erste_Schritte_V11.pdf | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+application/pdf            | /aasx/Document/HX_Datasheet.pdf                                | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+text/plain                 | /aasx/Document/Device_files.zip                                | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml
+application/pdf            | /aasx/Document/NJI-638_HX-CPU_SoftwareJP.pdf                   | text/xml          | /aasx/wwwcompanycomidsaas9350_1162_7091_7335/wwwcompanycomidsaas9350_1162_7091_7335.aas.xml

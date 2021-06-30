@@ -1,2 +1,4 @@
-Content Type | URI
--------------+----
+Supplementary Content Type | Supplementary URI              | Spec Content Type | Spec URI
+---------------------------+--------------------------------+-------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+image/png                  | /aasx/Nameplate/marking_ce.png | text/xml          | /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml
+N/A                        | N/A                            | N/A               | The relationship from spec /aasx/wwwcompanycomidsaas2520_6010_8091_1277/wwwcompanycomidsaas2520_6010_8091_1277.aas.xml as supplementary material to /aasx/Nameplate/Logo_IO-link.jpg exists, but the underlying part does not.

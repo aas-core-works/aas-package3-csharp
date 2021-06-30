@@ -17,7 +17,7 @@ Aas-package3-csharp is a library for reading and writing packaged file format of
 
 The library is thoroughly tested and meant to be used in production.
 
-Both NET Standard 2.1 and NET 5 are supported.
+NET Standard 2.0, NET Standard 2.1 and NET 5 are supported.
 
 ## Documentation
 
@@ -40,21 +40,30 @@ var packaging = new AasCore.Aas3.Package.Packaging();
     byte[] supplementaryContent = ...;
 
     using var pkg = packaging.Create("/path/to/some/file");
-    pkg.PutSpec(
-        new Uri("/aasx/some-company/data.json", UriKind.Relative),
-        "text/json",
-        specContent);
+    var spec = pkg.MakeSpec(
+        pkg.PutPart(
+            new Uri(
+                "/aasx/some-company/data.json", 
+                UriKind.Relative),
+            "text/json",
+            specContent);
 
-    pkg.PutThumbnail(
-        new Uri("/some-thumbnail.png", UriKind.Relative),
-        "image/png",
-        thumbnailContent,
-        true);
+    pkg.MakeThumbnail(
+        pkg.PutPart(
+            new Uri(
+                "/some-thumbnail.png", 
+                UriKind.Relative),
+            "image/png",
+            thumbnailContent));
 
-    pkg.PutSupplementary(
-        new Uri("/aasx-suppl/some-company/some-manual.pdf", UriKind.Relative),
-        "application/pdf",
-        supplementaryContent);
+    pkg.RelateSupplementaryToSpec(
+        pkg.PutPart(
+            new Uri(
+                "/aasx-suppl/some-company/some-manual.pdf",
+                 UriKind.Relative),
+            "application/pdf",
+            supplementaryContent),
+        spec);
 
     pkg.Flush();
 }
@@ -87,12 +96,20 @@ byte[] supplementaryContent;
     specContent = spec.ReadAllBytes();
 
     // Read the thumbnail
-    thumbnailContent = pkg.Thumbnail().ReadAllBytes();
+    var thumbnail = pkg.Thumbnail();
+    if(thumbnail != null)
+    {
+        thumbnailContent = pkg.Thumbnail().ReadAllBytes();
+
+        // Do something with the thumbnail content
+    }
 
     // Read the supplementary file
     supplementaryContent = pkg
-        .FindPart(
-            new Uri("/aasx-suppl/some-company/some-manual.pdf", UriKind.Relative))
+        .MustPart(
+            new Uri(
+                "/aasx-suppl/some-company/some-manual.pdf",
+                 UriKind.Relative))
         .ReadAllBytes();
 }
 ```
