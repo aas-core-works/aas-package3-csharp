@@ -8,7 +8,7 @@
         <LangVersion>8</LangVersion>
 
         <PackageId>AasCore.Aas3.Package</PackageId>
-        <Version>1.0.0-pre6</Version>
+        <Version>1.0.0-pre7</Version>
         <Authors>Marko Ristin, Nico Braunisch, Robert Lehmann</Authors>
         <Description>
             A library for reading and writing packaged file format of an Asset Administration Shell (AAS) v3
