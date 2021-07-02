@@ -6,10 +6,16 @@
         <Configurations>Debug;Release;DebugSlow</Configurations>
         <Platforms>AnyCPU</Platforms>
         <LangVersion>8</LangVersion>
+
+        <PackageId>AasCore.Aas3.Package</PackageId>
+        <Version>1.0.0-pre6</Version>
+        <Authors>Marko Ristin, Nico Braunisch, Robert Lehmann</Authors>
+        <Description>
+            A library for reading and writing packaged file format of an Asset Administration Shell (AAS) v3
+        </Description>
     </PropertyGroup>
 
     <ItemGroup>
-      <!-- don't forget to update the .nuspec. -->
-      <PackageReference Include="System.IO.Packaging" Version="4.*" />
+      <PackageReference Include="System.IO.Packaging" version="4.*" />
     </ItemGroup>
 </Project>
