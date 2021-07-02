@@ -13,6 +13,12 @@
         <Description>
             A library for reading and writing packaged file format of an Asset Administration Shell (AAS) v3
         </Description>
+        <RepositoryUrl>https://github.com/aas-core-works/aas-package3-csharp.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <Copyright>Copyright (c) 2021 Marko Ristin, Nico Braunisch, Robert Lehmann</Copyright>
+        <PackageLicenseUrl>https://raw.githubusercontent.com/aas-core-works/aas-package3-csharp/main/LICENSE</PackageLicenseUrl>
+        <PackageProjectUrl>https://raw.githubusercontent.com/aas-core-works/aas-package3-csharp</PackageProjectUrl>
+        <PackageTags>aas;asset administration shell;iiot;industry internet of things;industrie 4.0;i4.0</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
