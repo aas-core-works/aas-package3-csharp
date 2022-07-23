@@ -22,15 +22,11 @@ jobs:
         run: |
           Write-Host "The repository is: ${env:REPOSITORY}"
 
-      - name: Install NET 5
+      - name: Install NET 6
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.202'
+          dotnet-version: '6.0.201'
 
-      - name: Install .NET 3 for the tools
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.100'
 
       - name: Install dotnet tools
         working-directory: src

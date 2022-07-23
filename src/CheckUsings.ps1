@@ -11,7 +11,7 @@ Import-Module (Join-Path $PSScriptRoot Common.psm1) -Function `
 
 function Main
 {
-    AssertDotnetToolVersion -packageID "opinionatedusings" -expectedVersion "1.0.0-pre2"
+    AssertDotnetToolVersion -packageID "opinionatedusings" -expectedVersion "1.0.0"
 
     Set-Location $PSScriptRoot
     Write-Host "Inspecting the using directives in the code..."

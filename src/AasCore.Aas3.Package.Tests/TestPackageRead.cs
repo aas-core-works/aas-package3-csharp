@@ -324,7 +324,12 @@ namespace AasCore.Aas3.Package.Tests
 
                 var firstBytes = new byte[] { 0, 0, 0, 0 };
                 using var stream = thumbnail?.Stream();
-                stream?.Read(firstBytes, 0, 4);
+                var bytesRead = stream?.Read(firstBytes, 0, 4);
+                if (bytesRead != 4)
+                {
+                    throw new InvalidOperationException(
+                        $"Unexpected to read only {bytesRead} bytes");
+                }
 
                 var firstBytesText = string.Join(
                     ", ",

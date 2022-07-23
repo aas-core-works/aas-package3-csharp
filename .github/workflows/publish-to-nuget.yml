@@ -16,15 +16,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v1
 
-      - name: Install NET 5
+      - name: Install Net 6
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.202'
-
-      - name: Install .NET 3
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.100'
+          dotnet-version: '6.0.201'
 
       - name: Build solution and generate NuGet package
         working-directory: src/AasCore.Aas3.Package
@@ -34,4 +29,4 @@ jobs:
         working-directory: src/AasCore.Aas3.Package
         env:
           NUGET_AUTH_TOKEN: ${{secrets.NUGET_API_KEY}}
-        run: dotnet nuget push out\*.nupkg --skip-duplicate --no-symbols true --source https://api.nuget.org/v3/index.json -k $env:NUGET_AUTH_TOKEN
+        run: dotnet nuget push out\*.nupkg --skip-duplicate --no-symbols --source https://api.nuget.org/v3/index.json -k $env:NUGET_AUTH_TOKEN
