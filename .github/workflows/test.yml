@@ -17,15 +17,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install NET 5
+      - name: Install Net 6
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.201'
+
+      - name: Install Net 5
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.202'
 
-      - name: Install .NET 3
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.100'
 
       - name: Display repository name
         env:
@@ -70,4 +71,4 @@ jobs:
           echo "Branch is: $branch"
           echo "Commit is: $commit"
 
-          dotnet tool run csmacnz.Coveralls --opencover -i AasCore.Aas3.Package.Tests\coverage.net5.0.opencover.xml --useRelativePaths --repoToken $env:COVERALLS_REPO_TOKEN --commitId $commit --commitBranch $branch
+          dotnet tool run csmacnz.Coveralls --opencover -i AasCore.Aas3.Package.Tests\coverage.net6.0.opencover.xml --useRelativePaths --repoToken $env:COVERALLS_REPO_TOKEN --commitId $commit --commitBranch $branch

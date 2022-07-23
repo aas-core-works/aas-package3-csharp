@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
+        <TargetFrameworks>net6.0;net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
         <Nullable>enable</Nullable>
         <Configurations>Debug;Release;DebugSlow</Configurations>
         <Platforms>AnyCPU</Platforms>
@@ -9,13 +9,13 @@
 
         <PackageId>AasCore.Aas3.Package</PackageId>
         <Version>1.0.0-pre8</Version>
-        <Authors>Marko Ristin, Nico Braunisch, Robert Lehmann</Authors>
+        <Authors>Marko Ristin, Nico Braunisch</Authors>
         <Description>
             A library for reading and writing packaged file format of an Asset Administration Shell (AAS) v3
         </Description>
         <RepositoryUrl>https://github.com/aas-core-works/aas-package3-csharp.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <Copyright>Copyright (c) 2021 Marko Ristin, Nico Braunisch, Robert Lehmann</Copyright>
+        <Copyright>Copyright (c) 2021 Marko Ristin, Nico Braunisch</Copyright>
         <PackageLicenseUrl>https://raw.githubusercontent.com/aas-core-works/aas-package3-csharp/main/LICENSE</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/aas-core-works/aas-package3-csharp</PackageProjectUrl>
         <PackageTags>aas;asset administration shell;iiot;industry internet of things;industrie 4.0;i4.0</PackageTags>

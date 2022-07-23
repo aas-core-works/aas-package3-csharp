@@ -11,7 +11,7 @@ Import-Module (Join-Path $PSScriptRoot Common.psm1) -Function `
 
 function Main
 {
-    AssertDotnetToolVersion -packageID "opinionatedcsharptodos" -expectedVersion "1.0.0"
+    AssertDotnetToolVersion -packageID "opinionatedcsharptodos" -expectedVersion "2.0.0"
 
     Set-Location $PSScriptRoot
     Write-Host "Inspecting the TODOs in the code..."
