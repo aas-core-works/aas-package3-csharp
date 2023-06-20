@@ -14,7 +14,7 @@
             NOTE (mristin, 2022-07-23):
             NUnit does not work with netstandard2.0 and 2.1 anymore, so we only test with netstandard2.1.
         --> 
-        <TargetFrameworks>net6.0;net5.0</TargetFrameworks>
+        <TargetFramework>net6.0</TargetFramework>
 
         <OutputType>Library</OutputType>
 

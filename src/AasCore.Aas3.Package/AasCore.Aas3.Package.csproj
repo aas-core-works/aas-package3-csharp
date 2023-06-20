@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
+        <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <Configurations>Debug;Release;DebugSlow</Configurations>
         <Platforms>AnyCPU</Platforms>
         <LangVersion>8</LangVersion>
 
         <PackageId>AasCore.Aas3.Package</PackageId>
-        <Version>1.0.0-pre9</Version>
+        <Version>1.0.0-pre09-dotnet6</Version>
         <Authors>Marko Ristin, Nico Braunisch</Authors>
         <Description>
             A library for reading and writing packaged file format of an Asset Administration Shell (AAS) v3
@@ -22,6 +22,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="System.IO.Packaging" version="4.*" />
+      <PackageReference Include="System.IO.Packaging" version="6.*" />
     </ItemGroup>
 </Project>
