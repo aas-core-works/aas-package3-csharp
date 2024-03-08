@@ -39,10 +39,6 @@ jobs:
         working-directory: src
         run: dotnet tool install coveralls.net --version 2.0.0-beta0002
 
-      - name: Download samples
-        working-directory: src
-        run: powershell .\DownloadSamples.ps1
-
       - name: Run tests
         working-directory: src
         run: powershell .\Test.ps1

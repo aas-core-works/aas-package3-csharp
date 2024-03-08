@@ -62,9 +62,6 @@ Please see the source code of `src\Check.ps1` for more details.
 Our tests with external dependencies use environment variables to specify the location of the dependencies.
 While `src\Check.ps1` and related scripts set up the expected locations in the environment automatically, you need to adjust your test setting accordingly.
 
-So far, we need to set `SAMPLE_AASX_DIR` environment variable to point to the absolute path where AASX samples have been downloaded (using `src\DownloadSamples.ps1`).
-This is by definition `{your repository}\sample-aasx`.
-
 ## Github Workflows
 
 Github Actions allow for running continuous integration on Github servers.
