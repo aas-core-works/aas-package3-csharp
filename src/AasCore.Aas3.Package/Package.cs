@@ -130,6 +130,7 @@ namespace AasCore.Aas3.Package
          * The caller is responsible for disposing it.
          * </returns>
          */
+        // ReSharper disable once MemberCanBePrivate.Global
         public Stream Stream()
         {
             return PackagePart.GetStream(FileMode.Open, FileAccess.Read);
@@ -149,6 +150,7 @@ namespace AasCore.Aas3.Package
         /**
          * <summary>Read the content of the part as UTF-8 text.</summary>
          */
+        // ReSharper disable once UnusedMember.Global
         public string ReadAllText()
         {
             return ReadAllText(Encoding.UTF8);
@@ -177,13 +179,13 @@ namespace AasCore.Aas3.Package
         internal static class RelationType
         {
             internal const string AasxOrigin =
-                "http://www.admin-shell.io/aasx/relationships/aasx-origin";
+                "http://admin-shell.io/aasx/relationships/aasx-origin";
 
             internal const string AasxSpec =
-                "http://www.admin-shell.io/aasx/relationships/aas-spec";
+                "http://admin-shell.io/aasx/relationships/aas-spec";
 
             internal const string AasxSupplementary =
-                "http://www.admin-shell.io/aasx/relationships/aas-suppl";
+                "http://admin-shell.io/aasx/relationships/aas-suppl";
 
             internal const string Thumbnail =
                 "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail";
@@ -797,6 +799,8 @@ namespace AasCore.Aas3.Package
 
         public class SupplementaryRelationship
         {
+            // ReSharper disable once MemberCanBePrivate.Global
+            // ReSharper disable once NotAccessedField.Global
             public readonly Part Spec;
             public readonly Part Supplementary;
 

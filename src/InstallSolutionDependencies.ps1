@@ -18,9 +18,6 @@ function Main
 
     Write-Host "Restoring the tools..."
     dotnet tool restore
-
-    Write-Host "Downloading the AASX samples..."
-    & powershell "./DownloadSamples.ps1"
 }
 
 $previousLocation = Get-Location; try
