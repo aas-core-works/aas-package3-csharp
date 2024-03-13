@@ -8,14 +8,14 @@
         <LangVersion>8</LangVersion>
 
         <PackageId>AasCore.Aas3.Package</PackageId>
-        <Version>1.0.0</Version>
+        <Version>1.0.1</Version>
         <Authors>Marko Ristin, Nico Braunisch</Authors>
         <Description>
             A library for reading and writing packaged file format of an Asset Administration Shell (AAS) v3
         </Description>
         <RepositoryUrl>https://github.com/aas-core-works/aas-package3-csharp.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <Copyright>Copyright (c) 2021 Marko Ristin, Nico Braunisch</Copyright>
+        <Copyright>Copyright (c) 2024 Marko Ristin, Nico Braunisch</Copyright>
         <PackageLicenseUrl>https://raw.githubusercontent.com/aas-core-works/aas-package3-csharp/main/LICENSE</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/aas-core-works/aas-package3-csharp</PackageProjectUrl>
         <PackageTags>aas;asset administration shell;iiot;industry internet of things;industrie 4.0;i4.0</PackageTags>
