@@ -114,12 +114,11 @@ They are simply meant as shortcuts for use cases where error handling can be han
 <p>Notable exceptions here are <code>System.Linq</code>, <code>System.CommandLine</code> and other libraries which introduce <a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods">extensions</a>.
 Please note in your code when this is the case to differentiate from cases where you simply forgot to alias the used type.</p>
 <h2 id="todos">TODOs</h2>
-<p>We use <a href="https://github.com/mristin/opinionated-csharp-todos">opinionated-csharp-todos</a> to enforce a common style on all the TODO comments.</p>
-<p>Please distinguish between issues and TODOs left in code.
-The issues concern the features and broader refactorings.
-The TODOs in code are meant to be fixed soon or mark code spots which will be affected by a future refactoring or bug fixing.</p>
-<p>Please use <code>// DONT-CHECK-IN: </code> to mark the parts of code which you do not want to make part of the pull request.
-[Opinionated csharp-todos] will alert you accordingly before you commit or merge in the code.</p>
+<p>Please do not leave any TODOs in the code.
+Write a proper note with:</p>
+<pre><code>// NOTE(your-username): 
+...
+</code></pre>
 </article>
           </div>
           
