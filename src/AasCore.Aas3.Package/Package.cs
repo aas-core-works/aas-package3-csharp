@@ -21,9 +21,6 @@ using System.Collections.Generic; // can't alias
 using System.IO; // can't alias
 using System.Linq; // can't alias
 
-// This is necessary only for InspectCode.
-// See https://resharper-support.jetbrains.com/hc/en-us/community/posts/360008362700-Not-recognising-Nullable-enable-Nullable-
-#nullable enable
 
 namespace AasCore.Aas3.Package
 {

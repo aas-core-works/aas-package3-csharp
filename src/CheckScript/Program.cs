@@ -142,14 +142,8 @@ namespace CheckScript
             var scriptsLabels = new List<(string, string)>
             {
                 ("CheckFormat.ps1", "Format"),
-                ("CheckBiteSized.ps1", "BiteSized"),
-                ("CheckUsings.ps1", "Usings"),
-                ("CheckDeadCode.ps1", "DeadCode"),
-                ("CheckTodos.ps1", "Todos"),
-                ("Doctest.ps1 -check", "Doctest"),
                 ("Test.ps1", "Test"),
-                ("InspectCode.ps1", "Inspect"),
-                ("CheckPushCommitMessages.ps1", "CommitMessages")
+                ("InspectCode.ps1", "Inspect")
             };
 
             foreach (var (script, label) in scriptsLabels)

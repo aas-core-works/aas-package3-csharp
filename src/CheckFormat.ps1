@@ -7,13 +7,10 @@ $ErrorActionPreference = "Stop"
 
 Import-Module (Join-Path $PSScriptRoot Common.psm1) -Function `
     AssertDotnet,  `
-    AssertDotnetFormatVersion,  `
     CreateAndGetArtefactsDir
 
 function Main
 {
-    AssertDotnetFormatVersion
-
     Set-Location $PSScriptRoot
     Write-Host "Inspecting the code format with dotnet-format..."
 

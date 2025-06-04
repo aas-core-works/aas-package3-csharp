@@ -59,13 +59,10 @@ Please note in your code when this is the case to differentiate from cases where
 
 ## TODOs
 
-We use [opinionated-csharp-todos] to enforce a common style on all the TODO comments.
+Please do not leave any TODOs in the code.
+Write a proper note with:
 
-[opinionated-csharp-todos]: https://github.com/mristin/opinionated-csharp-todos
-
-Please distinguish between issues and TODOs left in code.
-The issues concern the features and broader refactorings.
-The TODOs in code are meant to be fixed soon or mark code spots which will be affected by a future refactoring or bug fixing.
-
-Please use `// DONT-CHECK-IN: ` to mark the parts of code which you do not want to make part of the pull request.
-[Opinionated csharp-todos] will alert you accordingly before you commit or merge in the code.
+```
+// NOTE(your-username): 
+...
+```
