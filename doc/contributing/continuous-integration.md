@@ -33,18 +33,6 @@ To reformat the code in-place, call:
 .\src\FormatCode.ps1
 ```
 
-## Generate Doctests
-
-We use [doctest-csharp] for [doctests].
-To extract the doctests and generate the corresponding unit tests:
-
-```powershell
-.\src\Doctest.ps1
-```
-
-[doctest-csharp]: https://github.com/mristin/doctest-csharp
-[doctests]: https://en.wikipedia.org/wiki/Doctest 
-
 ## Running Checks Locally
 
 We bundled all the checks in a single script, `src\Check.ps1`. 

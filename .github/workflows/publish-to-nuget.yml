@@ -4,7 +4,6 @@ on:
   push:
     tags:
       - 'v*'
-
     branches:
       - '*/Fix-nuget-publishing'
 
@@ -14,12 +13,12 @@ jobs:
     name: Update NuGet package
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
-      - name: Install Net 6
+      - name: Install .NET 9
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.201'
+          dotnet-version: '9.0.x'
 
       - name: Build solution and generate NuGet package
         working-directory: src/AasCore.Aas3.Package
@@ -28,5 +27,5 @@ jobs:
       - name: Push generated package
         working-directory: src/AasCore.Aas3.Package
         env:
-          NUGET_AUTH_TOKEN: ${{secrets.NUGET_API_KEY}}
+          NUGET_AUTH_TOKEN: ${{ secrets.NUGET_API_KEY }}
         run: dotnet nuget push out\*.nupkg --skip-duplicate --no-symbols --source https://api.nuget.org/v3/index.json -k $env:NUGET_AUTH_TOKEN

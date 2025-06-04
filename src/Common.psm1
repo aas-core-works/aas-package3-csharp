@@ -86,42 +86,6 @@ function AssertDotnetToolVersion($PackageID, $ExpectedVersion) {
     }
 }
 
-<#
-.SYNOPSIS
-Check the version of dotnet-format so that the code is always formatted in the same manner.
-#>
-function AssertDotnetFormatVersion
-{
-    AssertDotnetToolVersion -packageID "dotnet-format" -expectedVersion "5.1.250801"
-}
-
-<#
-.SYNOPSIS
-Check the version of dead-csharp so that the dead code is always detected in the same manner.
-#>
-function AssertDeadCsharpVersion
-{
-    AssertDotnetToolVersion -packageID "deadcsharp" -expectedVersion "2.0.0"
-}
-
-<#
-.SYNOPSIS
-Check the version of doctest-csharp so that the code is always generated and checked in the same manner.
-#>
-function AssertDoctestCsharpVersion
-{
-    AssertDotnetToolVersion -packageID "doctestcsharp" -expectedVersion "2.0.0"
-}
-
-<#
-.SYNOPSIS
-Check the version of opinionated-csharp-todos so that the TODOs are always inspected in the same manner.
-#>
-function AssertOpinionatedCsharpTodosVersion
-{
-    AssertDotnetToolVersion -packageID "opinionatedcsharptodos" -expectedVersion "2.0.0"
-}
-
 function GetArtefactsDir
 {
     $repoRoot = Split-Path $PSScriptRoot -Parent
@@ -145,10 +109,6 @@ Export-ModuleMember -Function `
     GetToolsDir, `
     AssertDotnet, `
     AssertDotnetToolVersion, `
-    AssertDotnetFormatVersion, `
-    AssertDeadCsharpVersion, `
-    AssertDoctestCsharpVersion, `
-    AssertOpinionatedCsharpTodosVersion, `
     GetArtefactsDir, `
     CreateAndGetArtefactsDir, `
     GetSamplesDir

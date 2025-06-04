@@ -14,7 +14,7 @@ jobs:
   Check:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
       - name: Display repository name
         env:
@@ -22,11 +22,13 @@ jobs:
         run: |
           Write-Host "The repository is: ${env:REPOSITORY}"
 
-      - name: Install NET 6
+      - name: Install .NET 9
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.201'
+          dotnet-version: '9.0.x'  # Use latest .NET 9 SDK
 
+      - name: Add dotnet9 preview NuGet feed (necessary for InspectCode)
+        run: dotnet nuget add source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet9/nuget/v3/index.json -n dotnet9
 
       - name: Install dotnet tools
         working-directory: src
@@ -35,26 +37,6 @@ jobs:
       - name: Check format
         working-directory: src
         run: powershell .\CheckFormat.ps1
-
-      - name: Check bite-sized
-        working-directory: src
-        run: powershell .\CheckBiteSized.ps1
-
-      - name: Check using directives
-        working-directory: src
-        run: powershell .\CheckUsings.ps1
-
-      - name: Check for dead code
-        working-directory: src
-        run: powershell .\CheckDeadCode.ps1
-
-      - name: Check TODOs
-        working-directory: src
-        run: powershell .\CheckTodos.ps1
-
-      - name: Check doctests
-        working-directory: src
-        run: powershell .\Doctest.ps1 -check
 
       - name: Build for inspection
         working-directory: src

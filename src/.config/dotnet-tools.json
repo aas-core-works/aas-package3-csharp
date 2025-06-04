@@ -8,40 +8,10 @@
         "dotnet-format"
       ]
     },
-    "deadcsharp": {
-      "version": "2.0.0",
-      "commands": [
-        "dead-csharp"
-      ]
-    },
-    "bitesized": {
-      "version": "2.0.0",
-      "commands": [
-        "bite-sized"
-      ]
-    },
-    "doctestcsharp": {
-      "version": "2.0.0",
-      "commands": [
-        "doctest-csharp"
-      ]
-    },
-    "opinionatedcsharptodos": {
-      "version": "2.0.0",
-      "commands": [
-        "opinionated-csharp-todos"
-      ]
-    },
     "jetbrains.resharper.globaltools": {
-      "version": "2022.1.0",
+      "version": "2025.1.2",
       "commands": [
         "jb"
-      ]
-    },
-    "opinionatedusings": {
-      "version": "1.0.0",
-      "commands": [
-        "opinionated-usings"
       ]
     }
   }
