@@ -74,7 +74,7 @@ namespace CheckScript
             {
                 StartInfo =
                 {
-                    FileName = "powershell.exe",
+                    FileName = "pwsh",
                     Arguments = expression,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,

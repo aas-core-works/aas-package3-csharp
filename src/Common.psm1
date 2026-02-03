@@ -12,29 +12,7 @@ function GetToolsDir
     return Join-Path (Split-Path $PSScriptRoot -Parent) "tools"
 }
 
-<#
-.SYNOPSIS
-Asserts that dotnet is on the path.
-#>
-function AssertDotnet
-{
-    if (!(Get-Command "dotnet" -ErrorAction SilentlyContinue))
-    {
-        if ($null -eq $env:LOCALAPPDATA)
-        {
-            throw "dotnet could not be found in the PATH."
-        }
-        else
-        {
-            throw "dotnet could not be found in the PATH. Look if you could find it, e.g., in " + `
-               "$( Join-Path $env:LOCALAPPDATA "Microsoft\dotnet" ) and add it to PATH."
-        }
-    }
-}
-
 function FindDotnetToolVersion($PackageID) {
-    AssertDotnet
-
     $version = ''
 
     $lines = (dotnet tool list)|Select-Object -Skip 2
@@ -60,32 +38,6 @@ function FindDotnetToolVersion($PackageID) {
     return $version
 }
 
-<#
-.SYNOPSIS
-Check the version of the given dotnet tool.
- #>
-function AssertDotnetToolVersion($PackageID, $ExpectedVersion) {
-    AssertDotnet
-
-    $version = FindDotnetToolVersion -PackageID $PackageID
-    if ($version -eq '')
-    {
-        throw "No $PackageID could be found. Have you installed it? " + `
-               "Check the list of the installed dotnet tools with: " + `
-               "`dotnet tool list` and `dotnet tool list -g`."
-    }
-    else
-    {
-        if ($version -ne $ExpectedVersion)
-        {
-            throw "Expected $PackageID version $ExpectedVersion, but got: $version;" + `
-                   "Check the list of the installed dotnet tools with: " + `
-                   "`dotnet tool list` and `dotnet tool list -g`."
-        }
-        # else: the version is correct.
-    }
-}
-
 function GetArtefactsDir
 {
     $repoRoot = Split-Path $PSScriptRoot -Parent
@@ -107,8 +59,6 @@ function GetSamplesDir
 
 Export-ModuleMember -Function `
     GetToolsDir, `
-    AssertDotnet, `
-    AssertDotnetToolVersion, `
     GetArtefactsDir, `
     CreateAndGetArtefactsDir, `
     GetSamplesDir

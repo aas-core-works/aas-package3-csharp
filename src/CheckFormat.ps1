@@ -1,4 +1,5 @@
-﻿<#
+﻿#!/usr/bin/env pwsh
+<#
 .SYNOPSIS
 This script checks the format of the code.
 #>
@@ -6,7 +7,6 @@ This script checks the format of the code.
 $ErrorActionPreference = "Stop"
 
 Import-Module (Join-Path $PSScriptRoot Common.psm1) -Function `
-    AssertDotnet,  `
     CreateAndGetArtefactsDir
 
 function Main
@@ -17,7 +17,7 @@ function Main
     $artefactsDir = CreateAndGetArtefactsDir
 
     $reportPath = Join-Path $artefactsDir "dotnet-format-report.json"
-    dotnet format --verify-no-changes --report $reportPath --exclude "**/DocTest*.cs"
+    & dotnet format --verify-no-changes --report $reportPath --exclude "**/DocTest*.cs"
     $formatReport = Get-Content $reportPath |ConvertFrom-Json
     if ($formatReport.Count -ge 1)
     {

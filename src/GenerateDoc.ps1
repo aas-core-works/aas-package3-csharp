@@ -1,10 +1,10 @@
+#!/usr/bin/env pwsh
 <#
 .SYNOPSIS
 This script generates the documentation for developers in the docdev directory.
 #>
 
 Import-Module (Join-Path $PSScriptRoot Common.psm1) -Function `
-    GetToolsDir, `
     CreateAndGetArtefactsDir
 
 
@@ -12,24 +12,12 @@ function Main
 {
     Set-Location $PSScriptRoot
 
-    $toolsDir = GetToolsDir
-    $docfxExe = Join-Path $toolsDir "docfx.console.2.56.1" `
-        | Join-Path -ChildPath "tools" `
-        | Join-Path -ChildPath "docfx.exe"
-
-    if(!(Test-Path -Path $docfxExe))
-    {
-        throw ("The docfx.exe could not be found: $docfxExe; " + `
-            "Did you install it using InstallDocdevDependencies.ps1?")
-    }
-
     $artefactsDir = CreateAndGetArtefactsDir
 
     $repoDir = Split-Path -Parent $PSScriptRoot
-    $docfxProjectDir = Join-Path $repoDir "doc"
+    $docfxJson = Join-Path $repoDir "doc" "docfx.json"
 
-    Set-Location $docfxProjectDir
-    & $docfxExe "docfx.json"
+    & dotnet docfx $docfxJson
     if($LASTEXITCODE -ne 0)
     {
         throw "docfx failed. See above for error logs."
@@ -40,7 +28,7 @@ function Main
 
     Write-Host "The documentation has been generated to: '$siteDir'"
     Write-Host "You can serve it locally with:"
-    Write-Host "'$docfxExe' serve '$siteDir'"
+    Write-Host "dotnet docfx serve '$siteDir'"
 }
 
 $previousLocation = Get-Location; try { Main } finally { Set-Location $previousLocation }
