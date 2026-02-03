@@ -17,9 +17,9 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Install doc dependencies
+      - name: Install dotnet tools
         working-directory: src
-        run: powershell .\InstallDocDependencies.ps1
+        run: dotnet tool restore
 
       - name: Generate the doc
         working-directory: src

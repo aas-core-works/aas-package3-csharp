@@ -1,19 +1,16 @@
-﻿<#
+#!/usr/bin/env pwsh
+
+<#
 .SYNOPSIS
 This script runs all the pre-merge checks locally.
 #>
 
 $ErrorActionPreference = "Stop"
 
-Import-Module (Join-Path $PSScriptRoot Common.psm1) -Function `
-    AssertDotnet
-
 function Main
 {
-    AssertDotnet
-
     Set-Location $PSScriptRoot
-    & dotnet.exe run --project CheckScript
+    & dotnet run --project CheckScript
 }
 
 $previousLocation = Get-Location; try
