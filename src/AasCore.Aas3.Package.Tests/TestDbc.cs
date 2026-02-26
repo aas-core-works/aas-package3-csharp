@@ -1,7 +1,6 @@
-﻿using ArgumentException = System.ArgumentException;
+﻿using NUnit.Framework;  // can't alias
+using ArgumentException = System.ArgumentException;
 using InvalidOperationException = System.InvalidOperationException;
-
-using NUnit.Framework;  // can't alias
 
 namespace AasCore.Aas3.Package.Tests
 {

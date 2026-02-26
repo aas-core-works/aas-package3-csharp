@@ -1,3 +1,6 @@
+﻿using System.Collections.Generic; // can't alias
+using System.Linq; // can't alias
+using NUnit.Framework; // can't alias
 using Encoding = System.Text.Encoding;
 using File = System.IO.File;
 using FileAccess = System.IO.FileAccess;
@@ -9,9 +12,6 @@ using Path = System.IO.Path;
 using SystemPackage = System.IO.Packaging.Package; // renamed
 using Uri = System.Uri;
 using UriKind = System.UriKind;
-using System.Collections.Generic; // can't alias
-using System.Linq; // can't alias
-using NUnit.Framework; // can't alias
 
 namespace AasCore.Aas3.Package.Tests
 {

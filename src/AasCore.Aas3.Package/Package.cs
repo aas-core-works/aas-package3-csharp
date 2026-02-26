@@ -1,4 +1,7 @@
-﻿using CompressionOption = System.IO.Packaging.CompressionOption;
+﻿using System.Collections.Generic; // can't alias
+using System.IO; // can't alias
+using System.Linq; // can't alias
+using CompressionOption = System.IO.Packaging.CompressionOption;
 using Encoding = System.Text.Encoding;
 using Exception = System.Exception;
 using File = System.IO.File;
@@ -17,9 +20,6 @@ using SystemPackage = System.IO.Packaging.Package; // renamed
 using TargetMode = System.IO.Packaging.TargetMode;
 using Uri = System.Uri;
 using UriKind = System.UriKind;
-using System.Collections.Generic; // can't alias
-using System.IO; // can't alias
-using System.Linq; // can't alias
 
 
 namespace AasCore.Aas3.Package
@@ -173,19 +173,38 @@ namespace AasCore.Aas3.Package
      */
     public class Packaging
     {
-        internal static class RelationType
+
+        internal static class RelationTypePaths
         {
-            internal const string AasxOrigin =
-                "http://admin-shell.io/aasx/relationships/aasx-origin";
+            internal const string AasxOrigin = "/aasx-origin";
 
-            internal const string AasxSpec =
-                "http://admin-shell.io/aasx/relationships/aas-spec";
+            internal const string AasxSpec = "/aasx-spec";
 
-            internal const string AasxSupplementary =
-                "http://admin-shell.io/aasx/relationships/aas-suppl";
+            internal const string AasxSupplementary = "/aas-suppl";
 
             internal const string Thumbnail =
                 "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail";
+        }
+
+        internal static class RelationType
+        {
+            private const string Basepath = "http://admin-shell.io/aasx/relationships";
+
+            internal const string AasxOrigin = Basepath + RelationTypePaths.AasxOrigin;
+
+            internal const string AasxSpec = Basepath + RelationTypePaths.AasxSpec;
+
+            internal const string AasxSupplementary = Basepath + RelationTypePaths.AasxSupplementary;
+        }
+
+        internal static class RelationTypeDeprecated
+        {
+            private const string Basepath = "http://www.admin-shell.io/aasx/relationships";
+            internal const string AasxOrigin = Basepath + RelationTypePaths.AasxOrigin;
+
+            internal const string AasxSpec = Basepath + RelationTypePaths.AasxSpec;
+
+            internal const string AasxSupplementary = Basepath + RelationTypePaths.AasxSupplementary;
         }
 
         /**
@@ -204,6 +223,7 @@ namespace AasCore.Aas3.Package
             {
                 var pkg = SystemPackage.Open(
                     path, FileMode.Create, FileAccess.ReadWrite);
+
                 toBeDisposed.Add(pkg);
 
                 return CreatePackage(path, pkg, toBeDisposed);
@@ -256,6 +276,10 @@ namespace AasCore.Aas3.Package
         {
             var xs = package.GetRelationshipsByType(
                 RelationType.AasxOrigin);
+            if (!xs.Any())
+            {
+                xs = package.GetRelationshipsByType(RelationTypeDeprecated.AasxOrigin);
+            }
 
             return (
                 from x in xs
@@ -698,6 +722,12 @@ namespace AasCore.Aas3.Package
             var xs = OriginPart.GetRelationshipsByType(
                 Packaging.RelationType.AasxSpec);
 
+            if (!xs.Any())
+            {
+                xs = OriginPart.GetRelationshipsByType(
+                    Packaging.RelationTypeDeprecated.AasxSpec);
+            }
+
             foreach (var x in xs)
             {
                 var specUri = x.TargetUri;
@@ -765,6 +795,7 @@ namespace AasCore.Aas3.Package
         {
             return OriginPart
                 .GetRelationshipsByType(Packaging.RelationType.AasxSpec)
+                .Concat(OriginPart.GetRelationshipsByType(Packaging.RelationTypeDeprecated.AasxSpec))
                 .Any(rel => rel.TargetUri == part.Uri);
         }
 
@@ -776,6 +807,12 @@ namespace AasCore.Aas3.Package
         {
             var xs = spec.PackagePart.GetRelationshipsByType(
                 Packaging.RelationType.AasxSupplementary);
+
+            if (!xs.Any())
+            {
+                xs = spec.PackagePart.GetRelationshipsByType(
+                    Packaging.RelationTypeDeprecated.AasxSupplementary);
+            }
 
             foreach (var x in xs)
             {
@@ -865,7 +902,7 @@ namespace AasCore.Aas3.Package
             Part? result = null;
 
             var xs = UnderlyingPackage.GetRelationshipsByType(
-                Packaging.RelationType.Thumbnail);
+                Packaging.RelationTypePaths.Thumbnail);
 
             foreach (var x in xs)
             {
@@ -1083,6 +1120,7 @@ namespace AasCore.Aas3.Package
 
             var rels = OriginPart
                 .GetRelationshipsByType(Packaging.RelationType.AasxSpec)
+                .Concat(OriginPart.GetRelationshipsByType(Packaging.RelationTypeDeprecated.AasxSpec))
                 .Where(aRel => aRel.TargetUri == part.Uri);
 
             foreach (var rel in rels)
@@ -1149,7 +1187,9 @@ namespace AasCore.Aas3.Package
 
 
             var rels = spec.PackagePart.GetRelationshipsByType(
-                Packaging.RelationType.AasxSupplementary);
+                    Packaging.RelationType.AasxSupplementary)
+                .Concat(spec.PackagePart.GetRelationshipsByType(Packaging.RelationTypeDeprecated.AasxSupplementary));
+
 
             if (rels.All(rel => rel.TargetUri != supplementary.Uri))
             {
@@ -1222,8 +1262,8 @@ namespace AasCore.Aas3.Package
             var rels = spec
                 .PackagePart
                 .GetRelationshipsByType(Packaging.RelationType.AasxSupplementary)
-                .Where(
-                    aRel => aRel.TargetUri == supplementary.Uri);
+                .Concat(spec.PackagePart.GetRelationshipsByType(Packaging.RelationTypeDeprecated.AasxSupplementary))
+                .Where(aRel => aRel.TargetUri == supplementary.Uri);
 
             foreach (var rel in rels)
             {
@@ -1298,7 +1338,7 @@ namespace AasCore.Aas3.Package
             if (createRelation)
             {
                 UnderlyingPackage.CreateRelationship(
-                    part.Uri, TargetMode.Internal, Packaging.RelationType.Thumbnail);
+                    part.Uri, TargetMode.Internal, Packaging.RelationTypePaths.Thumbnail);
             }
 
             #region Postconditions
@@ -1334,7 +1374,7 @@ namespace AasCore.Aas3.Package
         {
             var morituri =
                 UnderlyingPackage.GetRelationshipsByType(
-                        Packaging.RelationType.Thumbnail)
+                        Packaging.RelationTypePaths.Thumbnail)
                     .Where(rel => rel.SourceUri.ToString() == "/")
                     .ToList();
 
