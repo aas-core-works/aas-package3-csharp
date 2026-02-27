@@ -1,0 +1,403 @@
+{
+  "source_base_path": "D:/a/aas-package3-csharp/aas-package3-csharp/doc",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasCore.Aas3.Package.Dbc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasCore.Aas3.Package.Dbc.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AasCore.Aas3.Package.Dbc",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasCore.Aas3.Package.PackageOrException-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasCore.Aas3.Package.PackageOrException-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AasCore.Aas3.Package.PackageOrException<TPackage>",
+      "Summary": "<p sourcefile=\"api/AasCore.Aas3.Package.PackageOrException-1.yml\" sourcestartlinenumber=\"1\">Either a <xref href=\"AasCore.Aas3.Package.PackageRead\" data-throw-if-not-resolved=\"false\"></xref> or an <xref href=\"System.Exception\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasCore.Aas3.Package.PackageRead.SupplementaryRelationship.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasCore.Aas3.Package.PackageRead.SupplementaryRelationship.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AasCore.Aas3.Package.PackageRead.SupplementaryRelationship",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasCore.Aas3.Package.PackageRead.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasCore.Aas3.Package.PackageRead.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AasCore.Aas3.Package.PackageRead",
+      "Summary": "<p sourcefile=\"api/AasCore.Aas3.Package.PackageRead.yml\" sourcestartlinenumber=\"1\">Read from the AAS package.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasCore.Aas3.Package.PackageReadWrite.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasCore.Aas3.Package.PackageReadWrite.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AasCore.Aas3.Package.PackageReadWrite",
+      "Summary": "<p sourcefile=\"api/AasCore.Aas3.Package.PackageReadWrite.yml\" sourcestartlinenumber=\"1\">Read and write from/to the AAS package.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasCore.Aas3.Package.Packaging.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasCore.Aas3.Package.Packaging.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AasCore.Aas3.Package.Packaging",
+      "Summary": "<p sourcefile=\"api/AasCore.Aas3.Package.Packaging.yml\" sourcestartlinenumber=\"1\">Open and create packages.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasCore.Aas3.Package.Part.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasCore.Aas3.Package.Part.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AasCore.Aas3.Package.Part",
+      "Summary": "<p sourcefile=\"api/AasCore.Aas3.Package.Part.yml\" sourcestartlinenumber=\"1\">Represent a part of an AAS package.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasCore.Aas3.Package.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasCore.Aas3.Package.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AasCore.Aas3.Package",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CheckScript.ThreeLetterWords.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CheckScript.ThreeLetterWords.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "CheckScript.ThreeLetterWords",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CheckScript.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CheckScript.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "CheckScript",
+      "Summary": null
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "contributing/continuous-integration.md",
+      "output": {
+        ".html": {
+          "relative_path": "contributing/continuous-integration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "contributing/development-workflow.md",
+      "output": {
+        ".html": {
+          "relative_path": "contributing/development-workflow.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "contributing/installing-the-dependencies.md",
+      "output": {
+        ".html": {
+          "relative_path": "contributing/installing-the-dependencies.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "contributing/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "contributing/intro.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "contributing/releasing.md",
+      "output": {
+        ".html": {
+          "relative_path": "contributing/releasing.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "contributing/style-guide.md",
+      "output": {
+        ".html": {
+          "relative_path": "contributing/style-guide.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "contributing/test-resources.md",
+      "output": {
+        ".html": {
+          "relative_path": "contributing/test-resources.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "contributing/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "contributing/toc.html"
+        },
+        ".json": {
+          "relative_path": "contributing/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "contributing/troubleshooting.md",
+      "output": {
+        ".html": {
+          "relative_path": "contributing/troubleshooting.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "getting-started/entry-point.md",
+      "output": {
+        ".html": {
+          "relative_path": "getting-started/entry-point.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "getting-started/installation.md",
+      "output": {
+        ".html": {
+          "relative_path": "getting-started/installation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "getting-started/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "getting-started/intro.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "getting-started/read-write.md",
+      "output": {
+        ".html": {
+          "relative_path": "getting-started/read-write.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "getting-started/reading.md",
+      "output": {
+        ".html": {
+          "relative_path": "getting-started/reading.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "getting-started/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "getting-started/toc.html"
+        },
+        ".json": {
+          "relative_path": "getting-started/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/adminshellio-48x48.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "images/adminshellio-48x48.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/favicon-16x16.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/favicon-16x16.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/favicon-32x32.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/favicon-32x32.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/favicon-96x96.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/favicon-96x96.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/favicon.ico",
+      "output": {
+        "resource": {
+          "relative_path": "images/favicon.ico"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

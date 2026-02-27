@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class PackageReadWrite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class PackageReadWrite ">
+    
+    <meta name="description" content="Read and write from/to the AAS package.">
+      <link rel="shortcut icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/adminshellio-48x48.jpg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AasCore.Aas3.Package.PackageReadWrite">
+
+
+
+  <h1 id="AasCore_Aas3_Package_PackageReadWrite" data-uid="AasCore.Aas3.Package.PackageReadWrite" class="text-break">Class PackageReadWrite</h1>
+  <div class="markdown level0 summary"><p>Read and write from/to the AAS package.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><a class="xref" href="AasCore.Aas3.Package.PackageRead.html">PackageRead</a></div>
+    <div class="level2"><span class="xref">PackageReadWrite</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="AasCore.Aas3.Package.PackageRead.html#AasCore_Aas3_Package_PackageRead_UnderlyingPackage">PackageRead.UnderlyingPackage</a>
+    </div>
+    <div>
+      <a class="xref" href="AasCore.Aas3.Package.PackageRead.html#AasCore_Aas3_Package_PackageRead_OriginPart">PackageRead.OriginPart</a>
+    </div>
+    <div>
+      <a class="xref" href="AasCore.Aas3.Package.PackageRead.html#AasCore_Aas3_Package_PackageRead_Path">PackageRead.Path</a>
+    </div>
+    <div>
+      <a class="xref" href="AasCore.Aas3.Package.PackageRead.html#AasCore_Aas3_Package_PackageRead_Specs">PackageRead.Specs()</a>
+    </div>
+    <div>
+      <a class="xref" href="AasCore.Aas3.Package.PackageRead.html#AasCore_Aas3_Package_PackageRead_SpecsByContentType">PackageRead.SpecsByContentType()</a>
+    </div>
+    <div>
+      <a class="xref" href="AasCore.Aas3.Package.PackageRead.html#AasCore_Aas3_Package_PackageRead_IsSpec_AasCore_Aas3_Package_Part_">PackageRead.IsSpec(Part)</a>
+    </div>
+    <div>
+      <a class="xref" href="AasCore.Aas3.Package.PackageRead.html#AasCore_Aas3_Package_PackageRead_SupplementariesFor_AasCore_Aas3_Package_Part_">PackageRead.SupplementariesFor(Part)</a>
+    </div>
+    <div>
+      <a class="xref" href="AasCore.Aas3.Package.PackageRead.html#AasCore_Aas3_Package_PackageRead_SupplementaryRelationships">PackageRead.SupplementaryRelationships()</a>
+    </div>
+    <div>
+      <a class="xref" href="AasCore.Aas3.Package.PackageRead.html#AasCore_Aas3_Package_PackageRead_FindPart_System_Uri_">PackageRead.FindPart(Uri)</a>
+    </div>
+    <div>
+      <a class="xref" href="AasCore.Aas3.Package.PackageRead.html#AasCore_Aas3_Package_PackageRead_MustPart_System_Uri_">PackageRead.MustPart(Uri)</a>
+    </div>
+    <div>
+      <a class="xref" href="AasCore.Aas3.Package.PackageRead.html#AasCore_Aas3_Package_PackageRead_Thumbnail">PackageRead.Thumbnail()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AasCore.html">AasCore</a>.<a class="xref" href="AasCore.Aas3.html">Aas3</a>.<a class="xref" href="AasCore.Aas3.Package.html">Package</a></h6>
+  <h6><strong>Assembly</strong>: AasCore.Aas3.Package.dll</h6>
+  <h5 id="AasCore_Aas3_Package_PackageReadWrite_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class PackageReadWrite : PackageRead, IDisposable</code></pre>
+  </div>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/new/main/apiSpec/new?filename=AasCore_Aas3_Package_PackageReadWrite_Flush.md&amp;value=---%0Auid%3A%20AasCore.Aas3.Package.PackageReadWrite.Flush%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/blob/main/src/AasCore.Aas3.Package/Package.cs/#L1400">View Source</a>
+  </span>
+  <a id="AasCore_Aas3_Package_PackageReadWrite_Flush_" data-uid="AasCore.Aas3.Package.PackageReadWrite.Flush*"></a>
+  <h4 id="AasCore_Aas3_Package_PackageReadWrite_Flush" data-uid="AasCore.Aas3.Package.PackageReadWrite.Flush">Flush()</h4>
+  <div class="markdown level1 summary"><p>Flush the changes to the underlying storage layers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Flush()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/new/main/apiSpec/new?filename=AasCore_Aas3_Package_PackageReadWrite_MakeSpec_AasCore_Aas3_Package_Part_.md&amp;value=---%0Auid%3A%20AasCore.Aas3.Package.PackageReadWrite.MakeSpec(AasCore.Aas3.Package.Part)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/blob/main/src/AasCore.Aas3.Package/Package.cs/#L1057">View Source</a>
+  </span>
+  <a id="AasCore_Aas3_Package_PackageReadWrite_MakeSpec_" data-uid="AasCore.Aas3.Package.PackageReadWrite.MakeSpec*"></a>
+  <h4 id="AasCore_Aas3_Package_PackageReadWrite_MakeSpec_AasCore_Aas3_Package_Part_" data-uid="AasCore.Aas3.Package.PackageReadWrite.MakeSpec(AasCore.Aas3.Package.Part)">MakeSpec(Part)</h4>
+  <div class="markdown level1 summary"><p>Relate the <code class="paramref">part</code> to the package origin as a spec.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Part MakeSpec(Part part)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasCore.Aas3.Package.Part.html">Part</a></td>
+        <td><span class="parametername">part</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasCore.Aas3.Package.Part.html">Part</a></td>
+        <td><p>The same unchanged <code class="paramref">part</code>.</p>
+<p>This is practical if you want to chain function calls.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/new/main/apiSpec/new?filename=AasCore_Aas3_Package_PackageReadWrite_MakeThumbnail_AasCore_Aas3_Package_Part_.md&amp;value=---%0Auid%3A%20AasCore.Aas3.Package.PackageReadWrite.MakeThumbnail(AasCore.Aas3.Package.Part)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/blob/main/src/AasCore.Aas3.Package/Package.cs/#L1321">View Source</a>
+  </span>
+  <a id="AasCore_Aas3_Package_PackageReadWrite_MakeThumbnail_" data-uid="AasCore.Aas3.Package.PackageReadWrite.MakeThumbnail*"></a>
+  <h4 id="AasCore_Aas3_Package_PackageReadWrite_MakeThumbnail_AasCore_Aas3_Package_Part_" data-uid="AasCore.Aas3.Package.PackageReadWrite.MakeThumbnail(AasCore.Aas3.Package.Part)">MakeThumbnail(Part)</h4>
+  <div class="markdown level1 summary"><p>Establish the relation from package origin to <code class="paramref">part</code>
+as a thumbnail.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Part MakeThumbnail(Part part)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasCore.Aas3.Package.Part.html">Part</a></td>
+        <td><span class="parametername">part</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasCore.Aas3.Package.Part.html">Part</a></td>
+        <td><p>The same unchanged <code class="paramref">part</code>.</p>
+<p>This is practical if you want to chain function calls.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="AasCore_Aas3_Package_PackageReadWrite_MakeThumbnail_AasCore_Aas3_Package_Part__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If there is a relationship to a thumbnail already, it will be unmade first.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/new/main/apiSpec/new?filename=AasCore_Aas3_Package_PackageReadWrite_PutPart_System_Uri_System_String_System_Byte___.md&amp;value=---%0Auid%3A%20AasCore.Aas3.Package.PackageReadWrite.PutPart(System.Uri%2CSystem.String%2CSystem.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/blob/main/src/AasCore.Aas3.Package/Package.cs/#L962">View Source</a>
+  </span>
+  <a id="AasCore_Aas3_Package_PackageReadWrite_PutPart_" data-uid="AasCore.Aas3.Package.PackageReadWrite.PutPart*"></a>
+  <h4 id="AasCore_Aas3_Package_PackageReadWrite_PutPart_System_Uri_System_String_System_Byte___" data-uid="AasCore.Aas3.Package.PackageReadWrite.PutPart(System.Uri,System.String,System.Byte[])">PutPart(Uri, string, byte[])</h4>
+  <div class="markdown level1 summary"><p>Write the <code class="paramref">content</code> to the package as a package part
+with <code class="paramref">contentType</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Part PutPart(Uri uri, string contentType, byte[] content)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uri">Uri</a></td>
+        <td><span class="parametername">uri</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">contentType</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</td>
+        <td><span class="parametername">content</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasCore.Aas3.Package.Part.html">Part</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="AasCore_Aas3_Package_PackageReadWrite_PutPart_System_Uri_System_String_System_Byte____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This function needs to be used to put <i>any content</i> into the package.</p>
+<p>You have to introduce the relations by calling, <i>e.g.</i>,
+<a class="xref" href="AasCore.Aas3.Package.PackageReadWrite.html#AasCore_Aas3_Package_PackageReadWrite_RelateSupplementaryToSpec_AasCore_Aas3_Package_Part_AasCore_Aas3_Package_Part_">RelateSupplementaryToSpec(Part, Part)</a>.</p>
+<p>The caller needs to be careful not to unintentionally overwrite
+existing parts which are already related to each other (<i>e.g.</i>,
+do not overwrite a part as a supplementary material which has been made
+a spec).</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/new/main/apiSpec/new?filename=AasCore_Aas3_Package_PackageReadWrite_PutPart_System_Uri_System_String_System_IO_Stream_.md&amp;value=---%0Auid%3A%20AasCore.Aas3.Package.PackageReadWrite.PutPart(System.Uri%2CSystem.String%2CSystem.IO.Stream)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/blob/main/src/AasCore.Aas3.Package/Package.cs/#L990">View Source</a>
+  </span>
+  <a id="AasCore_Aas3_Package_PackageReadWrite_PutPart_" data-uid="AasCore.Aas3.Package.PackageReadWrite.PutPart*"></a>
+  <h4 id="AasCore_Aas3_Package_PackageReadWrite_PutPart_System_Uri_System_String_System_IO_Stream_" data-uid="AasCore.Aas3.Package.PackageReadWrite.PutPart(System.Uri,System.String,System.IO.Stream)">PutPart(Uri, string, Stream)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Part PutPart(Uri uri, string contentType, Stream stream)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uri">Uri</a></td>
+        <td><span class="parametername">uri</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">contentType</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
+        <td><span class="parametername">stream</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasCore.Aas3.Package.Part.html">Part</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/new/main/apiSpec/new?filename=AasCore_Aas3_Package_PackageReadWrite_RelateSupplementaryToSpec_AasCore_Aas3_Package_Part_AasCore_Aas3_Package_Part_.md&amp;value=---%0Auid%3A%20AasCore.Aas3.Package.PackageReadWrite.RelateSupplementaryToSpec(AasCore.Aas3.Package.Part%2CAasCore.Aas3.Package.Part)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/blob/main/src/AasCore.Aas3.Package/Package.cs/#L1174">View Source</a>
+  </span>
+  <a id="AasCore_Aas3_Package_PackageReadWrite_RelateSupplementaryToSpec_" data-uid="AasCore.Aas3.Package.PackageReadWrite.RelateSupplementaryToSpec*"></a>
+  <h4 id="AasCore_Aas3_Package_PackageReadWrite_RelateSupplementaryToSpec_AasCore_Aas3_Package_Part_AasCore_Aas3_Package_Part_" data-uid="AasCore.Aas3.Package.PackageReadWrite.RelateSupplementaryToSpec(AasCore.Aas3.Package.Part,AasCore.Aas3.Package.Part)">RelateSupplementaryToSpec(Part, Part)</h4>
+  <div class="markdown level1 summary"><p>Relate the <code class="paramref">supplementary</code> to the <code class="paramref">spec</code>
+as a supplementary material.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Part RelateSupplementaryToSpec(Part supplementary, Part spec)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasCore.Aas3.Package.Part.html">Part</a></td>
+        <td><span class="parametername">supplementary</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AasCore.Aas3.Package.Part.html">Part</a></td>
+        <td><span class="parametername">spec</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasCore.Aas3.Package.Part.html">Part</a></td>
+        <td><p>The same unchanged <code class="paramref">supplementary</code>.</p>
+<p>This is practical if you want to chain function calls.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/new/main/apiSpec/new?filename=AasCore_Aas3_Package_PackageReadWrite_RemovePart_AasCore_Aas3_Package_Part_.md&amp;value=---%0Auid%3A%20AasCore.Aas3.Package.PackageReadWrite.RemovePart(AasCore.Aas3.Package.Part)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/blob/main/src/AasCore.Aas3.Package/Package.cs/#L1033">View Source</a>
+  </span>
+  <a id="AasCore_Aas3_Package_PackageReadWrite_RemovePart_" data-uid="AasCore.Aas3.Package.PackageReadWrite.RemovePart*"></a>
+  <h4 id="AasCore_Aas3_Package_PackageReadWrite_RemovePart_AasCore_Aas3_Package_Part_" data-uid="AasCore.Aas3.Package.PackageReadWrite.RemovePart(AasCore.Aas3.Package.Part)">RemovePart(Part)</h4>
+  <div class="markdown level1 summary"><p>Remove the part from the package.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemovePart(Part part)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasCore.Aas3.Package.Part.html">Part</a></td>
+        <td><span class="parametername">part</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="AasCore_Aas3_Package_PackageReadWrite_RemovePart_AasCore_Aas3_Package_Part__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This function will not check whether you removed the relations corresponding
+to this part. Please use <a class="xref" href="AasCore.Aas3.Package.PackageReadWrite.html#AasCore_Aas3_Package_PackageReadWrite_UnrelateSupplementaryFromSpec_AasCore_Aas3_Package_Part_AasCore_Aas3_Package_Part_">UnrelateSupplementaryFromSpec(Part, Part)</a> to
+that end.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/new/main/apiSpec/new?filename=AasCore_Aas3_Package_PackageReadWrite_UnmakeSpec_AasCore_Aas3_Package_Part_.md&amp;value=---%0Auid%3A%20AasCore.Aas3.Package.PackageReadWrite.UnmakeSpec(AasCore.Aas3.Package.Part)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/blob/main/src/AasCore.Aas3.Package/Package.cs/#L1094">View Source</a>
+  </span>
+  <a id="AasCore_Aas3_Package_PackageReadWrite_UnmakeSpec_" data-uid="AasCore.Aas3.Package.PackageReadWrite.UnmakeSpec*"></a>
+  <h4 id="AasCore_Aas3_Package_PackageReadWrite_UnmakeSpec_AasCore_Aas3_Package_Part_" data-uid="AasCore.Aas3.Package.PackageReadWrite.UnmakeSpec(AasCore.Aas3.Package.Part)">UnmakeSpec(Part)</h4>
+  <div class="markdown level1 summary"><p>Remove the relationship from the origin to the <code class="paramref">part</code>
+as a spec.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Part UnmakeSpec(Part part)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasCore.Aas3.Package.Part.html">Part</a></td>
+        <td><span class="parametername">part</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasCore.Aas3.Package.Part.html">Part</a></td>
+        <td><p>The same unchanged <code class="paramref">part</code>.</p>
+<p>This is practical if you want to chain function calls.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="AasCore_Aas3_Package_PackageReadWrite_UnmakeSpec_AasCore_Aas3_Package_Part__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The caller needs to delete the part herself by calling
+<a class="xref" href="AasCore.Aas3.Package.PackageReadWrite.html#AasCore_Aas3_Package_PackageReadWrite_RemovePart_AasCore_Aas3_Package_Part_">RemovePart(Part)</a>.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/new/main/apiSpec/new?filename=AasCore_Aas3_Package_PackageReadWrite_UnmakeThumbnail.md&amp;value=---%0Auid%3A%20AasCore.Aas3.Package.PackageReadWrite.UnmakeThumbnail%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/blob/main/src/AasCore.Aas3.Package/Package.cs/#L1373">View Source</a>
+  </span>
+  <a id="AasCore_Aas3_Package_PackageReadWrite_UnmakeThumbnail_" data-uid="AasCore.Aas3.Package.PackageReadWrite.UnmakeThumbnail*"></a>
+  <h4 id="AasCore_Aas3_Package_PackageReadWrite_UnmakeThumbnail" data-uid="AasCore.Aas3.Package.PackageReadWrite.UnmakeThumbnail">UnmakeThumbnail()</h4>
+  <div class="markdown level1 summary"><p>Remove the relation from package origin to any thumbnail, if specified.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UnmakeThumbnail()</code></pre>
+  </div>
+  <h5 id="AasCore_Aas3_Package_PackageReadWrite_UnmakeThumbnail_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The caller needs to delete the part herself by calling
+<a class="xref" href="AasCore.Aas3.Package.PackageReadWrite.html#AasCore_Aas3_Package_PackageReadWrite_RemovePart_AasCore_Aas3_Package_Part_">RemovePart(Part)</a>.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/new/main/apiSpec/new?filename=AasCore_Aas3_Package_PackageReadWrite_UnrelateSupplementaryFromSpec_AasCore_Aas3_Package_Part_AasCore_Aas3_Package_Part_.md&amp;value=---%0Auid%3A%20AasCore.Aas3.Package.PackageReadWrite.UnrelateSupplementaryFromSpec(AasCore.Aas3.Package.Part%2CAasCore.Aas3.Package.Part)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/aas-core-works/aas-package3-csharp/blob/main/src/AasCore.Aas3.Package/Package.cs/#L1236">View Source</a>
+  </span>
+  <a id="AasCore_Aas3_Package_PackageReadWrite_UnrelateSupplementaryFromSpec_" data-uid="AasCore.Aas3.Package.PackageReadWrite.UnrelateSupplementaryFromSpec*"></a>
+  <h4 id="AasCore_Aas3_Package_PackageReadWrite_UnrelateSupplementaryFromSpec_AasCore_Aas3_Package_Part_AasCore_Aas3_Package_Part_" data-uid="AasCore.Aas3.Package.PackageReadWrite.UnrelateSupplementaryFromSpec(AasCore.Aas3.Package.Part,AasCore.Aas3.Package.Part)">UnrelateSupplementaryFromSpec(Part, Part)</h4>
+  <div class="markdown level1 summary"><p>Remove the relation as supplementary between
+the <code class="paramref">supplementary</code> and the <code class="paramref">spec</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Part UnrelateSupplementaryFromSpec(Part supplementary, Part spec)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasCore.Aas3.Package.Part.html">Part</a></td>
+        <td><span class="parametername">supplementary</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AasCore.Aas3.Package.Part.html">Part</a></td>
+        <td><span class="parametername">spec</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasCore.Aas3.Package.Part.html">Part</a></td>
+        <td><p>The same unchanged <code class="paramref">supplementary</code>.</p>
+<p>This is practical if you want to chain function calls.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="AasCore_Aas3_Package_PackageReadWrite_UnrelateSupplementaryFromSpec_AasCore_Aas3_Package_Part_AasCore_Aas3_Package_Part__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If the relationship has not been previously established, do nothing.</p>
+<p>The caller needs to delete the part(s) herself by calling
+<a class="xref" href="AasCore.Aas3.Package.PackageReadWrite.html#AasCore_Aas3_Package_PackageReadWrite_RemovePart_AasCore_Aas3_Package_Part_">RemovePart(Part)</a>.</p>
+</div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a>
+  </div>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/aas-core-works/aas-package3-csharp/new/main/apiSpec/new?filename=AasCore_Aas3_Package_PackageReadWrite.md&amp;value=---%0Auid%3A%20AasCore.Aas3.Package.PackageReadWrite%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/aas-core-works/aas-package3-csharp/blob/main/src/AasCore.Aas3.Package/Package.cs/#L930" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
