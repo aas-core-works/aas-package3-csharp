@@ -21,8 +21,9 @@ jobs:
         run: dotnet tool restore
 
       - name: Generate the doc
+        shell: pwsh
         working-directory: src
-        run: powershell .\GenerateDoc.ps1
+        run: .\GenerateDoc.ps1
 
       - name: Deploy to gh-pages 🚀
         uses: peaceiris/actions-gh-pages@v3
