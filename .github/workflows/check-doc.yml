@@ -15,12 +15,13 @@ jobs:
       - name: Install .NET 9
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: "9.0.x"
 
       - name: Install dotnet tools
         working-directory: src
         run: dotnet tool restore
 
       - name: Generate the doc
+        shell: pwsh
         working-directory: src
-        run: powershell .\GenerateDoc.ps1
+        run: .\GenerateDoc.ps1
