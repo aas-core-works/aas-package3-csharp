@@ -178,7 +178,7 @@ namespace AasCore.Aas3.Package
         {
             internal const string AasxOrigin = "/aasx-origin";
 
-            internal const string AasxSpec = "/aasx-spec";
+            internal const string AasxSpec = "/aas-spec";
 
             internal const string AasxSupplementary = "/aas-suppl";
 
