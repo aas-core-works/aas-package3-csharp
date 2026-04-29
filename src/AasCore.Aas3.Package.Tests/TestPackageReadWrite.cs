@@ -668,7 +668,7 @@ namespace AasCore.Aas3.Package.Tests
                 using (var s = specPart.GetStream())
                     s.Write(specContent, 0, specContent.Length);
 
-                originPart.CreateRelationship(specUri, System.IO.Packaging.TargetMode.Internal, RelationTypeDeprecatedBase + "/aasx-spec");
+                originPart.CreateRelationship(specUri, System.IO.Packaging.TargetMode.Internal, RelationTypeDeprecatedBase + "/aas-spec");
                 pkg.Flush();
             }
 
@@ -717,7 +717,7 @@ namespace AasCore.Aas3.Package.Tests
                 );
 
                 var specPart = pkg.CreatePart(specUri, "application/xml");
-                originPart.CreateRelationship(specUri, System.IO.Packaging.TargetMode.Internal, RelationTypeDeprecatedBase + "/aasx-spec");
+                originPart.CreateRelationship(specUri, System.IO.Packaging.TargetMode.Internal, RelationTypeDeprecatedBase + "/aas-spec");
 
                 _ = pkg.CreatePart(supplUri, "application/pdf");
                 specPart.CreateRelationship(supplUri, System.IO.Packaging.TargetMode.Internal, RelationTypeDeprecatedBase + "/aas-suppl");
@@ -771,7 +771,7 @@ namespace AasCore.Aas3.Package.Tests
                 );
 
                 var specPart = pkg.CreatePart(specUri, "application/xml");
-                originPart.CreateRelationship(specUri, System.IO.Packaging.TargetMode.Internal, RelationTypeDeprecatedBase + "/aasx-spec");
+                originPart.CreateRelationship(specUri, System.IO.Packaging.TargetMode.Internal, RelationTypeDeprecatedBase + "/aas-spec");
 
                 _ = pkg.CreatePart(supplUri, "application/pdf");
                 specPart.CreateRelationship(supplUri, System.IO.Packaging.TargetMode.Internal, RelationTypeDeprecatedBase + "/aas-suppl");
@@ -817,7 +817,7 @@ namespace AasCore.Aas3.Package.Tests
                     RelationTypeDeprecatedBase + "/aasx-origin"
                 );
                 pkg.CreatePart(specUri, "application/xml");
-                originPart.CreateRelationship(specUri, System.IO.Packaging.TargetMode.Internal, RelationTypeDeprecatedBase + "/aasx-spec");
+                originPart.CreateRelationship(specUri, System.IO.Packaging.TargetMode.Internal, RelationTypeDeprecatedBase + "/aas-spec");
                 pkg.Flush();
             }
 
